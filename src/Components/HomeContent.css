@@ -1,0 +1,111 @@
+.home-container {
+    min-height: calc(100vh - 105px);
+    padding: 2rem 0;
+    background-color: #f8f9fa;
+}
+
+.home-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.logo-section {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.logo-section img {
+    width: 250px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.logo-section h2 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+}
+
+.logo-section h5 {
+    color: #666;
+    font-size: 1.2rem;
+}
+
+.navigation-cards {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 4rem;
+}
+
+.navigation-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 300px;
+}
+
+.navigation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.navigation-card h2 {
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.navigation-card p {
+    color: black;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.card-title-1 {
+    color: #8cb4bc;
+}
+
+.card-title-2 {
+    color: #eac862;
+}
+
+.card-title-3 {
+    color: #7d925c;
+}
+
+.home-intro {
+    max-width: 700px;
+    margin: 0 auto 2.5rem auto;
+    padding: 1.2rem 1.5rem;
+    background: #ffffff;
+    border-radius: 12px;
+    font-size: 1.18rem;
+    color: #444;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+@media (max-width: 768px) {
+    .logo-section h2 {
+        font-size: 2rem;
+    }
+
+    .logo-section h5 {
+        font-size: 1rem;
+    }
+
+    .navigation-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navigation-card {
+        width: 100%;
+        max-width: 300px;
+    }
+} 

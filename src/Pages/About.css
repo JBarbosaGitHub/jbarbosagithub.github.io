@@ -1,0 +1,128 @@
+.about-container {
+    min-height: calc(100vh - 105px);
+    background-color: #f5f6f7;
+    padding: 0;
+}
+
+.about-hero {
+    text-align: center;
+    padding: 5rem 2rem 2.5rem 2rem;
+    background: linear-gradient(135deg, #8CB4BC 0%, #5BA2CF 100%);
+    color: #fff;
+    margin-bottom: 0;
+}
+
+.about-hero h1 {
+    color: black;
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1.2rem;
+    letter-spacing: 1px;
+}
+
+.about-hero .subtitle {
+    color: #444;
+    font-size: 1.4rem;
+    opacity: 0.97;
+    font-weight: 400;
+}
+
+.about-content {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    padding: 3rem 1rem 4rem 1rem;
+}
+
+.about-section {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    padding: 2.5rem 2rem 2rem 2rem;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.about-section h2 {
+    color: #8cb4bc;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.about-section .about-info-row,
+.about-section p {
+    color: #444;
+    font-size: 1.13rem;
+    text-align: center;
+    margin-bottom: 0.7rem;
+    line-height: 1.7;
+}
+
+.about-section .about-info-row:last-child,
+.about-section p:last-child {
+    margin-bottom: 0;
+}
+
+.about-section .about-icon {
+    font-size: 3.5rem;
+    color: #eac862;
+    margin-bottom: 1.5rem;
+}
+
+.about-section .about-cta {
+    color: #c94d3f;
+    font-weight: 600;
+    font-size: 1.08rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.2s;
+}
+
+.about-section .about-cta:hover {
+    color: #a53a2a;
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .about-content {
+        padding: 0 1rem 3rem 1rem;
+    }
+    .about-section {
+        padding: 2rem 1rem 1.5rem 1rem;
+    }
+    .about-section h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .about-hero {
+        padding: 3rem 0.5rem 1.5rem 0.5rem;
+    }
+    .about-hero h1 {
+        font-size: 2rem;
+    }
+    .about-hero .subtitle {
+        font-size: 1rem;
+    }
+    .about-content {
+        gap: 1.5rem;
+        padding: 1.5rem 0.5rem 2rem 0.5rem;
+    }
+    .about-section {
+        padding: 1.2rem 0.5rem 1rem 0.5rem;
+    }
+    .about-section h2 {
+        font-size: 1.2rem;
+    }
+} 

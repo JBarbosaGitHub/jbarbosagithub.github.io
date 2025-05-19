@@ -1,0 +1,60 @@
+import { useState } from 'react';
+import './Header.css';
+import { Button } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+
+const Header = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navItems = ['Sobre', 'Workshops', 'Contactos'];
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
+    return (
+        <header>
+            <div className="header-content">
+                <div className="top-left">
+                    <a href="/">
+                        <img className="nav-logo" src="src/assets/logo-removebg.png" alt="Logo" />
+                    </a>
+                </div>
+                <div className="top-right">
+                    <button className="menu-toggle" onClick={toggleMenu}>
+                        {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+                    </button>
+                    <nav className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
+                        <div className="nav-list">
+                            {navItems.map((item, index) => (
+                                <Button
+                                    variant="text"
+                                    className="nav-button"
+                                    href={`${item.toLowerCase()}`}
+                                    key={index}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    sx={{
+                                        backgroundColor: '#576d43',
+                                        color: '#edcc6e',
+                                        border: 'none',
+                                        padding: '10px 20px',
+                                        fontsize: '1.2rem',
+                                        borderRadius: '30px',
+                                        cursor: 'pointer',
+                                        transition: 'transform 0.3s ease',
+                                        backgroungColor: '0.3s ease',
+                                        marginLeft: '15px',
+                                    }}
+                                >
+                                    {item}
+                                </Button>
+                            ))}
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+    );
+};
+
+export default Header;
