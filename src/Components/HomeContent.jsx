@@ -8,62 +8,43 @@ const HomeContent = () => {
         navigate(path);
     };
 
-    const navigationCards = [
+    const navigationItems = [
         {
-            title: 'Sobre Nós',
-            description: 'Conheça nossa história e missão',
-            path: '/sobre',
-            titleClass: 'card-title-1'
+            title: 'Quem Somos',
+            path: '/quemsomos',
+            titleClass: 'nav-title-1'
         },
         {
-            title: 'Workshops',
-            description: 'Descubra o que podemos fazer por você',
-            path: '/workshops',
-            titleClass: 'card-title-2'
+            title: 'O que fazemos',
+            path: '/oquefazemos',
+            titleClass: 'nav-title-2'
         },
         {
-            title: 'Contactos',
-            description: 'Entre em contacto connosco',
-            path: '/contactos',
-            titleClass: 'card-title-3'
+            title: 'Onde Estamos',
+            path: '/ondeestamos',
+            titleClass: 'nav-title-3'
         }
     ];
-
     return (
         <div className="home-container">
             <div className="home-content">
                 {/* Logo Section */}
                 <div className="logo-section">
                     <img
-                        src="src/assets/logo.png"
+                        src="src/assets/logo-removebg.png"
                         alt="ContaContando Logo"
                     />
-                    <h5>Transformando histórias em experiências únicas</h5>
                 </div>
 
-                {/* Intro Section */}
-                <div className="home-intro">
-                    <p>
-                    A Academia ContaContando, em Ferreira do Zêzere, promove literacia financeira e matemática para crianças de 5 a 12 anos, com métodos lúdicos e interativos.
-                    </p>
-                    <p>
-                    Com um currículo abrangente, de conceitos básicos a investimentos e empreendedorismo, a academia oferece acompanhamento personalizado, incentivando pensamento crítico e autonomia.
-                    </p>
-                    <p>
-                    Abertura em setembro de 2024. Junte-se a nós!
-                    </p>
-                </div>
-
-                {/* Navigation Cards */}
-                <div className="navigation-cards">
-                    {navigationCards.map((card) => (
+                {/* Navigation Items */}
+                <div className="navigation-items">
+                    {navigationItems.map((item) => (
                         <div
-                            key={card.title}
-                            className="navigation-card"
-                            onClick={() => handleNavigation(card.path)}
+                            key={item.title}
+                            className="navigation-item"
+                            onClick={() => handleNavigation(item.path)}
                         >
-                            <h2 className={card.titleClass}>{card.title}</h2>
-                            <p>{card.description}</p>
+                            <h2 className={item.titleClass}>{item.title}</h2>
                         </div>
                     ))}
                 </div>

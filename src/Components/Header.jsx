@@ -6,7 +6,11 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const navItems = ['Sobre', 'Workshops', 'Contactos'];
+    const navItems = [
+        { title: 'Quem Somos', path: '/quemsomos' },
+        { title: 'O que fazemos', path: '/oquefazemos' },
+        { title: 'Onde Estamos', path: '/ondeestamos' }
+    ];
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -30,7 +34,7 @@ const Header = () => {
                                 <Button
                                     variant="text"
                                     className="nav-button"
-                                    href={`${item.toLowerCase()}`}
+                                    href={item.path}
                                     key={index}
                                     onClick={() => setIsMenuOpen(false)}
                                     sx={{
@@ -46,7 +50,7 @@ const Header = () => {
                                         marginLeft: '15px',
                                     }}
                                 >
-                                    {item}
+                                    {item.title}
                                 </Button>
                             ))}
                         </div>

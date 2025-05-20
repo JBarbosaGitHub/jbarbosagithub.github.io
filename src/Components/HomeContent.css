@@ -1,80 +1,100 @@
 .home-container {
-    min-height: calc(100vh - 105px);
-    padding: 2rem 0;
-    background-color: #f8f9fa;
+    height: 100vh;
+    padding: 0;
+    background-image: url('../assets/background.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.home-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
 }
 
 .home-content {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+    position: relative;
+    z-index: 2;
 }
 
 .logo-section {
     text-align: center;
     padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
 .logo-section img {
-    width: 250px;
+    width: 400px;
     height: auto;
-    margin-bottom: 1rem;
-}
-
-.logo-section h2 {
-    color: #333;
-    margin-bottom: 0.5rem;
-    font-size: 2.5rem;
 }
 
 .logo-section h5 {
-    color: #666;
+    color: #444;
     font-size: 1.2rem;
+    font-weight: 500;
+    max-width: 400px;
+    line-height: 1.5;
 }
 
-.navigation-cards {
+.navigation-items {
     display: flex;
-    gap: 1.5rem;
+    gap: 4rem;
     justify-content: center;
-    margin-top: 4rem;
+    width: 100%;
+    max-width: 1000px;
 }
 
-.navigation-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.navigation-item {
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: 300px;
+    transition: transform 0.3s ease;
+    text-align: center;
+    padding: 1rem;
 }
 
-.navigation-card:hover {
+.navigation-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.navigation-card h2 {
+.navigation-item h2 {
     margin-bottom: 0.5rem;
-    text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
 }
 
-.navigation-card p {
-    color: black;
-    text-align: center;
-    font-size: 1rem;
+.navigation-item p {
+    color: #666;
+    font-size: 1.1rem;
+    line-height: 1.5;
 }
 
-.card-title-1 {
+.nav-title-1 {
     color: #8cb4bc;
 }
 
-.card-title-2 {
+.nav-title-2 {
     color: #eac862;
 }
 
-.card-title-3 {
+.nav-title-3 {
     color: #7d925c;
 }
 
@@ -91,20 +111,25 @@
 }
 
 @media (max-width: 768px) {
-    .logo-section h2 {
-        font-size: 2rem;
+    .home-content {
+        gap: 3rem;
+    }
+
+    .logo-section img {
+        width: 300px;
     }
 
     .logo-section h5 {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
 
-    .navigation-cards {
+    .navigation-items {
         flex-direction: column;
         align-items: center;
+        gap: 2rem;
     }
 
-    .navigation-card {
+    .navigation-item {
         width: 100%;
         max-width: 300px;
     }

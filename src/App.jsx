@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
-import About from "./Pages/About";
-import Contact from "./Pages/Contact";
-import Workshop from "./Pages/Workshop";
+import WhoWeAre from "./Pages/WhoWeAre";
+import WhereWeAt from "./Pages/WhereWeAt";
+import WhatWeDo from "./Pages/WhatWeDo";
 
 const App = () => {
     return (
@@ -10,9 +10,9 @@ const App = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/workshops" element={<Workshop />} />
-                    <Route path="/sobre" element={<About />} />
-                    <Route path="/contactos" element={<Contact />} />
+                    <Route path="/quemsomos" element={<WhoWeAre />} />
+                    <Route path="/oquefazemos" element={<WhatWeDo />} />
+                    <Route path="/ondeestamos" element={<WhereWeAt />} />
                 </Routes>
             </BrowserRouter>
         </>

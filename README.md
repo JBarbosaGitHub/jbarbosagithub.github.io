@@ -12,7 +12,6 @@ ContaContando is a modern, responsive website for a storytelling project. It is 
 
 ## Tech Stack
 - React.js
-- Vite (with base config for GitHub Pages)
 - CSS (custom, no CSS frameworks)
 - React Router DOM
 - Font Awesome (for social icons)
@@ -43,42 +42,14 @@ ContaContando is a modern, responsive website for a storytelling project. It is 
    ```
 4. Open your browser and go to `http://localhost:5173` (or the port shown in your terminal).
 
-## Deployment (GitHub Pages)
-
-To deploy this Vite React app to GitHub Pages:
-
-1. **Set the base path in `vite.config.js`:**
-   ```js
-   export default defineConfig({
-     base: '/', // For user/organization pages
-     plugins: [react()],
-   })
-   ```
-2. **Build the project:**
-   ```bash
-   npm run build
-   ```
-3. **Copy the contents of the `dist` folder to the root of your repository.**
-   - Overwrite old files as needed.
-   - Remove the `dist` folder after copying.
-4. **Create a `404.html` file:**
-   - Copy the contents of `index.html` and save as `404.html` in the root.
-   - This enables client-side routing with React Router on GitHub Pages.
-5. **Commit and push your changes to GitHub.**
-6. **Visit your site:**
-   - `https://<your-username>.github.io/`
-
 ## Project Structure
 ```
-404.html           # For SPA routing on GitHub Pages
-index.html         # Main HTML entry point
 src/
-  Components/      # Reusable UI components (Header, Footer, HomeContent, ContactForm)
-  Pages/           # Main pages (Home, About, Services, Contact)
-  assets/          # Images and static assets
-  index.jsx        # App entry point
-  App.jsx          # Main app and routing
-vite.config.js     # Vite configuration (with base path)
+  Components/    # Reusable UI components (Header, Footer, HomeContent, ContactForm)
+  Pages/         # Main pages (Home, About, Services, Contact)
+  assets/        # Images and static assets
+  index.jsx      # App entry point
+  App.jsx        # Main app and routing
 ```
 
 ## Customization

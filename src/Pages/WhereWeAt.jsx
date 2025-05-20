@@ -2,7 +2,7 @@ import Header from '../Components/Header'
 import Footer from '../Components/Footer'
 import ContactForm from '../Components/ContactForm'
 
-const Contact = () => {
+const WhereWeAt = () => {
     return (
         <>
             <Header />
@@ -12,4 +12,4 @@ const Contact = () => {
     )
 }
 
-export default Contact;
+export default WhereWeAt;
