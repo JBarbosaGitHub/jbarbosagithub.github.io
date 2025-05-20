@@ -3,6 +3,7 @@ import './Header.css';
 import { Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import logo from '../assets/logo-removebg.png';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,7 +22,7 @@ const Header = () => {
             <div className="header-content">
                 <div className="top-left">
                     <a href="/">
-                        <img className="nav-logo" src="src/assets/logo-removebg.png" alt="Logo" />
+                        <img className="nav-logo" src={logo} alt="Logo" />
                     </a>
                 </div>
                 <div className="top-right">

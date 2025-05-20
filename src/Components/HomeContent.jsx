@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import './HomeContent.css';
+import logo from '../assets/logo-removebg.png';
 
 const HomeContent = () => {
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ const HomeContent = () => {
                 {/* Logo Section */}
                 <div className="logo-section">
                     <img
-                        src="src/assets/logo-removebg.png"
+                        src={logo}
                         alt="ContaContando Logo"
                     />
                 </div>
