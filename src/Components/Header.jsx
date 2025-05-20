@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import './Header.css';
-import { Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import logo from '../assets/logo-removebg.png';
@@ -10,9 +9,9 @@ const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
     const navItems = [
-        { title: 'Quem Somos', path: '/quemsomos' },
-        { title: 'O que fazemos', path: '/oquefazemos' },
-        { title: 'Onde Estamos', path: '/ondeestamos' }
+        { title: 'Quem Somos', path: '/quemsomos', titleClass: 'nav-title-1' },
+        { title: 'O que fazemos', path: '/oquefazemos', titleClass: 'nav-title-2' },
+        { title: 'Onde Estamos', path: '/ondeestamos', titleClass: 'nav-title-3' }
     ];
 
     const toggleMenu = () => {
@@ -34,29 +33,17 @@ const Header = () => {
                     <nav className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
                         <div className="nav-list">
                             {navItems.map((item, index) => (
-                                <Button
-                                    variant="text"
-                                    className="nav-button"
-                                    key={index}
+                                <div
+                                    key={item.title}
+                                    className={`navigation-item ${item.titleClass}`}
                                     onClick={() => {
                                         setIsMenuOpen(false);
                                         navigate(item.path);
                                     }}
-                                    sx={{
-                                        backgroundColor: '#576d43',
-                                        color: '#edcc6e',
-                                        border: 'none',
-                                        padding: '10px 20px',
-                                        fontsize: '1.2rem',
-                                        borderRadius: '30px',
-                                        cursor: 'pointer',
-                                        transition: 'transform 0.3s ease',
-                                        backgroungColor: '0.3s ease',
-                                        marginLeft: '15px',
-                                    }}
+                                    style={{ cursor: 'pointer', marginLeft: '15px', fontWeight: 700, fontSize: '1.2rem' }}
                                 >
                                     {item.title}
-                                </Button>
+                                </div>
                             ))}
                         </div>
                     </nav>
