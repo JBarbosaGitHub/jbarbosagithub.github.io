@@ -4,9 +4,11 @@ import { Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import logo from '../assets/logo-removebg.png';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
     const navItems = [
         { title: 'Quem Somos', path: '/quemsomos' },
         { title: 'O que fazemos', path: '/oquefazemos' },
@@ -35,9 +37,11 @@ const Header = () => {
                                 <Button
                                     variant="text"
                                     className="nav-button"
-                                    href={item.path}
                                     key={index}
-                                    onClick={() => setIsMenuOpen(false)}
+                                    onClick={() => {
+                                        setIsMenuOpen(false);
+                                        navigate(item.path);
+                                    }}
                                     sx={{
                                         backgroundColor: '#576d43',
                                         color: '#edcc6e',
