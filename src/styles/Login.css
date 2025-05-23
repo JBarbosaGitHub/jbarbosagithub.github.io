@@ -1,0 +1,121 @@
+/* Login & Register Shared Styles */
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../assets/background.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-logo {
+  width: 200px;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  margin-top: -2rem;
+}
+
+.login-box {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 370px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-box h2 {
+  margin: 0 0 1.5rem 0;
+  color: #65774a;
+  font-size: 2.1rem;
+  font-weight: 700;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  color: #444;
+  font-size: 1rem;
+}
+
+.form-group input {
+  padding: 1rem 1.2rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1.15rem;
+  outline: none;
+  transition: border 0.2s;
+  height: 52px;
+}
+
+.form-group input:focus {
+  border-color: #6c63ff;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.8rem 0;
+  background: #65774a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+
+.login-button:hover {
+  background: #aebb68;
+}
+
+.register-link {
+  margin-top: 1.2rem;
+  color: #444;
+  font-size: 0.98rem;
+}
+
+.register-link a {
+  color: #6c63ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #fff;
+  background: #ff4d4f;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.success-message {
+  color: #fff;
+  background: #52c41a;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  width: 100%;
+  text-align: center;
+  font-size: 1rem;
+} 

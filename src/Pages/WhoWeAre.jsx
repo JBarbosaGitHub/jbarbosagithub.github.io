@@ -1,6 +1,6 @@
 import Header from '../Components/Header'
 import Footer from '../Components/Footer'
-import './WhoWeAre.css'
+import '../styles/WhoWeAre.css'
 
 const WhoWeAre = () => {
 

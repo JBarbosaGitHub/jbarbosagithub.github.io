@@ -1,12 +1,28 @@
 import { useNavigate } from 'react-router-dom';
-import './HomeContent.css';
+import { useEffect, useState } from 'react';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+import '../styles/HomeContent.css';
 import logo from '../assets/logo-removebg.png';
 
 const HomeContent = () => {
     const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setIsLoggedIn(!!user);
+        });
+        return () => unsubscribe();
+    }, []);
 
     const handleNavigation = (path) => {
         navigate(path);
+    };
+
+    const handleLogout = async () => {
+        await signOut(auth);
+        navigate('/');
     };
 
     const navigationItems = [
@@ -16,7 +32,7 @@ const HomeContent = () => {
             titleClass: 'nav-title-1'
         },
         {
-            title: 'O que fazemos',
+            title: 'Formações/Workshops',
             path: '/oquefazemos',
             titleClass: 'nav-title-2'
         },
@@ -49,6 +65,23 @@ const HomeContent = () => {
                         </div>
                     ))}
                 </div>
+                {(isLoggedIn ? (
+                    <div
+                        className="navigation-item nav-title-1 home-login-item"
+                        style={{ cursor: 'pointer', fontWeight: 700, fontSize: '1.8rem', textAlign: 'center' }}
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </div>
+                ) : (
+                    <div
+                        className="navigation-item nav-title-1 home-login-item"
+                        style={{ cursor: 'pointer', fontWeight: 700, fontSize: '1.8rem', textAlign: 'center' }}
+                        onClick={() => navigate('/login')}
+                    >
+                        Login
+                    </div>
+                ))}
             </div>
         </div>
     );
