@@ -98,7 +98,7 @@ const WhatWeDo = () => {
                         <h2 style={{color: 'black'}}>Faça login ou registre-se</h2>
                         <p style={{color: 'black'}}>Para navegar totalmente nesta página, faça login ou crie uma conta.</p>
                         <button className="login-button" style={{padding: '1rem'}} onClick={() => navigate('/login')}>Login</button>
-                        <button className="login-button" style={{padding: '1rem'}} onClick={() => navigate('/register')}>Registrar</button>
+                        <button className="login-button" style={{padding: '1rem'}} onClick={() => navigate('/register')}>Registar</button>
                     </div>
                 </div>
             )}

@@ -95,7 +95,7 @@ const Login = () => {
                     <button type="submit" className="login-button">Login</button>
                 </form>
                 <p className="register-link">
-                    Não tem uma conta? <Link style={{color: '#f4cc6b'}} to="/register">Registrar aqui</Link>
+                    Não tem uma conta? <Link style={{color: '#f4cc6b'}} to="/register">Registar aqui</Link>
                 </p>
             </div>
         </div>

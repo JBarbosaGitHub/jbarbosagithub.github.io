@@ -4,15 +4,8 @@ import '../styles/Login.css';
 import logo from '../assets/logo-removebg.png';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import validator from 'validator';
 
-const validateEmail = (email) => {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-};
-
-const validatePassword = (password) => {
-  // At least 8 chars, one uppercase, one lowercase, one number, one special char
-  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
-};
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -21,6 +14,14 @@ const Register = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const navigate = useNavigate();
+
+    const validateEmail = (email) => {
+        return validator.isEmail(email);
+    };
+
+    const validatePassword = (password) => {
+        return validator.isStrongPassword(password);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,11 +43,11 @@ const Register = () => {
 
         try {
             await createUserWithEmailAndPassword(auth, email, password);
-            setSuccess('Registration successful! Redirecting to login...');
+            setSuccess('Registo realizado com sucesso! A redirecionar para o login...');
             setTimeout(() => navigate('/login'), 1500);
         } catch (err) {
             if (err.code === 'auth/email-already-in-use') {
-                setError('This email is already registered.');
+                setError('Este email já está registado.');
             } else {
                 setError(err.message);
             }
@@ -62,7 +63,7 @@ const Register = () => {
                 onClick={() => navigate('/')}
             />
             <div className="login-box">
-                <h2>Registrar</h2>
+                <h2>Registar</h2>
                 {error && <div className="error-message">{error}</div>}
                 {success && <div className="success-message">{success}</div>}
                 <form onSubmit={handleSubmit}>
@@ -96,7 +97,7 @@ const Register = () => {
                             required
                         />
                     </div>
-                    <button type="submit" className="login-button">Registrar</button>
+                    <button type="submit" className="login-button">Registar</button>
                 </form>
                 <p className="register-link">
                     Já tem uma conta? <Link style={{color: '#f4cc6b'}} to="/login">Login aqui</Link>
