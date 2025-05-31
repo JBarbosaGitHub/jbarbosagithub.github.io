@@ -2,24 +2,33 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import WhoWeAre from "./Pages/WhoWeAre";
 import WhereWeAt from "./Pages/WhereWeAt";
-import WhatWeDo from "./Pages/WhatWeDo";
+import Training from "./Pages/Training";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
-import ProtectedRoute from "./Components/ProtectedRoute";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import Success from "./Pages/Success";
+import Cancel from "./Pages/Cancel";
+
+const stripePromise = loadStripe('pk_test_51RTnkPGhaBptfacfMqv4niRWglthVZCNklXm4TSrCRxq5FAPdXYgXleUAu5KMglv24ff6znSfLIgiGlIBIPlq9nN00Q81fHW52')
 
 const App = () => {
     return (
         <>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/quemsomos" element={<WhoWeAre />} />
-                    <Route path="/oquefazemos" element={<WhatWeDo />} />
-                    <Route path="/ondeestamos" element={<WhereWeAt />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                </Routes>
-            </BrowserRouter>
+            <Elements stripe={stripePromise}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/quemsomos" element={<WhoWeAre />} />
+                        <Route path="/formacoes" element={<Training />} />
+                        <Route path="/ondeestamos" element={<WhereWeAt />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/success" element={<Success />} />
+                        <Route path="/cancel" element={<Cancel />} />
+                    </Routes>
+                </BrowserRouter>
+            </Elements>
         </>
     )
 }

@@ -33,7 +33,7 @@ const HomeContent = () => {
         },
         {
             title: 'Formações/Workshops',
-            path: '/oquefazemos',
+            path: '/formacoes',
             titleClass: 'nav-title-2'
         },
         {

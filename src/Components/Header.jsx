@@ -13,7 +13,7 @@ const Header = () => {
     const navigate = useNavigate();
     const navItems = [
         { title: 'Quem Somos', path: '/quemsomos', titleClass: 'nav-title-1' },
-        { title: 'Formações/Workshops', path: '/oquefazemos', titleClass: 'nav-title-2' },
+        { title: 'Formações/Workshops', path: '/formacoes', titleClass: 'nav-title-2' },
         { title: 'Onde Estamos', path: '/ondeestamos', titleClass: 'nav-title-3' }
     ];
 
