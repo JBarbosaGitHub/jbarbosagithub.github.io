@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import WhoWeAre from "./Pages/WhoWeAre";
 import WhereWeAt from "./Pages/WhereWeAt";
@@ -16,7 +16,7 @@ const App = () => {
     return (
         <>
             <Elements stripe={stripePromise}>
-                <BrowserRouter>
+                <HashRouter>
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/quemsomos" element={<WhoWeAre />} />
@@ -27,7 +27,7 @@ const App = () => {
                         <Route path="/success" element={<Success />} />
                         <Route path="/cancel" element={<Cancel />} />
                     </Routes>
-                </BrowserRouter>
+                </HashRouter>
             </Elements>
         </>
     )
