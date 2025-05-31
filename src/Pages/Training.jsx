@@ -6,6 +6,10 @@ import Header from '../Components/Header'
 import Footer from '../Components/Footer'
 import CourseCard from '../Components/CourseCard'
 import logo from '../assets/logo-removebg.png'
+import example1 from '../assets/example1.jpg';
+import example2 from '../assets/example2.jpg';
+import example3 from '../assets/example3.jpg';
+import example4 from '../assets/example4.jpg';
 import TrainingModal from '../Components/TrainingModal';
 import '../styles/Training.css'
 
@@ -44,55 +48,45 @@ const Training = () => {
 
     const courses = [
         {
-            title: "Planejamento Financeiro Familiar",
-            description: "Descubra como criar um orçamento familiar e poupar para o futuro.",
-            image: 'src/assets/example1.jpg',
-            data: "15-06 até 17-06 de 2025",
-            instructor: "Ricardo Almeida",
-            platform: "Zoom",
-            price: 10,
-            link: "https://teams.microsoft.com/l/message/17:user/17224000000000000"
-        },
-        {
-            title: "Investimentos para Iniciantes",
-            description: "Conheça os primeiros passos para investir no mercado financeiro com segurança.",
-            image: 'src/assets/example2.jpg',
-            data: "20-06 até 21-06 de 2025",
-            instructor: "Sofia Mendes",
-            platform: "Google Meet",
-            price: 10,
-            link: "https://teams.microsoft.com/l/message/17:user/17224000000000000"
-        },
-        {
-            title: "Gestão de Dívidas",
-            description: "Estratégias práticas para sair das dívidas e recuperar o controle financeiro.",
-            image: 'src/assets/example3.jpg',
-            data: "05-07 até 07-07 de 2025",
-            instructor: "Miguel Ferreira",
-            platform: "Microsoft Teams",
-            price: 10,
-            link: "https://teams.microsoft.com/l/message/17:user/17224000000000000"
-        },
-        {
-            title: "Educação Financeira para Jovens",
-            description: "Ensine jovens a lidar com dinheiro de forma responsável e inteligente.",
-            image: 'src/assets/example4.jpg',
-            data: "10-07 até 12-07 de 2025",
-            instructor: "Carla Souza",
-            platform: "Webex",
-            price: 10,
-            link: "https://teams.microsoft.com/l/message/17:user/17224000000000000"
-        },
-        {
             title: "Literacia Financeira Básica",
             description: "Aprenda os fundamentos para gerir suas finanças pessoais de forma eficiente.",
-            image: logo,
+            image: example1,
             data: "01-06 até 03-06 de 2025",
             instructor: "Ana Costa",
             platform: "Microsoft Teams",
             price: 10,
             link: "https://teams.microsoft.com/l/message/17:user/17224000000000000"
         },
+        {
+            title: "Gestão de Orçamento Familiar",
+            description: "Aprenda a criar e manter um orçamento familiar eficiente.",
+            image: example2,
+            data: "15-06 até 17-06 de 2025",
+            instructor: "João Silva",
+            platform: "Microsoft Teams",
+            price: 15,
+            link: "https://teams.microsoft.com/l/message/17:user/17224000000000000"
+        },
+        {
+            title: "Investimentos para Iniciantes",
+            description: "Conheça as bases dos investimentos e como começar a investir.",
+            image: example3,
+            data: "01-07 até 03-07 de 2025",
+            instructor: "Maria Santos",
+            platform: "Microsoft Teams",
+            price: 20,
+            link: "https://teams.microsoft.com/l/message/17:user/17224000000000000"
+        },
+        {
+            title: "Planejamento Financeiro",
+            description: "Aprenda a planejar suas finanças para o futuro.",
+            image: example4,
+            data: "15-07 até 17-07 de 2025",
+            instructor: "Pedro Oliveira",
+            platform: "Microsoft Teams",
+            price: 25,
+            link: "https://teams.microsoft.com/l/message/17:user/17224000000000000"
+        }
     ]
 
     return (
