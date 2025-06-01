@@ -56,19 +56,19 @@ FIREBASE_APP_ID=your_firebase_app_id
 ## Installation
 
 1. Clone the repository:
-```bash
+   ```bash
 git clone [repository-url]
 cd [repository-name]
-```
+   ```
 
 2. Install dependencies:
-```bash
+   ```bash
 # Install frontend dependencies
 npm install
 
 # Install server dependencies
 cd server
-npm install
+   npm install
 ```
 
 3. Set up environment variables:
@@ -76,13 +76,13 @@ npm install
 - Fill in your environment variables
 
 4. Start the development servers:
-```bash
+   ```bash
 # Start frontend (from root directory)
-npm run dev
+   npm run dev
 
 # Start backend (from server directory)
 node server.js
-```
+   ```
 
 ## Project Structure
 

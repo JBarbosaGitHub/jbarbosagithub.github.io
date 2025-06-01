@@ -35,4 +35,13 @@ yarn-error.log*
 # Vercel
 .vercel
 
-.vercel
+# testing
+/coverage
+
+# misc
+.env.development.local
+.env.test.local
+.env.production.local
+
+# server folder
+/server/
