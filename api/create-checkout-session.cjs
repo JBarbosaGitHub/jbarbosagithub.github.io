@@ -6,7 +6,12 @@ module.exports = async function handler(req, res) {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
-  const { courseTitle, coursePrice, successUrl, cancelUrl } = req.body;
+  let body = '';
+  for await (const chunk of req) {
+    body += chunk;
+  }
+  const parsed = JSON.parse(body);
+  const { courseTitle, coursePrice, successUrl, cancelUrl } = parsed;
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card', 'paypal'],
