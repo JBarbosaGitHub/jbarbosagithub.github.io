@@ -31,7 +31,7 @@ const TrainingModal = ({ open, onClose, training }) => {
     const handleBuy = async () => {
         const stripe = await stripePromise;
 
-        const response = await fetch('/api/create-checkout-session', {
+        const response = await fetch('/api/create-checkout-session.js', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
