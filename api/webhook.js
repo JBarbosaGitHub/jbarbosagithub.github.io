@@ -1,4 +1,4 @@
-import { buffer } from 'micro';
+const { buffer } = require('micro');
 const Stripe = require('stripe');
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const admin = require('firebase-admin');
@@ -23,13 +23,7 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
-export const config = {
-  api: {
-    bodyParser: false, // Needed for Stripe signature verification
-  },
-};
-
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
