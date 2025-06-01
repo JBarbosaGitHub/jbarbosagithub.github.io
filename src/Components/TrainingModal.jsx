@@ -39,8 +39,8 @@ const TrainingModal = ({ open, onClose, training }) => {
             body: JSON.stringify({
                 courseTitle: training.title,
                 coursePrice: training.price,
-                successUrl: window.location.origin + '/success',
-                cancelUrl: window.location.origin + '/cancel',
+                successUrl: window.location.origin + '/#/success',
+                cancelUrl: window.location.origin + '/#/cancel',
             }),
         });
 
