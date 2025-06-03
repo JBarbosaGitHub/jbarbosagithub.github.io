@@ -352,8 +352,7 @@ const Training = () => {
                             title={course.title}
                             description={course.description}
                             image={course.imageUrl}
-                            onMoreDetails={() => handleOpenModal(course)
-                            }
+                            onMoreDetails={() => handleOpenModal(course)}
                             isLoggedIn={isLoggedIn}
                         />
                     ))}
