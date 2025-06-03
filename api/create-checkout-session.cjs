@@ -20,19 +20,13 @@ if (!admin.apps.length) {
 }
 const db = admin.firestore();
 
-const { json } = require('micro');
-
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
 
-  // Parse the JSON request body
-  const body = await json(req);
-
-  // Now access properties from the parsed body
-  const { courseId, successUrl, cancelUrl } = body; // Use 'body' instead of 'req.body'
+  const { courseId, successUrl, cancelUrl } = req.body;
 
   const courseDoc = await db.collection('courses').doc(courseId).get();
   if (!courseDoc.exists) {
