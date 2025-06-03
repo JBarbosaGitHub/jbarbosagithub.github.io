@@ -45,11 +45,13 @@ module.exports = async function handler(req, res) {
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     const email = session.customer_details.email;
+    const courseId = session.metadata ? session.metadata.courseId : null;
     const courseTitle = session.metadata ? session.metadata.courseTitle : 'Unknown Course';
 
     // Save to Firestore
     await db.collection('purchases').add({
       email: email,
+      courseId: courseId,
       courseTitle: courseTitle,
       purchasedAt: new Date(),
       sessionId: session.id
