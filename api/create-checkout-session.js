@@ -1,8 +1,8 @@
-const Stripe = require('stripe');
+import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const { json } = require('micro');
+import { json } from 'micro';
 
-const admin = require('firebase-admin');
+import admin from 'firebase-admin';
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
@@ -21,7 +21,7 @@ if (!admin.apps.length) {
 }
 const db = admin.firestore();
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   try {
     if (req.method !== 'POST') {
       res.status(405).json({ error: 'Method not allowed' });

@@ -1,7 +1,7 @@
-const { buffer } = require('micro');
-const Stripe = require('stripe');
+import { buffer } from 'micro';
+import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const admin = require('firebase-admin');
+import admin from 'firebase-admin';
 
 // Initialize Firebase only if not already initialized
 if (!admin.apps.length) {
@@ -23,7 +23,7 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
