@@ -18,10 +18,8 @@ module.exports = async function handler(req, res) {
   }
   const course = courseDoc.data();
 
-  // Use course.price, course.title, etc. for Stripe session
-  // Example:
   const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
+    payment_method_types: ['card', 'paypal'],
     line_items: [{
       price_data: {
         currency: 'eur',

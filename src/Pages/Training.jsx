@@ -352,17 +352,7 @@ const Training = () => {
                             title={course.title}
                             description={course.description}
                             image={course.imageUrl}
-                            onMoreDetails={() =>
-                                handleOpenModal({
-                                    title: course.title,
-                                    description: course.description,
-                                    image: course.imageUrl,
-                                    data: course.data,
-                                    instructor: course.instructor,
-                                    platform: course.platform,
-                                    price: course.price,
-                                    link: course.link
-                                })
+                            onMoreDetails={() => handleOpenModal(course)
                             }
                             isLoggedIn={isLoggedIn}
                         />

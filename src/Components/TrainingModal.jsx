@@ -35,18 +35,18 @@ const TrainingModal = ({ open, onClose, training }) => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                courseId: training.id,
+                courseId: training.id, // Only send the ID!
                 successUrl: window.location.origin + '/#/success',
                 cancelUrl: window.location.origin + '/#/cancel',
             }),
         });
 
         const data = await response.json();
-        console.log(data);
-        
-        const result = await stripe.redirectToCheckout({sessionId: data.id});
+        console.log('Stripe session response:', data);
 
-        if(result.error) {
+        const result = await stripe.redirectToCheckout({ sessionId: data.id });
+
+        if (result.error) {
             alert(result.error.message);
         }
     };
