@@ -1,37 +1,45 @@
 const Stripe = require('stripe');
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const { getFirestore } = require('firebase-admin/firestore');
+const db = getFirestore();
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
-  let body = '';
-  for await (const chunk of req) {
-    body += chunk;
+
+  const { courseId, successUrl, cancelUrl } = req.body;
+
+  // Fetch course from Firestore by ID
+  const courseDoc = await db.collection('courses').doc(courseId).get();
+  if (!courseDoc.exists) {
+    return res.status(404).json({ error: 'Course not found' });
   }
-  const parsed = JSON.parse(body);
-  const { courseTitle, coursePrice, successUrl, cancelUrl } = parsed;
-  try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'paypal'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'eur',
-            product_data: { name: courseTitle },
-            unit_amount: coursePrice * 100,
-          },
-          quantity: 1,
+  const course = courseDoc.data();
+
+  // Use course.price, course.title, etc. for Stripe session
+  // Example:
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [{
+      price_data: {
+        currency: 'eur',
+        product_data: {
+          name: course.title,
         },
-      ],
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-      mode: 'payment',
-      metadata: { courseTitle },
-    });
-    res.status(200).json({ id: session.id });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-} 
+        unit_amount: Math.round(course.price * 100), // Stripe expects cents
+      },
+      quantity: 1,
+    }],
+    mode: 'payment',
+    success_url: successUrl,
+    cancel_url: cancelUrl,
+    metadata: {
+      courseId: courseId,
+      // ...any other info
+    }
+  });
+
+  res.status(200).json({ id: session.id });
+}; 

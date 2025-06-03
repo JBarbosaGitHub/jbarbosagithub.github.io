@@ -18,27 +18,24 @@ const TrainingModal = ({ open, onClose, training }) => {
             const q = query(
                 collection(db, 'purchases'),
                 where('email', '==', user.email),
-                where('courseTitle', '==', training.title)
+                where('courseId', '==', training.id)
             );
             const querySnapshot = await getDocs(q);
             setHasPurchased(!querySnapshot.empty);
         };
         checkPurchases();
-    }, [user, training.title]);
+    }, [user, training.id]);
 
     const stripePromise = loadStripe('pk_test_51RTnkPGhaBptfacfMqv4niRWglthVZCNklXm4TSrCRxq5FAPdXYgXleUAu5KMglv24ff6znSfLIgiGlIBIPlq9nN00Q81fHW52')
 
     const handleBuy = async () => {
         const stripe = await stripePromise;
 
-        const response = await fetch('/api/create-checkout-session.cjs', {
+        const response = await fetch('/api/create-checkout-session', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                courseTitle: training.title,
-                coursePrice: training.price,
+                courseId: training.id,
                 successUrl: window.location.origin + '/#/success',
                 cancelUrl: window.location.origin + '/#/cancel',
             }),
@@ -113,7 +110,7 @@ const TrainingModal = ({ open, onClose, training }) => {
                                  color="primary"
                                  onClick={() => window.open(training.link, '_blank')}
                              >
-                                    Acessar curso
+                                    Acessar Formação
                                 </Button>
                             ) : (
                             <Button

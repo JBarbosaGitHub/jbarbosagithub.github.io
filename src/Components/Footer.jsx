@@ -26,6 +26,7 @@ const Footer = () => {
                     <button
                         className="scroll-to-top-button"
                         onClick={scrollToTop}
+                        style={{ fontWeight: 700, fontSize: '1.2rem' }}
                     >
                         Voltar ao topo
                     </button>
