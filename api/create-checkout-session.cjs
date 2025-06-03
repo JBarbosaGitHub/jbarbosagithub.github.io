@@ -9,7 +9,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const { courseId, successUrl, cancelUrl } = req.body;
+  const { courseId, courseTitle, coursePrice, successUrl, cancelUrl } = req.body;
 
   // Fetch course from Firestore by ID
   const courseDoc = await db.collection('courses').doc(courseId).get();
@@ -24,9 +24,9 @@ module.exports = async function handler(req, res) {
       price_data: {
         currency: 'eur',
         product_data: {
-          name: course.title,
+          name: courseTitle,
         },
-        unit_amount: Math.round(course.price * 100), // Stripe expects cents
+        unit_amount: Math.round(coursePrice * 100), // Stripe expects cents
       },
       quantity: 1,
     }],
@@ -35,8 +35,8 @@ module.exports = async function handler(req, res) {
     cancel_url: cancelUrl,
     metadata: {
       courseId: courseId,
-      courseTitle: course.title,
-      coursePrice: course.price
+      courseTitle: courseTitle,
+      coursePrice: coursePrice
     }
   });
 
