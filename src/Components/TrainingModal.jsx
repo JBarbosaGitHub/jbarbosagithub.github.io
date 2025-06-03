@@ -74,7 +74,7 @@ const TrainingModal = ({ open, onClose, training }) => {
                 >
                     {training && (
                         <>
-                            <img src={training.image} alt={training.title} style={{ width: '100%', height: 'auto', marginBottom: '1rem' }} />
+                            <img src={training.imageUrl} alt={training.title} style={{ width: '100%', height: 'auto', marginBottom: '1rem' }} />
                             <Typography variant="h6" component="h2" sx={{ fontWeight: 700, fontSize: '1.4rem', marginBottom: '1rem', color: 'black' }}>
                                 {training.title}
                             </Typography>
