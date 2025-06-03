@@ -35,7 +35,8 @@ module.exports = async function handler(req, res) {
     cancel_url: cancelUrl,
     metadata: {
       courseId: courseId,
-      // ...any other info
+      courseTitle: course.title,
+      coursePrice: course.price
     }
   });
 
