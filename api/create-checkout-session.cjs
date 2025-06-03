@@ -11,7 +11,6 @@ module.exports = async function handler(req, res) {
 
   const { courseId, courseTitle, coursePrice, successUrl, cancelUrl } = req.body;
 
-  // Fetch course from Firestore by ID
   const courseDoc = await db.collection('courses').doc(courseId).get();
   if (!courseDoc.exists) {
     return res.status(404).json({ error: 'Course not found' });
@@ -26,7 +25,7 @@ module.exports = async function handler(req, res) {
         product_data: {
           name: courseTitle,
         },
-        unit_amount: Math.round(coursePrice * 100), // Stripe expects cents
+        unit_amount: coursePrice * 100, // Stripe expects cents
       },
       quantity: 1,
     }],

@@ -36,6 +36,8 @@ const TrainingModal = ({ open, onClose, training }) => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 courseId: training.id, // Only send the ID!
+                courseTitle: training.title,
+                coursePrice: training.price,
                 successUrl: window.location.origin + '/#/success',
                 cancelUrl: window.location.origin + '/#/cancel',
             }),
