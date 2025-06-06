@@ -87,7 +87,9 @@ const Training = () => {
             description: "",
             subDescription: "",
             imageUrl: "",
-            data: "",
+            age: "",
+            durantion: "",
+            instructor: "",
             platform: "",
             price: "",
             link: ""
@@ -221,9 +223,29 @@ const Training = () => {
                                                 fontWeight: 500,
                                                 fontSize: '1rem'
                                             }}
-                                            placeholder="Data"
-                                            value={newCourse.data}
-                                            onChange={e => setNewCourse(c => ({ ...c, data: e.target.value }))}
+                                            placeholder="Idade"
+                                            value={newCourse.age}
+                                            onChange={e => setNewCourse(c => ({ ...c, age: e.target.value }))}
+                                        />
+                                        <input
+                                            style={{
+                                                padding: '0.3rem',
+                                                fontWeight: 500,
+                                                fontSize: '1rem'
+                                            }}
+                                            placeholder="Duração da Formação"
+                                            value={newCourse.duration}
+                                            onChange={e => setNewCourse(c => ({ ...c, duration: e.target.value }))}
+                                        />
+                                        <input
+                                            style={{
+                                                padding: '0.3rem',
+                                                fontWeight: 500,
+                                                fontSize: '1rem'
+                                            }}
+                                            placeholder="Formador"
+                                            value={newCourse.instructor}
+                                            onChange={e => setNewCourse(c => ({ ...c, instructor: e.target.value }))}
                                         />
                                         <input
                                             style={{

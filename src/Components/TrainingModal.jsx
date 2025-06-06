@@ -74,7 +74,17 @@ const TrainingModal = ({ open, onClose, training }) => {
                 >
                     {training && (
                         <>
-                            <img src={training.imageUrl} alt={training.title} style={{ width: '100%', height: '300px', marginBottom: '1rem' }} />
+                            <img 
+                                src={training.imageUrl} 
+                                alt={training.title} 
+                                style={{
+                                    width: '100%', 
+                                    height: '300px', // Keep the modal's height
+                                    objectFit: 'cover',
+                                    objectPosition: 'center',
+                                    marginBottom: '1rem' 
+                                }}
+                            />
                             {training.subDescription && (
                                 <Typography variant="body1" color="text.secondary" sx={{ 
                                     fontSize: '1rem', 
@@ -85,19 +95,29 @@ const TrainingModal = ({ open, onClose, training }) => {
                                     {training.subDescription}
                                 </Typography>
                             )}
-                            {training.data && (
+                            {training.age && (
                                 <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                    Data:{training.data}
+                                    <strong>Idade:</strong> {training.age}
+                                </Typography>
+                            )}
+                            {training.duration && (
+                                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                    <strong>Duração:</strong> {training.duration}
+                                </Typography>
+                            )}
+                            {training.instructor && (
+                                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                    <strong>Formador:</strong> {training.instructor}
                                 </Typography>
                             )}
                             {training.platform && (
                                 <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                    Plataforma: {training.platform}
+                                    <strong>Plataforma:</strong> {training.platform}
                                 </Typography>
                             )}
                             {training.price && !hasPurchased && (
                                 <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                    Preço: {training.price}€
+                                    <strong>Preço:</strong> {training.price}€
                                 </Typography>
                             )}
                             {hasPurchased ? (
