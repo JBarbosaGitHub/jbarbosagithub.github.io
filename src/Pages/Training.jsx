@@ -85,9 +85,9 @@ const Training = () => {
         setNewCourse({
             title: "",
             description: "",
+            subDescription: "",
             imageUrl: "",
             data: "",
-            instructor: "",
             platform: "",
             price: "",
             link: ""
@@ -193,6 +193,17 @@ const Training = () => {
                                             onChange={e => setNewCourse(c => ({ ...c, description: e.target.value }))}
                                             required
                                         />
+                                        <textarea
+                                            style={{
+                                                padding: '0.3rem',
+                                                fontWeight: 500,
+                                                fontSize: '1rem'
+                                            }}
+                                            placeholder="Sub-Descrição"
+                                            value={newCourse.subDescription}
+                                            onChange={e => setNewCourse(c => ({ ...c, subDescription: e.target.value }))}
+                                            required
+                                        />
                                         <input
                                             style={{
                                                 padding: '0.3rem',
@@ -213,18 +224,6 @@ const Training = () => {
                                             placeholder="Data"
                                             value={newCourse.data}
                                             onChange={e => setNewCourse(c => ({ ...c, data: e.target.value }))}
-                                            required
-                                        />
-                                        <input
-                                            style={{
-                                                padding: '0.3rem',
-                                                fontWeight: 500,
-                                                fontSize: '1rem'
-                                            }}
-                                            placeholder="Instrutor"
-                                            value={newCourse.instructor}
-                                            onChange={e => setNewCourse(c => ({ ...c, instructor: e.target.value }))}
-                                            required
                                         />
                                         <input
                                             style={{
@@ -235,7 +234,6 @@ const Training = () => {
                                             placeholder="Plataforma"
                                             value={newCourse.platform}
                                             onChange={e => setNewCourse(c => ({ ...c, platform: e.target.value }))}
-                                            required
                                         />
                                         <input
                                             style={{

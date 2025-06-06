@@ -24,7 +24,10 @@ if (!admin.apps.length) {
 const db = admin.firestore();
 
 export default async function handler(req, res) {
+  console.log('Webhook received:', req.method);
+
   if (req.method !== 'POST') {
+    console.log('Method not allowed:', req.method);
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
@@ -36,6 +39,7 @@ export default async function handler(req, res) {
 
   try {
     event = stripe.webhooks.constructEvent(buf, sig, endpointSecret);
+    console.log('Webhook event constructed successfully:', event.type);
   } catch (err) {
     console.log(`Webhook Error: ${err.message}`);
     return res.status(400).send(`Webhook Error: ${err.message}`);
@@ -44,20 +48,29 @@ export default async function handler(req, res) {
   // Handle the event
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
+    console.log('Processing checkout.session.completed event:', session.id);
+
     const email = session.customer_details.email;
     const courseId = session.metadata ? session.metadata.courseId : null;
     const courseTitle = session.metadata ? session.metadata.courseTitle : 'Unknown Course';
 
-    // Save to Firestore
-    await db.collection('purchases').add({
-      email: email,
-      courseId: courseId,
-      courseTitle: courseTitle,
-      purchasedAt: new Date(),
-      sessionId: session.id
-    });
+    console.log('Purchase details:', { email, courseId, courseTitle });
 
-    console.log(`Purchase saved for ${email} - ${courseTitle}`);
+    // Save to Firestore
+    try {
+      await db.collection('purchases').add({
+        email: email,
+        courseId: courseId,
+        courseTitle: courseTitle,
+        purchasedAt: new Date(),
+        sessionId: session.id
+      });
+      console.log(`Purchase saved successfully for ${email} - ${courseTitle}`);
+    } catch (error) {
+      console.error('Error saving purchase to Firestore:', error);
+    }
+  } else {
+    console.log('Unhandled event type:', event.type);
   }
 
   res.json({ received: true });

@@ -74,25 +74,32 @@ const TrainingModal = ({ open, onClose, training }) => {
                 >
                     {training && (
                         <>
-                            <img src={training.imageUrl} alt={training.title} style={{ width: '100%', height: 'auto', marginBottom: '1rem' }} />
-                            <Typography variant="h6" component="h2" sx={{ fontWeight: 700, fontSize: '1.4rem', marginBottom: '1rem', color: 'black' }}>
-                                {training.title}
-                            </Typography>
-                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                {training.description}
-                            </Typography>
-                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                Data:{training.data}
-                            </Typography>
-                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                Professor: {training.instructor}
-                            </Typography>
-                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                Plataforma: {training.platform}
-                            </Typography>
-                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                Preço: {training.price}€
-                            </Typography>
+                            <img src={training.imageUrl} alt={training.title} style={{ width: '100%', height: '300px', marginBottom: '1rem' }} />
+                            {training.subDescription && (
+                                <Typography variant="body1" color="text.secondary" sx={{ 
+                                    fontSize: '1rem', 
+                                    marginBottom: '1rem',
+                                    whiteSpace: 'pre-line',
+                                    lineHeight: '1.6'
+                                }}>
+                                    {training.subDescription}
+                                </Typography>
+                            )}
+                            {training.data && (
+                                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                    Data:{training.data}
+                                </Typography>
+                            )}
+                            {training.platform && (
+                                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                    Plataforma: {training.platform}
+                                </Typography>
+                            )}
+                            {training.price && !hasPurchased && (
+                                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                    Preço: {training.price}€
+                                </Typography>
+                            )}
                             {hasPurchased ? (
                                  <Button
                                  sx={{
