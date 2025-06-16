@@ -20,8 +20,7 @@ const WhoWeAre = () => {
                                 A Academia ContaContando é um projeto educativo inovador com sede em Ferreira do Zêzere, Portugal, focado em promover a literacia financeira e matemática para crianças. Fundada por Miguel Dias e Sónia Sanches, a iniciativa nasce da visão de que ensinar competências financeiras desde tenra idade é essencial para preparar as crianças para os desafios económicos do futuro.
                             </p>
                             <p>
-                                Com abertura prevista para setembro de 2024, a ContaContando pretende transformar a educação local, oferecendo uma abordagem lúdica, interativa e adaptada às necessidades de cada faixa etária. Acreditamos que a educação financeira não é apenas uma ferramenta, mas um pilar fundamental para o desenvolvimento de cidadãos conscientes e autónomos.
-                            </p>
+                                A Academia ContaContando pretende transformar a educação local, oferecendo uma abordagem lúdica, interativa e adaptada às necessidades de cada faixa etária. Acreditamos que a educação financeira não é apenas uma ferramenta, mas um pilar fundamental para o desenvolvimento de cidadãos conscientes e autónomos.                            </p>
                         </div>
                     </div>
 
@@ -29,8 +28,7 @@ const WhoWeAre = () => {
                         <h2>Missão e Visão</h2>
                         <div className="who-we-are-info-row">
                             <p>
-                                A nossa missão é tornar a aprendizagem de conceitos financeiros e matemáticos numa experiência divertida e envolvente, utilizando métodos pedagógicos inovadores como jogos, desafios práticos, simulações e tecnologia. A nossa visão é criar uma comunidade em Ferreira do Zêzere onde crianças e famílias estejam capacitadas para gerir as suas finanças com confiança, promovendo uma cultura de responsabilidade financeira e sustentabilidade. Queremos inspirar as crianças a explorar o mundo dos números e das finanças, abrindo portas para um futuro de sucesso e contributo positivo para a sociedade.
-                            </p>
+                            A nossa missão é tornar a aprendizagem de conceitos financeiros e matemáticos numa experiência divertida e envolvente, utilizando métodos pedagógicos inovadores como jogos, desafios práticos, simulações e tecnologia. A nossa visão é criar uma comunidade onde crianças e famílias estejam capacitadas para gerir as suas finanças com confiança, promovendo uma cultura de responsabilidade financeira e sustentabilidade. Queremos inspirar as crianças a explorar o mundo dos números e das finanças, abrindo portas para um futuro de sucesso e contributo positivo para a sociedade.                            </p>
                         </div>
                     </div>
 

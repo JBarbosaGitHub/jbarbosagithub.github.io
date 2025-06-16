@@ -43,15 +43,6 @@ const Training = () => {
     }, []);
 
     useEffect(() => {
-        if (!isLoggedIn) {
-            const timer = setTimeout(() => setShowModal(true), 5000);
-            return () => clearTimeout(timer);
-        } else {
-            setShowModal(false);
-        }
-    }, [isLoggedIn]);
-
-    useEffect(() => {
         const fetchCourses = async () => {
             const coursesCollection = collection(db, 'courses');
             const querySnapshot = await getDocs(coursesCollection);
@@ -65,14 +56,22 @@ const Training = () => {
     }, []);
 
     const handleOpenModal = (training) => {
-        setSelectedTraining(training);
-        setOpenModal(true);
+        if (isLoggedIn) {
+            setSelectedTraining(training);
+            setOpenModal(true);
+        } else {
+            setShowModal(true);
+        }
     }
 
     const handleCloseModal = () => {
         setOpenModal(false);
         setSelectedTraining(null);
     }
+
+    const handleCloseWelcomeModal = () => {
+        setShowModal(false);
+    };
 
     const handleAddCourse = async (e) => {
         e.preventDefault();
@@ -397,10 +396,26 @@ const Training = () => {
                         borderRadius: '12px',
                         textAlign: 'center',
                         maxWidth: '90vw',
-                        boxShadow: '0 4px 24px rgba(0,0,0,0.15)'
+                        boxShadow: '0 4px 24px rgba(0,0,0,0.15)',
+                        position: 'relative',
                     }}>
+                        <button
+                            onClick={handleCloseWelcomeModal}
+                            style={{
+                                position: 'absolute',
+                                top: '10px',
+                                right: '10px',
+                                background: 'none',
+                                border: 'none',
+                                fontSize: '1.5rem',
+                                cursor: 'pointer',
+                                color: '#333',
+                            }}
+                        >
+                            &times;
+                        </button>
                         <h2 style={{ color: 'black' }}>Faça o login ou crie uma conta</h2>
-                        <p style={{ color: 'black' }}>Para navegar totalmente nesta página, faça o login ou crie uma conta.</p>
+                        <p style={{ color: 'black' }}>Para ver o conteúdo das formações, faça o login ou crie uma conta.</p>
                         <button className="login-button" style={{ padding: '1rem' }} onClick={() => navigate('/login')}>Login</button>
                         <button className="login-button" style={{ padding: '1rem' }} onClick={() => navigate('/register')}>Registar</button>
                     </div>
