@@ -1,5 +1,4 @@
-import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import fetch from 'node-fetch';
 import { json } from 'micro';
 
 import admin from 'firebase-admin';
@@ -21,6 +20,26 @@ if (!admin.apps.length) {
 }
 const db = admin.firestore();
 
+async function getSumUpAccessToken() {
+  const tokenResponse = await fetch('https://api.sumup.com/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+      grant_type: 'client_credentials',
+      client_id: process.env.SUMUP_CLIENT_ID,
+      client_secret: process.env.SUMUP_CLIENT_SECRET
+    }).toString()
+  });
+
+  const tokenData = await tokenResponse.json();
+  if (!tokenResponse.ok) {
+    throw new Error(tokenData.message || 'Failed to get SumUp access token');
+  }
+  return tokenData.access_token;
+}
+
 export default async function handler(req, res) {
   try {
     if (req.method !== 'POST') {
@@ -28,12 +47,11 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Parse the JSON request body
     const body = await json(req);
-    const { courseId, successUrl, cancelUrl } = body;
+    const { courseId, amount, currency, description, successUrl, cancelUrl, buyerEmail } = body;
 
-    if (!courseId) {
-      res.status(400).json({ error: 'Course ID is required' });
+    if (!courseId || !amount || !currency || !description || !buyerEmail) {
+      res.status(400).json({ error: 'Missing required fields' });
       return;
     }
 
@@ -41,31 +59,33 @@ export default async function handler(req, res) {
     if (!courseDoc.exists) {
       return res.status(404).json({ error: 'Course not found' });
     }
-    const course = courseDoc.data();
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card', 'paypal'],
-      line_items: [{
-        price_data: {
-          currency: 'eur',
-          product_data: {
-            name: course.title,
-          },
-          unit_amount: Math.round(course.price * 100), // Stripe expects cents
-        },
-        quantity: 1,
-      }],
-      mode: 'payment',
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-      metadata: {
-        courseId: courseId, // Use the courseId from the request
-        courseTitle: course.title,
-        coursePrice: course.price
-      }
+    const accessToken = await getSumUpAccessToken();
+
+    const response = await fetch('https://api.sumup.com/v0.1/checkouts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({
+        checkout_reference: `course-${courseId}-${buyerEmail}-${Date.now()}`,
+        amount: parseFloat(amount),
+        currency: currency,
+        merchant_code: process.env.SUMUP_MERCHANT_CODE,
+        description: description,
+        return_url: successUrl,
+        hosted_checkout: { enabled: true },
+      })
     });
 
-    res.status(200).json({ id: session.id });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to create SumUp checkout');
+    }
+
+    res.status(200).json({ id: data.id, hosted_checkout_url: data.hosted_checkout_url });
   } catch (error) {
     console.error('Error creating checkout session:', error);
     res.status(500).json({ error: 'Internal server error' });

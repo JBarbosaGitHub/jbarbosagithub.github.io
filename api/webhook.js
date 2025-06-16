@@ -1,9 +1,7 @@
-import { buffer } from 'micro';
-import Stripe from 'stripe';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import fetch from 'node-fetch';
+import { json } from 'micro';
 import admin from 'firebase-admin';
 
-// Initialize Firebase only if not already initialized
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
@@ -23,6 +21,26 @@ if (!admin.apps.length) {
 
 const db = admin.firestore();
 
+async function getSumUpAccessToken() {
+  const tokenResponse = await fetch('https://api.sumup.com/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({
+      grant_type: 'client_credentials',
+      client_id: process.env.SUMUP_CLIENT_ID,
+      client_secret: process.env.SUMUP_CLIENT_SECRET
+    }).toString()
+  });
+
+  const tokenData = await tokenResponse.json();
+  if (!tokenResponse.ok) {
+    throw new Error(tokenData.message || 'Failed to get SumUp access token');
+  }
+  return tokenData.access_token;
+}
+
 export default async function handler(req, res) {
   console.log('Webhook received:', req.method);
 
@@ -32,45 +50,66 @@ export default async function handler(req, res) {
     return;
   }
 
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  const buf = await buffer(req);
-  const sig = req.headers['stripe-signature'];
-  let event;
+  // Para Vercel Serverless Functions, o body já deve estar parsed se o Content-Type for application/json
+  // Se não estiver, pode ser necessário usar `await json(req)` como no create-checkout-session
+  const event = req.body;
 
-  try {
-    event = stripe.webhooks.constructEvent(buf, sig, endpointSecret);
-    console.log('Webhook event constructed successfully:', event.type);
-  } catch (err) {
-    console.log(`Webhook Error: ${err.message}`);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
+  // TODO: EM PRODUÇÃO, IMPLEMENTAR A VERIFICAÇÃO DE ASSINATURA 'x-sumup-signature' AQUI!
+  // Exemplo (verifica a documentação SumUp para detalhes exatos):
+  // const sig = req.headers['x-sumup-signature'];
+  // const expectedSignature = calculateSumUpSignature(req.rawBody, process.env.SUMUP_WEBHOOK_SECRET);
+  // if (sig !== expectedSignature) { return res.status(401).send('Invalid signature'); }
 
-  // Handle the event
-  if (event.type === 'checkout.session.completed') {
-    const session = event.data.object;
-    console.log('Processing checkout.session.completed event:', session.id);
+  console.log('Webhook Event:', event);
 
-    const email = session.customer_details.email;
-    const courseId = session.metadata ? session.metadata.courseId : null;
-    const courseTitle = session.metadata ? session.metadata.courseTitle : 'Unknown Course';
+  if (event.event_type === 'CHECKOUT_STATUS_CHANGED') {
+    const checkoutId = event.id;
 
-    console.log('Purchase details:', { email, courseId, courseTitle });
-
-    // Save to Firestore
     try {
-      await db.collection('purchases').add({
-        email: email,
-        courseId: courseId,
-        courseTitle: courseTitle,
-        purchasedAt: new Date(),
-        sessionId: session.id
-      });
-      console.log(`Purchase saved successfully for ${email} - ${courseTitle}`);
+        const accessToken = await getSumUpAccessToken();
+        const checkoutDetailsResponse = await fetch(`https://api.sumup.com/v0.1/checkouts/${checkoutId}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        const checkoutDetails = await checkoutDetailsResponse.json();
+
+        if (!checkoutDetailsResponse.ok) {
+            console.error('Failed to retrieve checkout details:', checkoutDetails.message || 'Unknown error');
+            return res.status(500).json({ error: 'Failed to retrieve checkout details' });
+        }
+
+        const { checkout_reference, transaction_id, amount, currency, status } = checkoutDetails;
+        const processedStatus = String(status).trim();
+
+        if (processedStatus === 'PAID') {
+            const existingPurchase = await db.collection('purchases').doc(transaction_id).get();
+
+            if (existingPurchase.exists) {
+                console.log('Purchase with this transaction ID already exists. Skipping.');
+                return res.json({ received: true });
+            }
+
+            const parts = checkout_reference.split('-');
+            const buyerEmail = parts[2];
+
+            await db.collection('purchases').doc(transaction_id).set({
+                email: buyerEmail || '',
+                courseId: parts[1],
+                transactionId: transaction_id,
+                amount: amount,
+                currency: currency,
+                purchasedAt: new Date(),
+                status: processedStatus
+            });
+            console.log('Purchase saved to Firestore!');
+        } else {
+            console.log(`Transaction status is not PAID, it is: ${processedStatus}. Not saving to Firestore.`);
+        }
     } catch (error) {
-      console.error('Error saving purchase to Firestore:', error);
+        console.error('Error processing SumUp webhook event:', error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
-  } else {
-    console.log('Unhandled event type:', event.type);
   }
 
   res.json({ received: true });

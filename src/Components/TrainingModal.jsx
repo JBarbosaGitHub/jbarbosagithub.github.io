@@ -1,8 +1,7 @@
 import React from 'react';
 import { Modal, Box, Typography, Button } from '@mui/material';
-import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
-import { getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, query, where, getDocs, addDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 const db = getFirestore();
@@ -26,144 +25,180 @@ const TrainingModal = ({ open, onClose, training }) => {
         checkPurchases();
     }, [user, training.id]);
 
-    const stripePromise = loadStripe('pk_test_51RTnkPGhaBptfacfMqv4niRWglthVZCNklXm4TSrCRxq5FAPdXYgXleUAu5KMglv24ff6znSfLIgiGlIBIPlq9nN00Q81fHW52')
-
     const handleBuy = async () => {
-        const stripe = await stripePromise;
+        if (!user || !user.email) {
+            alert('You must be logged in to purchase.');
+            return;
+        }
 
-        const response = await fetch('/api/create-checkout-session.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                courseId: training.id, // Only send the ID!
-                successUrl: window.location.origin + '/#/success',
-                cancelUrl: window.location.origin + '/#/cancel',
-            }),
-        });
+        // Lógica para formações gratuitas
+        if (training.price === 0) {
+            try {
+                await addDoc(collection(db, 'purchases'), {
+                    email: user.email,
+                    courseId: training.id,
+                    transactionId: `FREE-${training.id}-${user.uid}-${Date.now()}`,
+                    amount: 0,
+                    currency: 'FREE',
+                    purchasedAt: new Date(),
+                    status: 'FREE',
+                });
+                alert('Inscrição na formação gratuita realizada com sucesso!');
+                onClose(); // Fechar o modal
+                // Redirecionar para a página de formações após a "compra" gratuita
+                window.location.href = `http://contacontando.pt/#/formacoes`;
+            } catch (error) {
+                console.error('Error registering for free course:', error);
+                alert('Não foi possível inscrever-se na formação gratuita. Por favor, tente novamente.');
+            }
+            return; // Interromper o fluxo para SumUp
+        }
 
-        const data = await response.json();
-        console.log('Stripe session response:', data);
+        const courseData = {
+            courseId: training.id,
+            amount: training.price,
+            currency: 'EUR',
+            description: training.title,
+            successUrl: `http://contacontando.pt/#/formacoes`,
+            cancelUrl: `http://contacontando.pt/#/formacoes`,
+            buyerEmail: user.email, // Use the logged-in user's email
+        };
 
-        const result = await stripe.redirectToCheckout({ sessionId: data.id });
+        try {
+            const response = await fetch('https://contacontando.pt/api/create-checkout-session', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(courseData),
+            });
 
-        if (result.error) {
-            alert(result.error.message);
+            const data = await response.json();
+            console.log('Frontend received data:', data);
+            
+            if (data.id && data.hosted_checkout_url) {
+                // Redirect to SumUp hosted checkout
+                window.location.href = data.hosted_checkout_url;
+            } else {
+                throw new Error('Failed to create payment or retrieve hosted checkout URL');
+            }
+        } catch (error) {
+            console.error('Payment error:', error);
+            alert('Failed to process payment. Please try again.');
         }
     };
 
-        return (
-            <Modal
-                open={open}
-                onClose={onClose}
-                aria-labelledby="training-modal"
-                aria-describedby="training-modal-description"
+    return (
+        <Modal
+            open={open}
+            onClose={onClose}
+            aria-labelledby="training-modal"
+            aria-describedby="training-modal-description"
+        >
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    bgcolor: 'background.paper',
+                    boxShadow: 24,
+                    p: 4,
+                    borderRadius: 2,
+                    minWidth: 300,
+                    maxWidth: 500,
+                }}
             >
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        p: 4,
-                        borderRadius: 2,
-                        minWidth: 300,
-                        maxWidth: 500,
-                    }}
-                >
-                    {training && (
-                        <>
-                            <img 
-                                src={training.imageUrl} 
-                                alt={training.title} 
-                                style={{
-                                    width: '100%', 
-                                    height: '300px', // Keep the modal's height
-                                    objectFit: 'cover',
-                                    objectPosition: 'center',
-                                    marginBottom: '1rem' 
-                                }}
-                            />
-                            {training.subDescription && (
-                                <Typography variant="body1" color="text.secondary" sx={{ 
-                                    fontSize: '1rem', 
-                                    marginBottom: '1rem',
-                                    whiteSpace: 'pre-line',
-                                    lineHeight: '1.6'
-                                }}>
-                                    {training.subDescription}
-                                </Typography>
-                            )}
-                            {training.age && (
-                                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                    <strong>Idade:</strong> {training.age}
-                                </Typography>
-                            )}
-                            {training.duration && (
-                                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                    <strong>Duração:</strong> {training.duration}
-                                </Typography>
-                            )}
-                            {training.instructor && (
-                                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                    <strong>Formador:</strong> {training.instructor}
-                                </Typography>
-                            )}
-                            {training.platform && (
-                                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                    <strong>Plataforma:</strong> {training.platform}
-                                </Typography>
-                            )}
-                            {training.price && !hasPurchased && (
-                                <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
-                                    <strong>Preço:</strong> {training.price}€
-                                </Typography>
-                            )}
-                            {hasPurchased ? (
-                                 <Button
-                                 sx={{
-                                     backgroundColor: '#65774a',
-                                     color: 'white',
-                                     '&:active': {
-                                         backgroundColor: '#aebb68',
-                                     },
-                                     '&:hover': {
-                                         transform: 'scale(1.03)',
-                                         transition: 'transform 0.3s ease',
-                                     },
-                                 }}
-                                 variant="contained"
-                                 color="primary"
-                                 onClick={() => window.open(training.link, '_blank')}
-                             >
-                                    Acessar Formação
-                                </Button>
-                            ) : (
-                            <Button
-                                sx={{
-                                    backgroundColor: '#65774a',
-                                    color: 'white',
-                                    '&:active': {
-                                        backgroundColor: '#aebb68',
-                                    },
-                                    '&:hover': {
-                                        transform: 'scale(1.03)',
-                                        transition: 'transform 0.3s ease',
-                                    },
-                                }}
-                                variant="contained"
-                                color="primary"
-                                onClick={handleBuy}
-                            >
-                                Comprar
+                {training && (
+                    <>
+                        <img 
+                            src={training.imageUrl} 
+                            alt={training.title} 
+                            style={{
+                                width: '100%', 
+                                height: '300px',
+                                objectFit: 'cover',
+                                objectPosition: 'center',
+                                marginBottom: '1rem' 
+                            }}
+                        />
+                        {training.subDescription && (
+                            <Typography variant="body1" color="text.secondary" sx={{ 
+                                fontSize: '1rem', 
+                                marginBottom: '1rem',
+                                whiteSpace: 'pre-line',
+                                lineHeight: '1.6'
+                            }}>
+                                {training.subDescription}
+                            </Typography>
+                        )}
+                        {training.age && (
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                <strong>Idade:</strong> {training.age}
+                            </Typography>
+                        )}
+                        {training.duration && (
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                <strong>Duração:</strong> {training.duration}
+                            </Typography>
+                        )}
+                        {training.instructor && (
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                <strong>Formador:</strong> {training.instructor}
+                            </Typography>
+                        )}
+                        {training.platform && (
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                <strong>Plataforma:</strong> {training.platform}
+                            </Typography>
+                        )}
+                        {training.price && !hasPurchased && (
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                <strong>Preço:</strong> {training.price}€
+                            </Typography>
+                        )}
+                        {hasPurchased ? (
+                             <Button
+                             sx={{
+                                 backgroundColor: '#65774a',
+                                 color: 'white',
+                                 '&:active': {
+                                     backgroundColor: '#aebb68',
+                                 },
+                                 '&:hover': {
+                                     transform: 'scale(1.03)',
+                                     transition: 'transform 0.3s ease',
+                                 },
+                             }}
+                             variant="contained"
+                             color="primary"
+                             onClick={() => window.open(training.link, '_blank')}
+                         >
+                                Acessar Formação
                             </Button>
-                            )}
-                        </>
-                    )}
-                </Box>
-            </Modal>
-        )
-    }
+                        ) : (
+                        <Button
+                            sx={{
+                                backgroundColor: '#65774a',
+                                color: 'white',
+                                '&:active': {
+                                    backgroundColor: '#aebb68',
+                                },
+                                '&:hover': {
+                                    transform: 'scale(1.03)',
+                                    transition: 'transform 0.3s ease',
+                                },
+                            }}
+                            variant="contained"
+                            color="primary"
+                            onClick={handleBuy}
+                        >
+                            Comprar
+                        </Button>
+                        )}
+                    </>
+                )}
+            </Box>
+        </Modal>
+    )
+};
 
-    export default TrainingModal;
+export default TrainingModal;
