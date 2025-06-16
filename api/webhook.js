@@ -42,6 +42,8 @@ async function getSumUpAccessToken() {
 }
 
 export default async function handler(req, res) {
+  console.log('--- Webhook function invoked ---');
+  console.log('Request Headers:', req.headers);
   console.log('Webhook received:', req.method);
 
   if (req.method !== 'POST') {
