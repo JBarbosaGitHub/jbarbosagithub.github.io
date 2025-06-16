@@ -33,8 +33,8 @@ const Login = () => {
             await signInWithEmailAndPassword(auth, email, password);
             navigate('/');
         } catch (err) {
-            if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
-                setError('Email ou senha inválidos.');
+            if (err.code === 'auth/invalid-credential') {
+                setError('As suas credenciais estão incorretas. Por favor, verifique o email e/ou a password.');
             } else {
                 setError(err.message);
             }

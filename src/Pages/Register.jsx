@@ -4,6 +4,8 @@ import '../styles/Login.css';
 import logo from '../assets/logo-removebg.png';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
+import { db } from '../firebase';
+import { addDoc, collection } from 'firebase/firestore';
 import validator from 'validator';
 
 
@@ -44,6 +46,21 @@ const Register = () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             setSuccess('Registo realizado com sucesso! A redirecionar para o login...');
+
+            // Send welcome email
+            try {
+                await addDoc(collection(db, 'mail'), {
+                    to: email,
+                    message: {
+                        subject: 'Bem-vindo à ContaContando!',
+                        html: '<p>Olá!</p><p>Bem-vindo à ContaContando! Estamos muito felizes por tê-lo(a) a bordo. Explore os nossos conteúdos e aproveite ao máximo a sua experiência.</p><p>Com os melhores cumprimentos,<br>A Equipa ContaContando</p>',
+                    },
+                });
+            } catch (emailError) {
+                console.error('Error queuing welcome email (outer catch):', emailError);
+                setError('Não foi possível enviar o email de boas-vindas. Por favor, tente novamente mais tarde ou contacte o suporte.');
+            }
+            
             setTimeout(() => navigate('/login'), 1500);
         } catch (err) {
             if (err.code === 'auth/email-already-in-use') {
