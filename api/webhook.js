@@ -64,7 +64,7 @@ export default async function handler(req, res) {
 
   console.log('Webhook Event:', event);
 
-  if (event.event_type === 'CHECKOUT_STATUS_CHANGED') {
+  if (event.event_type === 'checkout.status.updated') {
     const checkoutId = event.payload.checkout_id;
     console.log('Processing checkoutId from payload:', checkoutId);
 
