@@ -65,7 +65,7 @@ const TrainingModal = ({ open, onClose, training }) => {
         };
 
         try {
-            const response = await fetch('https://contacontando.pt/api/create-checkout-session', {
+            const response = await fetch('https://www.contacontando.pt/api/create-checkout-session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(courseData),
