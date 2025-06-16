@@ -42,10 +42,6 @@ async function getSumUpAccessToken() {
 }
 
 export default async function handler(req, res) {
-  console.log('Function create-checkout-session started.');
-  console.log('FIREBASE_PROJECT_ID:', process.env.FIREBASE_PROJECT_ID);
-  console.log('SUMUP_CLIENT_ID:', process.env.SUMUP_CLIENT_ID);
-
   try {
     if (req.method !== 'POST') {
       res.status(405).json({ error: 'Method not allowed' });
