@@ -46,7 +46,7 @@ const TrainingModal = ({ open, onClose, training }) => {
                 alert('Inscrição na formação gratuita realizada com sucesso!');
                 onClose(); // Fechar o modal
                 // Redirecionar para a página de formações após a "compra" gratuita
-                window.location.href = `http://contacontando.pt/#/formacoes`;
+                window.location.href = `http://www.contacontando.pt/#/formacoes`;
             } catch (error) {
                 console.error('Error registering for free course:', error);
                 alert('Não foi possível inscrever-se na formação gratuita. Por favor, tente novamente.');
@@ -59,8 +59,8 @@ const TrainingModal = ({ open, onClose, training }) => {
             amount: training.price,
             currency: 'EUR',
             description: training.title,
-            successUrl: `http://contacontando.pt/#/formacoes`,
-            cancelUrl: `http://contacontando.pt/#/formacoes`,
+            successUrl: `http://www.contacontando.pt/#/formacoes`,
+            cancelUrl: `http://www.contacontando.pt/#/formacoes`,
             buyerEmail: user.email, // Use the logged-in user's email
         };
 
