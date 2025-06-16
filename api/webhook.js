@@ -65,7 +65,8 @@ export default async function handler(req, res) {
   console.log('Webhook Event:', event);
 
   if (event.event_type === 'CHECKOUT_STATUS_CHANGED') {
-    const checkoutId = event.id;
+    const checkoutId = event.payload.checkout_id;
+    console.log('Processing checkoutId from payload:', checkoutId);
 
     try {
         const accessToken = await getSumUpAccessToken();
@@ -75,6 +76,9 @@ export default async function handler(req, res) {
             }
         });
         const checkoutDetails = await checkoutDetailsResponse.json();
+
+        console.log('SumUp API Checkout Details Response (ok):', checkoutDetailsResponse.ok);
+        console.log('SumUp API Checkout Details:', checkoutDetails);
 
         if (!checkoutDetailsResponse.ok) {
             console.error('Failed to retrieve checkout details:', checkoutDetails.message || 'Unknown error');
