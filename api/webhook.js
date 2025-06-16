@@ -42,31 +42,15 @@ async function getSumUpAccessToken() {
 }
 
 export default async function handler(req, res) {
-  console.log('--- Webhook function invoked ---');
-  console.log('Request Headers:', req.headers);
-  console.log('Webhook received:', req.method);
-
   if (req.method !== 'POST') {
-    console.log('Method not allowed:', req.method);
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
 
-  // Para Vercel Serverless Functions, o body já deve estar parsed se o Content-Type for application/json
-  // Se não estiver, pode ser necessário usar `await json(req)` como no create-checkout-session
   const event = req.body;
-
-  // TODO: EM PRODUÇÃO, IMPLEMENTAR A VERIFICAÇÃO DE ASSINATURA 'x-sumup-signature' AQUI!
-  // Exemplo (verifica a documentação SumUp para detalhes exatos):
-  // const sig = req.headers['x-sumup-signature'];
-  // const expectedSignature = calculateSumUpSignature(req.rawBody, process.env.SUMUP_WEBHOOK_SECRET);
-  // if (sig !== expectedSignature) { return res.status(401).send('Invalid signature'); }
-
-  console.log('Webhook Event:', event);
 
   if (event.event_type === 'checkout.status.updated') {
     const checkoutId = event.payload.checkout_id;
-    console.log('Processing checkoutId from payload:', checkoutId);
 
     try {
         const accessToken = await getSumUpAccessToken();
@@ -77,11 +61,7 @@ export default async function handler(req, res) {
         });
         const checkoutDetails = await checkoutDetailsResponse.json();
 
-        console.log('SumUp API Checkout Details Response (ok):', checkoutDetailsResponse.ok);
-        console.log('SumUp API Checkout Details:', checkoutDetails);
-
         if (!checkoutDetailsResponse.ok) {
-            console.error('Failed to retrieve checkout details:', checkoutDetails.message || 'Unknown error');
             return res.status(500).json({ error: 'Failed to retrieve checkout details' });
         }
 
@@ -92,7 +72,6 @@ export default async function handler(req, res) {
             const existingPurchase = await db.collection('purchases').doc(transaction_id).get();
 
             if (existingPurchase.exists) {
-                console.log('Purchase with this transaction ID already exists. Skipping.');
                 return res.json({ received: true });
             }
 
@@ -108,12 +87,8 @@ export default async function handler(req, res) {
                 purchasedAt: new Date(),
                 status: processedStatus
             });
-            console.log('Purchase saved to Firestore!');
-        } else {
-            console.log(`Transaction status is not PAID, it is: ${processedStatus}. Not saving to Firestore.`);
         }
     } catch (error) {
-        console.error('Error processing SumUp webhook event:', error);
         return res.status(500).json({ error: 'Internal server error' });
     }
   }
