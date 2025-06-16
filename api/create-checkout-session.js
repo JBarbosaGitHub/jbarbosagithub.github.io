@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { json } from 'micro';
-
 import admin from 'firebase-admin';
+
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert({
@@ -18,6 +18,7 @@ if (!admin.apps.length) {
     })
   });
 }
+
 const db = admin.firestore();
 
 async function getSumUpAccessToken() {
