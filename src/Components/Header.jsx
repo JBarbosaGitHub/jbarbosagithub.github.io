@@ -14,7 +14,8 @@ const Header = () => {
     const navItems = [
         { title: 'Quem Somos', path: '/quemsomos', titleClass: 'nav-title-1' },
         { title: 'Formações/Workshops', path: '/formacoes', titleClass: 'nav-title-2' },
-        { title: 'Onde Estamos', path: '/ondeestamos', titleClass: 'nav-title-3' }
+        { title: 'Onde Estamos', path: '/ondeestamos', titleClass: 'nav-title-3' },
+        { title: 'Contacte-nos', path: '/contacte-nos', titleClass: 'nav-title-4' }
     ];
 
     useEffect(() => {
