@@ -41,7 +41,13 @@ const HomeContent = () => {
             title: 'Onde Estamos',
             path: '/ondeestamos',
             titleClass: 'nav-title-3'
+        },
+        {
+            title: 'Contacte-nos',
+            path: '/contacte-nos',
+            titleClass: 'nav-title-2'
         }
+
     ];
 
     const containerVariants = {
@@ -75,7 +81,6 @@ const HomeContent = () => {
                 initial="hidden"
                 animate="visible"
             >
-                {/* Logo Section */}
                 <motion.div className="logo-section" variants={itemVariants}>
                     <motion.img
                         src={logo}
@@ -86,8 +91,6 @@ const HomeContent = () => {
                         whileHover={{ scale: 1.05 }}
                     />
                 </motion.div>
-
-                {/* Navigation Items */}
                 <motion.div className="navigation-items" variants={containerVariants}>
                     {navigationItems.map((item, idx) => (
                         <motion.div
