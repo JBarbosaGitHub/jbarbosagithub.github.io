@@ -5,10 +5,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Método não permitido' });
   }
 
-  const { email, subject, description, to } = req.body;
+  const { email, subject, description } = req.body;
 
   // Validate required fields
-  if (!email || !subject || !description || !to) {
+  if (!email || !subject || !description) {
     return res.status(400).json({ message: 'Faltam campos obrigatórios.' });
   }
 
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     // Send email
     await transporter.sendMail({
       from: process.env.SMTP_USER,
-      to: to,
+      to: process.env.SMTP_USER,
       replyTo: email,
       subject: `Formulário de Contacto: ${subject}`,
       text: `Nova mensagem do formulário de contacto:\n\nEmail: ${email}\nAssunto: ${subject}\n\nMensagem:\n${description}`,

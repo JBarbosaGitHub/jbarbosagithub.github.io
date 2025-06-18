@@ -31,10 +31,7 @@ const ContactUs = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    ...formData,
-                    to: 'joao@contacontando.pt'
-                }),
+                body: JSON.stringify(formData),
             });
 
             if (response.ok) {
