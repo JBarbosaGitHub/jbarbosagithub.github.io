@@ -51,6 +51,7 @@ export default async function handler(req, res) {
 
   if (event.event_type === 'checkout.status.updated') {
     const checkoutId = event.payload.checkout_id;
+    console.log('Webhook received checkout.status.updated event for checkoutId:', checkoutId);
 
     try {
         const accessToken = await getSumUpAccessToken();
@@ -62,22 +63,27 @@ export default async function handler(req, res) {
         const checkoutDetails = await checkoutDetailsResponse.json();
 
         if (!checkoutDetailsResponse.ok) {
+            console.error('Failed to retrieve checkout details:', checkoutDetails);
             return res.status(500).json({ error: 'Failed to retrieve checkout details' });
         }
 
         const { checkout_reference, transaction_id, amount, currency, status } = checkoutDetails;
         const processedStatus = String(status).trim();
+        console.log('Checkout details:', { checkout_reference, transaction_id, amount, currency, status: processedStatus });
 
         if (processedStatus === 'PAID') {
+            console.log('Payment is PAID, processing...');
             const existingPurchase = await db.collection('purchases').doc(transaction_id).get();
 
             if (existingPurchase.exists) {
+                console.log('Purchase already exists, skipping...');
                 return res.json({ received: true });
             }
 
-            const parts = checkout_reference.split('-');
+            const parts = checkout_reference.split('|');
             const buyerEmail = parts[2];
             const courseId = parts[1];
+            console.log('Parsed checkout reference:', { parts, buyerEmail, courseId });
 
             await db.collection('purchases').doc(transaction_id).set({
                 email: buyerEmail || '',
@@ -88,6 +94,7 @@ export default async function handler(req, res) {
                 purchasedAt: new Date(),
                 status: processedStatus
             });
+            console.log('Purchase saved to database');
             
             try {
                 const courseRef = db.collection('courses').doc(courseId);
@@ -95,6 +102,7 @@ export default async function handler(req, res) {
 
                 if (courseDoc.exists) {
                     const courseData = courseDoc.data();
+                    console.log('Course found:', courseData.title);
                     await db.collection('mail').add({
                         to: buyerEmail,
                         message: {
@@ -107,16 +115,22 @@ export default async function handler(req, res) {
                             `,
                         },
                     });
+                    console.log('Confirmation email queued for:', buyerEmail);
                 } else {
                     console.error(`Course with ID ${courseId} not found.`);
                 }
             } catch (emailError) {
                 console.error('Error sending confirmation email:', emailError);
             }
+        } else {
+            console.log('Payment status is not PAID:', processedStatus);
         }
     } catch (error) {
+        console.error('Webhook error:', error);
         return res.status(500).json({ error: 'Internal server error' });
     }
+  } else {
+    console.log('Webhook received event type:', event.event_type);
   }
 
   res.json({ received: true });

@@ -70,7 +70,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${accessToken}`
       },
       body: JSON.stringify({
-        checkout_reference: `course-${courseId}-${buyerEmail}-${Date.now()}`,
+        checkout_reference: `course|${courseId}|${buyerEmail}|${Date.now()}`,
         amount: parseFloat(amount),
         currency: currency,
         merchant_code: process.env.SUMUP_MERCHANT_CODE,
