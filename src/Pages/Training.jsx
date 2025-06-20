@@ -92,6 +92,7 @@ const Training = () => {
             imageUrl: "",
             public: "",
             date: "",
+            dateDisplay: "",
             instructor: "",
             platform: "",
             price: "",
@@ -120,7 +121,7 @@ const Training = () => {
             <Header />
             <PageTransition>
                 <div className="training-container">
-                    <motion.section 
+                    <motion.section
                         className="training-hero"
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -133,7 +134,7 @@ const Training = () => {
                         >
                             Formações e Workshops
                         </motion.h1>
-                        <motion.p 
+                        <motion.p
                             className="subtitle"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -143,7 +144,7 @@ const Training = () => {
                         </motion.p>
                     </motion.section>
                     {user && ADMIN_EMAILS.includes(user.email) && (
-                        <motion.div 
+                        <motion.div
                             style={{ margin: '1rem 0', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '2rem' }}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -264,6 +265,15 @@ const Training = () => {
                                                 placeholder="Data da Formação"
                                                 value={newCourse.date}
                                                 onChange={e => setNewCourse(c => ({ ...c, date: e.target.value }))}
+                                            /><input
+                                                style={{
+                                                    padding: '0.3rem',
+                                                    fontWeight: 500,
+                                                    fontSize: '1rem'
+                                                }}
+                                                placeholder="Data/Hora de inicio da Formação"
+                                                value={newCourse.dateDisplay}
+                                                onChange={e => setNewCourse(c => ({ ...c, dateDisplay: e.target.value }))}
                                             />
                                             <input
                                                 style={{

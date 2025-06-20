@@ -3,12 +3,14 @@ import { Modal, Box, Typography, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getFirestore, collection, query, where, getDocs, addDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { differenceInMinutes, parseISO } from 'date-fns';
 
 const db = getFirestore();
 const auth = getAuth();
 
 const TrainingModal = ({ open, onClose, training }) => {
     const [hasPurchased, setHasPurchased] = useState(false);
+    const [canAccess, setCanAccess] = useState(false);
     const user = auth.currentUser;
 
     useEffect(() => {
@@ -24,6 +26,37 @@ const TrainingModal = ({ open, onClose, training }) => {
         };
         checkPurchases();
     }, [user, training.id]);
+
+    useEffect(() => {
+        if (!training?.date) return;
+        const trainingDate = parseISO(training.date);
+        const now = new Date();
+        const diff = differenceInMinutes(trainingDate, now);
+        console.log('trainingDate:', trainingDate, 'now:', now, 'diff:', diff);
+        setCanAccess(diff <= 30);
+        const interval = setInterval(() => {
+            const now = new Date();
+            const diff = differenceInMinutes(trainingDate, now);
+            console.log('interval trainingDate:', trainingDate, 'now:', now, 'diff:', diff);
+            setCanAccess(diff <= 30);
+        }, 30000);
+        return () => clearInterval(interval);
+    }, [training?.date]);
+
+    const sendTrainingEmail = async () => {
+        if (!user?.email) return;
+        const message = `Obrigado pelo seu registo na formação ${training.title}.
+\nInformam-se os dados para acesso ao Microsoft Teams (dia e hora da formação):\n\nLink: ${training.link}\nMeeting ID: ${training.meetingId || '-'}\nPassword: ${training.meetingPass || '-'}\nData: ${training.dateDisplay || training.date}`;
+        await fetch('/api/contact.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: user.email,
+                subject: `Link de acesso à formação: ${training.title}`,
+                description: message
+            })
+        });
+    };
 
     const handleBuy = async () => {
         if (!user || !user.email) {
@@ -41,7 +74,8 @@ const TrainingModal = ({ open, onClose, training }) => {
                     purchasedAt: new Date(),
                     status: 'FREE',
                 });
-                alert('Inscrição na formação gratuita realizada com sucesso!');
+                await sendTrainingEmail();
+                alert('Inscrição na formação gratuita realizada com sucesso! O link de acesso foi enviado para o seu email.');
                 setHasPurchased(true);
             } catch (error) {
                 console.error('Error registering for free course:', error);
@@ -71,6 +105,7 @@ const TrainingModal = ({ open, onClose, training }) => {
             console.log('Frontend received data:', data);
 
             if (data.id && data.hosted_checkout_url) {
+                await sendTrainingEmail();
                 window.location.href = data.hosted_checkout_url;
             } else {
                 throw new Error('Failed to create payment or retrieve hosted checkout URL');
@@ -100,6 +135,8 @@ const TrainingModal = ({ open, onClose, training }) => {
                     borderRadius: 2,
                     minWidth: 300,
                     maxWidth: 500,
+                    maxHeight: '90vh',
+                    overflowY: 'auto',
                 }}
             >
                 {training && (
@@ -130,9 +167,9 @@ const TrainingModal = ({ open, onClose, training }) => {
                                 <strong>Publico-Alvo:</strong> {training.public}
                             </Typography>
                         )}
-                        {training.date && (
+                        {training.dateDisplay && (
                             <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
-                                <strong>Data:</strong> {training.date}
+                                <strong>Data:</strong> {training.dateDisplay}
                             </Typography>
                         )}
                         {training.instructor && (
@@ -176,8 +213,9 @@ const TrainingModal = ({ open, onClose, training }) => {
                                 variant="contained"
                                 color="primary"
                                 onClick={() => window.open(training.link, '_blank')}
+                                disabled={!canAccess}
                             >
-                                Acessar Formação
+                                Aceder à Formação
                             </Button>
                         ) : (
                             <Button
