@@ -125,14 +125,14 @@ const TrainingModal = ({ open, onClose, training }) => {
                                 {training.subDescription}
                             </Typography>
                         )}
-                        {training.age && (
+                        {training.public && (
                             <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
-                                <strong>Idade:</strong> {training.age}
+                                <strong>Publico-Alvo:</strong> {training.public}
                             </Typography>
                         )}
-                        {training.duration && (
+                        {training.date && (
                             <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
-                                <strong>Duração:</strong> {training.duration}
+                                <strong>Data:</strong> {training.date}
                             </Typography>
                         )}
                         {training.instructor && (

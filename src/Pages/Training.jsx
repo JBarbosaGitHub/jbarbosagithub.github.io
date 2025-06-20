@@ -90,8 +90,8 @@ const Training = () => {
             description: "",
             subDescription: "",
             imageUrl: "",
-            age: "",
-            duration: "",
+            public: "",
+            date: "",
             instructor: "",
             platform: "",
             price: "",
@@ -251,9 +251,9 @@ const Training = () => {
                                                     fontWeight: 500,
                                                     fontSize: '1rem'
                                                 }}
-                                                placeholder="Idade"
-                                                value={newCourse.age}
-                                                onChange={e => setNewCourse(c => ({ ...c, age: e.target.value }))}
+                                                placeholder="Publico-Alvo"
+                                                value={newCourse.public}
+                                                onChange={e => setNewCourse(c => ({ ...c, public: e.target.value }))}
                                             />
                                             <input
                                                 style={{
@@ -261,9 +261,9 @@ const Training = () => {
                                                     fontWeight: 500,
                                                     fontSize: '1rem'
                                                 }}
-                                                placeholder="Duração da Formação"
-                                                value={newCourse.duration}
-                                                onChange={e => setNewCourse(c => ({ ...c, duration: e.target.value }))}
+                                                placeholder="Data da Formação"
+                                                value={newCourse.date}
+                                                onChange={e => setNewCourse(c => ({ ...c, date: e.target.value }))}
                                             />
                                             <input
                                                 style={{
