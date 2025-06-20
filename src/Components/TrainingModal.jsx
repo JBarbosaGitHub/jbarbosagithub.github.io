@@ -13,7 +13,7 @@ const TrainingModal = ({ open, onClose, training }) => {
 
     useEffect(() => {
         const checkPurchases = async () => {
-            if(!user) return;
+            if (!user) return;
             const q = query(
                 collection(db, 'purchases'),
                 where('email', '==', user.email),
@@ -30,8 +30,6 @@ const TrainingModal = ({ open, onClose, training }) => {
             alert('You must be logged in to purchase.');
             return;
         }
-
-        // Lógica para formações gratuitas
         if (training.price === 0) {
             try {
                 await addDoc(collection(db, 'purchases'), {
@@ -44,14 +42,12 @@ const TrainingModal = ({ open, onClose, training }) => {
                     status: 'FREE',
                 });
                 alert('Inscrição na formação gratuita realizada com sucesso!');
-                onClose(); // Fechar o modal
-                // Redirecionar para a página de formações após a "compra" gratuita
-                window.location.href = `http://www.contacontando.pt/#/formacoes`;
+                setHasPurchased(true);
             } catch (error) {
                 console.error('Error registering for free course:', error);
                 alert('Não foi possível inscrever-se na formação gratuita. Por favor, tente novamente.');
             }
-            return; // Interromper o fluxo para SumUp
+            return;
         }
 
         const courseData = {
@@ -61,7 +57,7 @@ const TrainingModal = ({ open, onClose, training }) => {
             description: training.title,
             successUrl: `http://www.contacontando.pt/#/formacoes`,
             cancelUrl: `http://www.contacontando.pt/#/formacoes`,
-            buyerEmail: user.email, // Use the logged-in user's email
+            buyerEmail: user.email,
         };
 
         try {
@@ -73,9 +69,8 @@ const TrainingModal = ({ open, onClose, training }) => {
 
             const data = await response.json();
             console.log('Frontend received data:', data);
-            
+
             if (data.id && data.hosted_checkout_url) {
-                // Redirect to SumUp hosted checkout
                 window.location.href = data.hosted_checkout_url;
             } else {
                 throw new Error('Failed to create payment or retrieve hosted checkout URL');
@@ -109,20 +104,20 @@ const TrainingModal = ({ open, onClose, training }) => {
             >
                 {training && (
                     <>
-                        <img 
-                            src={training.imageUrl} 
-                            alt={training.title} 
+                        <img
+                            src={training.imageUrl}
+                            alt={training.title}
                             style={{
-                                width: '100%', 
+                                width: '100%',
                                 height: '300px',
                                 objectFit: 'cover',
                                 objectPosition: 'center',
-                                marginBottom: '1rem' 
+                                marginBottom: '1rem'
                             }}
                         />
                         {training.subDescription && (
-                            <Typography variant="body1" color="text.secondary" sx={{ 
-                                fontSize: '1rem', 
+                            <Typography variant="body1" color="text.secondary" sx={{
+                                fontSize: '1rem',
                                 marginBottom: '1rem',
                                 whiteSpace: 'pre-line',
                                 lineHeight: '1.6'
@@ -131,68 +126,78 @@ const TrainingModal = ({ open, onClose, training }) => {
                             </Typography>
                         )}
                         {training.age && (
-                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
                                 <strong>Idade:</strong> {training.age}
                             </Typography>
                         )}
                         {training.duration && (
-                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
                                 <strong>Duração:</strong> {training.duration}
                             </Typography>
                         )}
                         {training.instructor && (
-                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
                                 <strong>Formador:</strong> {training.instructor}
                             </Typography>
                         )}
                         {training.platform && (
-                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
                                 <strong>Plataforma:</strong> {training.platform}
                             </Typography>
                         )}
-                        {training.price && !hasPurchased && (
-                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                        {training.price > 0 && !hasPurchased && (
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
                                 <strong>Preço:</strong> {training.price}€
                             </Typography>
                         )}
+                        {hasPurchased && training.meetingId && (
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
+                                <strong>ID da Reunião:</strong> {training.meetingId}
+                            </Typography>
+                        )}
+                        {hasPurchased && training.meetingPass && (
+                            <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '1rem' }}>
+                                <strong>Password:</strong> {training.meetingPass}
+                            </Typography>
+                        )}
                         {hasPurchased ? (
-                             <Button
-                             sx={{
-                                 backgroundColor: '#65774a',
-                                 color: 'white',
-                                 '&:active': {
-                                     backgroundColor: '#aebb68',
-                                 },
-                                 '&:hover': {
-                                     transform: 'scale(1.03)',
-                                     transition: 'transform 0.3s ease',
-                                 },
-                             }}
-                             variant="contained"
-                             color="primary"
-                             onClick={() => window.open(training.link, '_blank')}
-                         >
+                            <Button
+                                sx={{
+                                    backgroundColor: '#65774a',
+                                    color: 'white',
+                                    '&:active': {
+                                        backgroundColor: '#aebb68',
+                                    },
+                                    '&:hover': {
+                                        transform: 'scale(1.03)',
+                                        transition: 'transform 0.3s ease',
+                                    },
+                                }}
+                                variant="contained"
+                                color="primary"
+                                onClick={() => window.open(training.link, '_blank')}
+                            >
                                 Acessar Formação
                             </Button>
                         ) : (
-                        <Button
-                            sx={{
-                                backgroundColor: '#65774a',
-                                color: 'white',
-                                '&:active': {
-                                    backgroundColor: '#aebb68',
-                                },
-                                '&:hover': {
-                                    transform: 'scale(1.03)',
-                                    transition: 'transform 0.3s ease',
-                                },
-                            }}
-                            variant="contained"
-                            color="primary"
-                            onClick={handleBuy}
-                        >
-                            Comprar
-                        </Button>
+                            <Button
+                                sx={{
+                                    backgroundColor: '#65774a',
+                                    color: 'white',
+                                    '&:active': {
+                                        backgroundColor: '#aebb68',
+                                    },
+                                    '&:hover': {
+                                        transform: 'scale(1.03)',
+                                        transition: 'transform 0.3s ease',
+                                    },
+                                }}
+                                variant="contained"
+                                color="primary"
+                                onClick={handleBuy}
+                            >
+                                {training.price === 0 ? 'Registar' : 'Comprar'}
+                            </Button>
                         )}
                     </>
                 )}

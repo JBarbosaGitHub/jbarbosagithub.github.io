@@ -30,7 +30,9 @@ const Training = () => {
         instructor: "",
         platform: "",
         price: "",
-        link: ""
+        link: "",
+        meetingId: "",
+        meetingPass: ""
     });
     const [showAddForm, setShowAddForm] = useState(false);
     const [removeCourseId, setRemoveCourseId] = useState("");
@@ -89,11 +91,13 @@ const Training = () => {
             subDescription: "",
             imageUrl: "",
             age: "",
-            durantion: "",
+            duration: "",
             instructor: "",
             platform: "",
             price: "",
-            link: ""
+            link: "",
+            meetingId: "",
+            meetingPass: ""
         });
         // Refresh courses
         const querySnapshot = await getDocs(collection(db, 'courses'));
@@ -302,6 +306,18 @@ const Training = () => {
                                                 value={newCourse.link}
                                                 onChange={e => setNewCourse(c => ({ ...c, link: e.target.value }))}
                                                 required
+                                            />
+                                            <input
+                                                style={{ padding: '0.3rem', fontWeight: 500, fontSize: '1rem' }}
+                                                placeholder="ID da Reunião (Zoom/Teams)"
+                                                value={newCourse.meetingId}
+                                                onChange={e => setNewCourse(c => ({ ...c, meetingId: e.target.value }))}
+                                            />
+                                            <input
+                                                style={{ padding: '0.3rem', fontWeight: 500, fontSize: '1rem' }}
+                                                placeholder="Password da Reunião"
+                                                value={newCourse.meetingPass}
+                                                onChange={e => setNewCourse(c => ({ ...c, meetingPass: e.target.value }))}
                                             />
                                             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', justifyContent: 'space-between' }}>
                                                 <Button
