@@ -102,17 +102,25 @@ export default async function handler(req, res) {
 
                 if (courseDoc.exists) {
                     const courseData = courseDoc.data();
-                    console.log('Course found:', courseData.title);
+                    const emailHtml = `
+                        <h1>Olá!</h1>
+                        <p>A sua inscrição na formação "${courseData.title}" foi confirmada com sucesso.</p>
+                        <p>Abaixo estão os detalhes para aceder à formação:</p>
+                        <ul>
+                            ${courseData.dateDisplay ? `<li><strong>Data:</strong> ${courseData.dateDisplay}</li>` : ''}
+                            ${courseData.link ? `<li><strong>Link de Acesso:</strong> <a href="${courseData.link}">${courseData.link}</a></li>` : ''}
+                            ${courseData.meetingId ? `<li><strong>ID da Reunião:</strong> ${courseData.meetingId}</li>` : ''}
+                            ${courseData.meetingPass ? `<li><strong>Password:</strong> ${courseData.meetingPass}</li>` : ''}
+                        </ul>
+                        <p>Guarde este email para referência futura.</p>
+                        <p>Obrigado!</p>
+                    `;
+
                     await db.collection('mail').add({
                         to: buyerEmail,
                         message: {
-                            subject: `Confirmação de Inscrição: ${courseData.title}`,
-                            html: `
-                                <h1>Olá!</h1>
-                                <p>A sua inscrição na formação "${courseData.title}" foi confirmada com sucesso.</p>
-                                <p>Em breve receberá mais informações sobre como aceder à formação.</p>
-                                <p>Obrigado!</p>
-                            `,
+                            subject: `Detalhes de Acesso: ${courseData.title}`,
+                            html: emailHtml,
                         },
                     });
                     console.log('Confirmation email queued for:', buyerEmail);

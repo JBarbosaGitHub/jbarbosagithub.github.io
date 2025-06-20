@@ -43,21 +43,6 @@ const TrainingModal = ({ open, onClose, training }) => {
         return () => clearInterval(interval);
     }, [training?.date]);
 
-    const sendTrainingEmail = async () => {
-        if (!user?.email) return;
-        const message = `Obrigado pelo seu registo na formação ${training.title}.
-\nInformam-se os dados para acesso ao Microsoft Teams (${training.dateDisplay}):\n\nLink: ${training.link}\nMeeting ID: ${training.meetingId || '-'}\nPassword: ${training.meetingPass || '-'}`;
-        await fetch('/api/contact.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: user.email,
-                subject: `Link de acesso à formação: ${training.title}`,
-                description: message
-            })
-        });
-    };
-
     const handleBuy = async () => {
         if (!user || !user.email) {
             alert('You must be logged in to purchase.');
@@ -74,7 +59,28 @@ const TrainingModal = ({ open, onClose, training }) => {
                     purchasedAt: new Date(),
                     status: 'FREE',
                 });
-                await sendTrainingEmail();
+                
+                const emailHtml = `
+                    <h1>Olá!</h1>
+                    <p>A sua inscrição na formação gratuita "${training.title}" foi confirmada com sucesso.</p>
+                    <p>Abaixo estão os detalhes para aceder à formação:</p>
+                    <ul>
+                        ${training.dateDisplay ? `<li><strong>Data:</strong> ${training.dateDisplay}</li>` : ''}
+                        ${training.link ? `<li><strong>Link de Acesso:</strong> <a href="${training.link}">${training.link}</a></li>` : ''}
+                        ${training.meetingId ? `<li><strong>ID da Reunião:</strong> ${training.meetingId}</li>` : ''}
+                        ${training.meetingPass ? `<li><strong>Password:</strong> ${training.meetingPass}</li>` : ''}
+                    </ul>
+                    <p>Obrigado!</p>
+                `;
+
+                await addDoc(collection(db, 'mail'), {
+                    to: user.email,
+                    message: {
+                        subject: `Detalhes de Acesso: ${training.title}`,
+                        html: emailHtml,
+                    },
+                });
+
                 alert('Inscrição na formação gratuita realizada com sucesso! O link de acesso foi enviado para o seu email.');
                 setHasPurchased(true);
             } catch (error) {
@@ -105,7 +111,6 @@ const TrainingModal = ({ open, onClose, training }) => {
             console.log('Frontend received data:', data);
 
             if (data.id && data.hosted_checkout_url) {
-                await sendTrainingEmail();
                 window.location.href = data.hosted_checkout_url;
             } else {
                 throw new Error('Failed to create payment or retrieve hosted checkout URL');
