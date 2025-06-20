@@ -46,7 +46,7 @@ const TrainingModal = ({ open, onClose, training }) => {
     const sendTrainingEmail = async () => {
         if (!user?.email) return;
         const message = `Obrigado pelo seu registo na formação ${training.title}.
-\nInformam-se os dados para acesso ao Microsoft Teams (dia e hora da formação):\n\nLink: ${training.link}\nMeeting ID: ${training.meetingId || '-'}\nPassword: ${training.meetingPass || '-'}\nData: ${training.dateDisplay || training.date}`;
+\nInformam-se os dados para acesso ao Microsoft Teams (${training.dateDisplay}):\n\nLink: ${training.link}\nMeeting ID: ${training.meetingId || '-'}\nPassword: ${training.meetingPass || '-'}`;
         await fetch('/api/contact.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

@@ -77,16 +77,42 @@ export default async function handler(req, res) {
 
             const parts = checkout_reference.split('-');
             const buyerEmail = parts[2];
+            const courseId = parts[1];
 
             await db.collection('purchases').doc(transaction_id).set({
                 email: buyerEmail || '',
-                courseId: parts[1],
+                courseId: courseId,
                 transactionId: transaction_id,
                 amount: amount,
                 currency: currency,
                 purchasedAt: new Date(),
                 status: processedStatus
             });
+            
+            try {
+                const courseRef = db.collection('courses').doc(courseId);
+                const courseDoc = await courseRef.get();
+
+                if (courseDoc.exists) {
+                    const courseData = courseDoc.data();
+                    await db.collection('mail').add({
+                        to: buyerEmail,
+                        message: {
+                            subject: `Confirmação de Inscrição: ${courseData.title}`,
+                            html: `
+                                <h1>Olá!</h1>
+                                <p>A sua inscrição na formação "${courseData.title}" foi confirmada com sucesso.</p>
+                                <p>Em breve receberá mais informações sobre como aceder à formação.</p>
+                                <p>Obrigado!</p>
+                            `,
+                        },
+                    });
+                } else {
+                    console.error(`Course with ID ${courseId} not found.`);
+                }
+            } catch (emailError) {
+                console.error('Error sending confirmation email:', emailError);
+            }
         }
     } catch (error) {
         return res.status(500).json({ error: 'Internal server error' });
