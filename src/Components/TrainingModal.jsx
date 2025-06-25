@@ -109,7 +109,7 @@ const TrainingModal = ({ open, onClose, training }) => {
 
             const data = await response.json();
             console.log('Frontend received data:', data);
-
+            
             if (data.id && data.hosted_checkout_url) {
                 window.location.href = data.hosted_checkout_url;
             } else {
@@ -146,20 +146,20 @@ const TrainingModal = ({ open, onClose, training }) => {
             >
                 {training && (
                     <>
-                        <img
-                            src={training.imageUrl}
-                            alt={training.title}
+                        <img 
+                            src={training.imageUrl} 
+                            alt={training.title} 
                             style={{
-                                width: '100%',
+                                width: '100%', 
                                 height: '300px',
                                 objectFit: 'cover',
                                 objectPosition: 'center',
-                                marginBottom: '1rem'
+                                marginBottom: '1rem' 
                             }}
                         />
                         {training.subDescription && (
-                            <Typography variant="body1" color="text.secondary" sx={{
-                                fontSize: '1rem',
+                            <Typography variant="body1" color="text.secondary" sx={{ 
+                                fontSize: '1rem', 
                                 marginBottom: '1rem',
                                 whiteSpace: 'pre-line',
                                 lineHeight: '1.6'
@@ -203,44 +203,44 @@ const TrainingModal = ({ open, onClose, training }) => {
                             </Typography>
                         )}
                         {hasPurchased ? (
-                            <Button
-                                sx={{
-                                    backgroundColor: '#65774a',
-                                    color: 'white',
-                                    '&:active': {
-                                        backgroundColor: '#aebb68',
-                                    },
-                                    '&:hover': {
-                                        transform: 'scale(1.03)',
-                                        transition: 'transform 0.3s ease',
-                                    },
-                                }}
-                                variant="contained"
-                                color="primary"
-                                onClick={() => window.open(training.link, '_blank')}
+                             <Button
+                             sx={{
+                                 backgroundColor: '#65774a',
+                                 color: 'white',
+                                 '&:active': {
+                                     backgroundColor: '#aebb68',
+                                 },
+                                 '&:hover': {
+                                     transform: 'scale(1.03)',
+                                     transition: 'transform 0.3s ease',
+                                 },
+                             }}
+                             variant="contained"
+                             color="primary"
+                             onClick={() => window.open(training.link, '_blank')}
                                 disabled={!canAccess}
-                            >
+                         >
                                 Aceder à Formação
                             </Button>
                         ) : (
-                            <Button
-                                sx={{
-                                    backgroundColor: '#65774a',
-                                    color: 'white',
-                                    '&:active': {
-                                        backgroundColor: '#aebb68',
-                                    },
-                                    '&:hover': {
-                                        transform: 'scale(1.03)',
-                                        transition: 'transform 0.3s ease',
-                                    },
-                                }}
-                                variant="contained"
-                                color="primary"
-                                onClick={handleBuy}
-                            >
+                        <Button
+                            sx={{
+                                backgroundColor: '#65774a',
+                                color: 'white',
+                                '&:active': {
+                                    backgroundColor: '#aebb68',
+                                },
+                                '&:hover': {
+                                    transform: 'scale(1.03)',
+                                    transition: 'transform 0.3s ease',
+                                },
+                            }}
+                            variant="contained"
+                            color="primary"
+                            onClick={handleBuy}
+                        >
                                 {training.price === 0 ? 'Registar' : 'Comprar'}
-                            </Button>
+                        </Button>
                         )}
                     </>
                 )}

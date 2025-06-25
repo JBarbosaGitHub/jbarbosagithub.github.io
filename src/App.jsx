@@ -9,9 +9,17 @@ import Register from "./Pages/Register";
 import Success from "./Pages/Success";
 import Cancel from "./Pages/Cancel";
 import ContactUs from "./Pages/ContactUs";
+import ElfsightChatbot from "./Components/ElfsightChatbot";
 
 const AnimatedRoutes = () => {
   const location = useLocation();
+
+  // Supondo que a rota de contacto é "/contacte-nos""
+  const isContactPage =
+    location.pathname === "/contacte-nos";
+
+  const isHomePage =
+    location.pathname === "/";
 
   return (
     <AnimatePresence mode="wait">
@@ -26,6 +34,8 @@ const AnimatedRoutes = () => {
         <Route path="/cancel" element={<Cancel />} />
         <Route path="/contacte-nos" element={<ContactUs />} />
       </Routes>
+      {/* Renderiza o chatbot só se não estiveres na página de contacto */}
+      {!isContactPage && <ElfsightChatbot />}
     </AnimatePresence>
   );
 };
