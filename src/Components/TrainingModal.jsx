@@ -45,7 +45,7 @@ const TrainingModal = ({ open, onClose, training }) => {
 
     const handleBuy = async () => {
         if (!user || !user.email) {
-            alert('You must be logged in to purchase.');
+            alert('Tem de estar logado para realizar a compra.');
             return;
         }
         if (training.price === 0) {
@@ -189,7 +189,7 @@ const TrainingModal = ({ open, onClose, training }) => {
                         )}
                         {training.price > 0 && !hasPurchased && (
                             <Typography variant="body1" color="text.secondary" sx={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
-                                <strong>Preço:</strong> {training.price}€
+                                <strong>Preço:</strong> {Number(training.price).toFixed(2)}€
                             </Typography>
                         )}
                         {hasPurchased && training.meetingId && (
