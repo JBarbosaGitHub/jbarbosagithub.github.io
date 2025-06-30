@@ -30,7 +30,7 @@ footer {
 
 .social-label {
     color: #444;
-    font-size: 1rem;
+    font-size: 0.85rem;
     font-weight: 600;
     margin-bottom: 0.3rem;
     margin-left: 2px;
@@ -51,7 +51,7 @@ footer {
     color: #edcc6e;
     border: none;
     padding: 0.8rem 1.5rem;
-    font-size: 1.1rem;
+    font-size: 0.92rem;
     border-radius: 30px;
     cursor: pointer;
     transition: transform 0.3s ease, background-color 0.3s ease;
@@ -69,7 +69,7 @@ footer {
     align-items: flex-end;
     margin-right: 45px;
     color: #444;
-    font-size: 1.1rem;
+    font-size: 0.92rem;
     width: 33.33%;
 }
 
@@ -99,17 +99,17 @@ footer {
     background: #f7f9fa;
     transition: background 0.2s, box-shadow 0.2s;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    font-size: 2rem;
+    font-size: 1.7rem;
 }
 
 .insta-icon i {
     color: #e4405f;
-    font-size: 2rem;
+    font-size: 1.7rem;
 }
 
 .facebook-icon i {
     color: #1877f3;
-    font-size: 2rem;
+    font-size: 1.7rem;
 }
 
 .insta-icon:hover, .facebook-icon:hover {
@@ -167,7 +167,7 @@ footer {
         width: 80%;
         max-width: 300px;
         padding: 0.7rem 1.2rem;
-        font-size: 1rem;
+        font-size: 0.85rem;
     }
 }
 
@@ -181,13 +181,13 @@ footer {
     }
 
     .bottom-right {
-        font-size: 0.9rem;
+        font-size: 0.75rem;
     }
 
     .scroll-to-top-button {
         width: 90%;
         padding: 0.6rem 1rem;
-        font-size: 0.9rem;
+        font-size: 0.75rem;
     }
 
     .insta-icon, .facebook-icon {
@@ -196,10 +196,10 @@ footer {
     }
 
     .insta-icon i, .facebook-icon i {
-        font-size: 1.7rem;
+        font-size: 1.3rem;
     }
 
     .social-label {
-        font-size: 0.9rem;
+        font-size: 0.75rem;
     }
 } 

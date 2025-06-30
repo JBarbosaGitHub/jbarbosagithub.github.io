@@ -14,18 +14,30 @@ const CourseCard = ({ title, description, image, onMoreDetails, isLoggedIn }) =>
                     transform: 'scale(1.03)',
                     transition: 'transform 0.3s ease',
                 },
+                border: '2px solid #eac862',
+                boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
+                minHeight: 370,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                margin: '0 auto',
+                width: '100%',
+                maxWidth: 350
             }}
         >
             <CardContent>
-                <CardMedia sx={{ height: 200, }}
+                <CardMedia
                     component="img"
                     image={image}
                     alt={title}
                     style={{
                         width: '100%',
-                        height: '200px',
+                        height: '150px',
                         objectFit: 'cover',
-                        objectPosition: 'center'
+                        objectPosition: 'center',
+                        margin: 0,
+                        padding: 0,
+                        background: '#fff'
                     }}
                 />
                 <Typography
@@ -34,7 +46,7 @@ const CourseCard = ({ title, description, image, onMoreDetails, isLoggedIn }) =>
                     component="div"
                     sx={{
                         fontWeight: 700,
-                        fontSize: '1.4rem',
+                        fontSize: '1.2rem',
                         marginTop: '1rem',
                     }}
                 >
@@ -44,7 +56,7 @@ const CourseCard = ({ title, description, image, onMoreDetails, isLoggedIn }) =>
                     variant="body2"
                     color="text.secondary"
                     sx={{
-                        fontSize: '1.2rem',
+                        fontSize: '1rem',
                         marginTop: '1rem',
                     }}
                 >

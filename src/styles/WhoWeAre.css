@@ -6,7 +6,7 @@
 
 .who-we-are-hero {
     text-align: center;
-    padding: 5rem 2rem 2.5rem 2rem;
+    padding: 3rem 2rem 2.5rem 2rem;
     background: linear-gradient(135deg, #8CB4BC 0%, #5BA2CF 100%);
     color: #fff;
     margin-bottom: 0;
@@ -15,7 +15,7 @@
 
 .who-we-are-hero h1 {
     color: black;
-    font-size: 3rem;
+    font-size: 2.2rem;
     font-weight: 800;
     margin-bottom: 1.2rem;
     letter-spacing: 1px;
@@ -23,7 +23,7 @@
 
 .who-we-are-hero .subtitle {
     color: #444;
-    font-size: 1.4rem;
+    font-size: 1.15rem;
     opacity: 0.97;
     font-weight: 400;
 }
@@ -52,7 +52,7 @@
 
 .who-we-are-section h2 {
     color: #8cb4bc;
-    font-size: 2rem;
+    font-size: 1.7rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
     text-align: center;
@@ -61,7 +61,7 @@
 .who-we-are-section .who-we-are-info-row,
 .who-we-are-section p {
     color: #444;
-    font-size: 1.13rem;
+    font-size: 0.95rem;
     text-align: center;
     margin-bottom: 0.7rem;
     line-height: 1.7;
@@ -73,7 +73,7 @@
 }
 
 .who-we-are-section .who-we-are-icon {
-    font-size: 3.5rem;
+    font-size: 2.9rem;
     color: #eac862;
     margin-bottom: 1.5rem;
 }
@@ -81,7 +81,7 @@
 .who-we-are-section .who-we-are-cta {
     color: #c94d3f;
     font-weight: 600;
-    font-size: 1.08rem;
+    font-size: 0.92rem;
     margin-top: 0.5rem;
     text-align: center;
     text-decoration: none;
@@ -102,7 +102,7 @@
         padding: 2rem 1rem 1.5rem 1rem;
     }
     .who-we-are-section h2 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 }
 
@@ -111,10 +111,10 @@
         padding: 3rem 0.5rem 1.5rem 0.5rem;
     }
     .who-we-are-hero h1 {
-        font-size: 2rem;
+        font-size: 1.7rem;
     }
     .who-we-are-hero .subtitle {
-        font-size: 1rem;
+        font-size: 0.85rem;
     }
     .who-we-are-content {
         gap: 1.5rem;
@@ -124,6 +124,6 @@
         padding: 1.2rem 0.5rem 1rem 0.5rem;
     }
     .who-we-are-section h2 {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 } 

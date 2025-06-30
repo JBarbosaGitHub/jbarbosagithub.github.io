@@ -33,6 +33,7 @@ header {
     list-style: none;
     display: flex;
     font-weight: 600;
+    font-size: 0.92rem;
 }
 
 .nav-button:hover {
@@ -50,7 +51,7 @@ header {
 }
 
 .menu-toggle svg {
-    font-size: 2rem;
+    font-size: 1.7rem;
 }
 
 @media (max-width: 768px) {
