@@ -140,7 +140,7 @@ const Training = () => {
         try {
             // Montar referência única
             const ref = `specialist|${specialistName}|${user.email}|${specialistDate?.toISOString().split('T')[0]}|${specialistTime?.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}|${Date.now()}`;
-            const response = await fetch('http://localhost:3000/api/create-payment', {
+            const response = await fetch('https://www.contacontando.pt/api/create-checkout-session.js', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -148,8 +148,8 @@ const Training = () => {
                     amount: 29.90,
                     currency: 'EUR',
                     description: 'Aula com Especialista',
-                    successUrl: window.location.origin + '/#/success',
-                    cancelUrl: window.location.origin + '/#/cancel',
+                    successUrl: 'http://www.contacontando.pt/#/success',
+                    cancelUrl: 'http://www.contacontando.pt/#/cancel',
                     buyerEmail: user.email,
                     specialistName,
                     specialistDate: specialistDate?.toISOString(),
