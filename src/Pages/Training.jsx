@@ -12,8 +12,12 @@ import TrainingModal from '../Components/TrainingModal';
 import PageTransition from '../Components/PageTransition';
 import '../styles/Training.css'
 import { Modal, Box, Typography, Button } from '@mui/material';
+import SpecialistLessonCard from '../Components/SpecialistLessonCard';
+import { DatePicker, TimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { pt } from 'date-fns/locale';
 
-const ADMIN_EMAILS = ["123@gmail.com"];
+const ADMIN_EMAILS = ["joao@contacontando.pt"];
 
 const Training = () => {
     const [showModal, setShowModal] = useState(false);
@@ -36,7 +40,16 @@ const Training = () => {
     });
     const [showAddForm, setShowAddForm] = useState(false);
     const [removeCourseId, setRemoveCourseId] = useState("");
+    const [showSpecialistModal, setShowSpecialistModal] = useState(false);
+    const [specialistName, setSpecialistName] = useState('');
+    const [specialistDate, setSpecialistDate] = useState(null);
+    const [specialistTime, setSpecialistTime] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const isFormValid = specialistName && specialistDate && specialistTime;
     const navigate = useNavigate();
+
+    // Link fixo do Teams (placeholder)
+    const TEAMS_LINK = 'https://teams.microsoft.com/l/meetup-join/placeholder';
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -116,6 +129,46 @@ const Training = () => {
         setCourses(courses);
     };
 
+    // Função para criar checkout SumUp para aula de especialista
+    const handleSpecialistBooking = async (e) => {
+        e.preventDefault();
+        if (!user || !user.email) {
+            alert('Tem de estar autenticado para marcar uma aula.');
+            return;
+        }
+        setIsSubmitting(true);
+        try {
+            // Montar referência única
+            const ref = `specialist|${specialistName}|${user.email}|${specialistDate?.toISOString().split('T')[0]}|${specialistTime?.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}|${Date.now()}`;
+            const response = await fetch('http://localhost:3000/api/create-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    courseId: ref, // Usar ref como courseId para distinguir no backend
+                    amount: 29.90,
+                    currency: 'EUR',
+                    description: 'Aula com Especialista',
+                    successUrl: window.location.origin + '/#/success',
+                    cancelUrl: window.location.origin + '/#/cancel',
+                    buyerEmail: user.email,
+                    specialistName,
+                    specialistDate: specialistDate?.toISOString(),
+                    specialistTime: specialistTime?.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })
+                })
+            });
+            const data = await response.json();
+            if (data.id && data.hosted_checkout_url) {
+                window.location.href = data.hosted_checkout_url;
+            } else {
+                alert('Erro ao criar checkout SumUp.');
+            }
+        } catch (err) {
+            alert('Erro ao processar marcação.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     return (
         <>
             <Header />
@@ -143,279 +196,8 @@ const Training = () => {
                             Venha conhecer as nossas formações e workshops
                         </motion.p>
                     </motion.section>
-                    {user && ADMIN_EMAILS.includes(user.email) && (
-                        <motion.div
-                            style={{ margin: '1rem 0', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '2rem' }}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 }}
-                        >
-                            <div>
-                                <Button
-                                    onClick={() => setShowAddForm(true)}
-                                    sx={{
-                                        transition: 'transform 0.3s ease',
-                                        textAlign: 'center',
-                                        padding: '1rem',
-                                        color: 'green',
-                                        fontSize: '1.1rem',
-                                        fontWeight: 700,
-                                        '&:hover': {
-                                            transform: 'translateY(-3px)',
-                                            backgroundColor: 'transparent',
-                                            opacity: '1',
-                                        },
-                                        '&:active': {
-                                            backgroundColor: 'transparent',
-                                            opacity: '1',
-                                            transform: 'scale(1.1)',
-                                        },
-                                    }}
-                                >
-                                    Adicionar Formação
-                                </Button>
-                                <Modal
-                                    open={showAddForm}
-                                    onClose={() => setShowAddForm(false)}
-                                    aria-labelledby="add-course-modal"
-                                    aria-describedby="add-course-modal-description"
-                                >
-                                    <Box
-                                        sx={{
-                                            position: 'absolute',
-                                            top: '50%',
-                                            left: '50%',
-                                            transform: 'translate(-50%, -50%)',
-                                            bgcolor: 'background.paper',
-                                            boxShadow: 24,
-                                            p: 6,
-                                            borderRadius: 2,
-                                            minWidth: 500,
-                                            maxWidth: 400,
-                                            width: '90%',
-                                        }}
-                                    >
-                                        <Typography id="add-course-modal" variant="h4" component="h2" sx={{ mb: 2, color: 'black' }}>
-                                            Adicionar Formação
-                                        </Typography>
-                                        <form
-                                            onSubmit={handleAddCourse}
-                                            style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}
-                                        >
-                                            <input
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="Título"
-                                                value={newCourse.title}
-                                                onChange={e => setNewCourse(c => ({ ...c, title: e.target.value }))}
-                                                required
-                                            />
-                                            <textarea
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="Descrição"
-                                                value={newCourse.description}
-                                                onChange={e => setNewCourse(c => ({ ...c, description: e.target.value }))}
-                                                required
-                                            />
-                                            <textarea
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="Sub-Descrição"
-                                                value={newCourse.subDescription}
-                                                onChange={e => setNewCourse(c => ({ ...c, subDescription: e.target.value }))}
-                                                required
-                                            />
-                                            <input
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="URL da Imagem"
-                                                value={newCourse.imageUrl}
-                                                onChange={e => setNewCourse(c => ({ ...c, imageUrl: e.target.value }))}
-                                                required
-                                            />
-                                            <input
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="Publico-Alvo"
-                                                value={newCourse.public}
-                                                onChange={e => setNewCourse(c => ({ ...c, public: e.target.value }))}
-                                            />
-                                            <input
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="Data da Formação"
-                                                value={newCourse.date}
-                                                onChange={e => setNewCourse(c => ({ ...c, date: e.target.value }))}
-                                            /><input
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="Data/Hora de inicio da Formação"
-                                                value={newCourse.dateDisplay}
-                                                onChange={e => setNewCourse(c => ({ ...c, dateDisplay: e.target.value }))}
-                                            />
-                                            <input
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="Formador"
-                                                value={newCourse.instructor}
-                                                onChange={e => setNewCourse(c => ({ ...c, instructor: e.target.value }))}
-                                            />
-                                            <input
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="Plataforma"
-                                                value={newCourse.platform}
-                                                onChange={e => setNewCourse(c => ({ ...c, platform: e.target.value }))}
-                                            />
-                                            <input
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="Preço"
-                                                value={newCourse.price}
-                                                onChange={e => setNewCourse(c => ({ ...c, price: e.target.value }))}
-                                                required
-                                            />
-                                            <input
-                                                style={{
-                                                    padding: '0.3rem',
-                                                    fontWeight: 500,
-                                                    fontSize: '1rem'
-                                                }}
-                                                placeholder="Link"
-                                                value={newCourse.link}
-                                                onChange={e => setNewCourse(c => ({ ...c, link: e.target.value }))}
-                                                required
-                                            />
-                                            <input
-                                                style={{ padding: '0.3rem', fontWeight: 500, fontSize: '1rem' }}
-                                                placeholder="ID da Reunião (Zoom/Teams)"
-                                                value={newCourse.meetingId}
-                                                onChange={e => setNewCourse(c => ({ ...c, meetingId: e.target.value }))}
-                                            />
-                                            <input
-                                                style={{ padding: '0.3rem', fontWeight: 500, fontSize: '1rem' }}
-                                                placeholder="Password da Reunião"
-                                                value={newCourse.meetingPass}
-                                                onChange={e => setNewCourse(c => ({ ...c, meetingPass: e.target.value }))}
-                                            />
-                                            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', justifyContent: 'space-between' }}>
-                                                <Button
-                                                    type="submit"
-                                                    sx={{
-                                                        transition: 'transform 0.3s ease',
-                                                        textAlign: 'center',
-                                                        color: 'green',
-                                                        fontSize: '1rem',
-                                                        fontWeight: 600,
-                                                        '&:hover': {
-                                                            transform: 'translateY(-3px)',
-                                                            backgroundColor: 'transparent',
-                                                            opacity: '1',
-                                                        },
-                                                        '&:active': {
-                                                            backgroundColor: 'transparent',
-                                                            opacity: '1',
-                                                            transform: 'scale(1.1)',
-                                                        },
-                                                    }}>
-                                                    Adicionar Formação
-                                                </Button>
-                                                <Button type="button" onClick={() => setShowAddForm(false)} sx={{
-                                                    transition: 'transform 0.3s ease',
-                                                    textAlign: 'center',
-                                                    color: 'red',
-                                                    fontSize: '1rem',
-                                                    fontWeight: 600,
-                                                    '&:hover': {
-                                                        transform: 'translateY(-3px)',
-                                                        backgroundColor: 'transparent',
-                                                        opacity: '1',
-                                                    },
-                                                    '&:active': {
-                                                        backgroundColor: 'transparent',
-                                                        opacity: '1',
-                                                        transform: 'scale(1.1)',
-                                                    },
-                                                }}>
-                                                    Cancelar
-                                                </Button>
-                                            </div>
-                                        </form>
-                                    </Box>
-                                </Modal>
-                            </div>
-                            {/* Remove Dropdown and Button */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                <select
-                                    value={removeCourseId}
-                                    onChange={e => setRemoveCourseId(e.target.value)}
-                                    style={{ padding: '0.5rem', borderRadius: '12px', fontWeight: 700, fontSize: '1rem' }}
-                                >
-                                    <option value="">Seleciona uma formação para remover</option>
-                                    {courses.map(course => (
-                                        <option key={course.id} value={course.id}>{course.title}</option>
-                                    ))}
-                                </select>
-                                <Button
-                                    onClick={handleRemoveCourse}
-                                    sx={{
-                                        cursor: removeCourseId ? 'pointer' : 'not-allowed',
-                                        transition: 'transform 0.3s ease',
-                                        opacity: removeCourseId ? 1 : 0.5,
-                                        textAlign: 'center',
-                                        padding: '1rem',
-                                        color: 'red',
-                                        fontSize: '1.1rem',
-                                        fontWeight: 700,
-                                        '&:hover': {
-                                            transform: 'translateY(-3px)',
-                                            backgroundColor: 'transparent',
-                                            opacity: '1',
-                                        },
-                                        '&:active': {
-                                            backgroundColor: 'transparent',
-                                            opacity: '1',
-                                            transform: 'scale(1.1)',
-                                        },
-                                    }}
-                                >
-                                    Remover Formação
-                                </Button>
-                            </div>
-                        </motion.div>
-                    )}
                     <div className="training-content">
+                        <SpecialistLessonCard onBook={() => setShowSpecialistModal(true)} />
                         {courses.map((course, index) => (
                             <CourseCard
                                 key={course.id || index}
@@ -479,6 +261,69 @@ const Training = () => {
                     onClose={handleCloseModal}
                     training={selectedTraining}
                 />
+            )}
+            {showSpecialistModal && (
+                <Modal
+                    open={showSpecialistModal}
+                    onClose={() => setShowSpecialistModal(false)}
+                    aria-labelledby="specialist-modal"
+                    aria-describedby="specialist-modal-description"
+                >
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            bgcolor: 'background.paper',
+                            boxShadow: 24,
+                            p: 4,
+                            borderRadius: 2,
+                            minWidth: 300,
+                            maxWidth: 500,
+                            maxHeight: '90vh',
+                            overflowY: 'auto',
+                            textAlign: 'center'
+                        }}
+                    >
+                        <Typography id="specialist-modal" variant="h5" sx={{ mb: 2, color: 'black' }}>
+                            Marcação de Aula com Especialista
+                        </Typography>
+                        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={pt}>
+                            <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }} onSubmit={handleSpecialistBooking}>
+                                <input
+                                    type="text"
+                                    placeholder="Nome"
+                                    value={specialistName}
+                                    onChange={e => setSpecialistName(e.target.value)}
+                                    style={{ padding: '0.7rem', borderRadius: 8, border: '1px solid #ccc', width: '100%' }}
+                                    required
+                                />
+                                <DatePicker
+                                    label="Data"
+                                    value={specialistDate}
+                                    onChange={setSpecialistDate}
+                                    slotProps={{ textField: { fullWidth: true, required: true } }}
+                                />
+                                <TimePicker
+                                    label="Hora"
+                                    value={specialistTime}
+                                    onChange={setSpecialistTime}
+                                    slotProps={{ textField: { fullWidth: true, required: true } }}
+                                />
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={!isFormValid || isSubmitting}
+                                    sx={{ mt: 2, backgroundColor: '#eac862', color: '#444', fontWeight: 700 }}
+                                >
+                                    {isSubmitting ? 'A processar...' : 'Marcar e Pagar'}
+                                </Button>
+                            </form>
+                        </LocalizationProvider>
+                    </Box>
+                </Modal>
             )}
             <Footer />
         </>

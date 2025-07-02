@@ -81,54 +81,102 @@ export default async function handler(req, res) {
             }
 
             const parts = checkout_reference.split('|');
-            const buyerEmail = parts[2];
-            const courseId = parts[1];
-            console.log('Parsed checkout reference:', { parts, buyerEmail, courseId });
-
-            await db.collection('purchases').doc(transaction_id).set({
-                email: buyerEmail || '',
-                courseId: courseId,
-                transactionId: transaction_id,
-                amount: amount,
-                currency: currency,
-                purchasedAt: new Date(),
-                status: processedStatus
-            });
-            console.log('Purchase saved to database');
-            
-            try {
-                const courseRef = db.collection('courses').doc(courseId);
-                const courseDoc = await courseRef.get();
-
-                if (courseDoc.exists) {
-                    const courseData = courseDoc.data();
+            if (checkout_reference.startsWith('specialist-')) {
+                // Marcação de especialista
+                const pendingDoc = await db.collection('pending_specialist_bookings').doc(checkout_reference).get();
+                if (!pendingDoc.exists) {
+                    console.error('Detalhes da marcação não encontrados para o checkout_reference:', checkout_reference);
+                    return res.status(500).json({ error: 'Detalhes da marcação não encontrados.' });
+                }
+                const { name, email, date, time } = pendingDoc.data();
+                const TEAMS_LINK = 'https://teams.microsoft.com/l/meetup-join/placeholder';
+                await db.collection('specialist_bookings').doc(transaction_id).set({
+                    name,
+                    email,
+                    date,
+                    time,
+                    transactionId: transaction_id,
+                    amount,
+                    currency,
+                    bookedAt: new Date(),
+                    status: processedStatus
+                });
+                // Enviar email de confirmação
+                try {
                     const emailHtml = `
-                        <h1>Olá!</h1>
-                        <p>A sua inscrição na formação "${courseData.title}" foi confirmada com sucesso.</p>
-                        <p>Abaixo estão os detalhes para aceder à formação:</p>
+                        <h2>Olá ${name}!</h2>
+                        <p>A sua marcação foi confirmada com sucesso.</p>
                         <ul>
-                            ${courseData.dateDisplay ? `<li><strong>Data:</strong> ${courseData.dateDisplay}</li>` : ''}
-                            ${courseData.link ? `<li><strong>Link de Acesso:</strong> <a href="${courseData.link}">${courseData.link}</a></li>` : ''}
-                            ${courseData.meetingId ? `<li><strong>ID da Reunião:</strong> ${courseData.meetingId}</li>` : ''}
-                            ${courseData.meetingPass ? `<li><strong>Password:</strong> ${courseData.meetingPass}</li>` : ''}
+                            <li><strong>Data:</strong> ${date}</li>
+                            <li><strong>Hora:</strong> ${time}</li>
+                            <li><strong>Valor:</strong> ${Number(amount).toFixed(2)}€</li>
+                            <li><strong>Link da Aula (Teams):</strong> <a href="${TEAMS_LINK}">${TEAMS_LINK}</a></li>
                         </ul>
-                        <p>Guarde este email para referência futura.</p>
-                        <p>Obrigado!</p>
+                        <p>Obrigado por escolher a nossa plataforma!</p>
                     `;
-
                     await db.collection('mail').add({
-                        to: buyerEmail,
+                        to: email,
                         message: {
-                            subject: `Detalhes de Acesso: ${courseData.title}`,
+                            subject: 'Confirmação da sua Aula com Especialista',
                             html: emailHtml,
                         },
                     });
-                    console.log('Confirmation email queued for:', buyerEmail);
-                } else {
-                    console.error(`Course with ID ${courseId} not found.`);
+                    console.log('Confirmation email queued for specialist:', email);
+                } catch (emailError) {
+                    console.error('Error sending specialist confirmation email:', emailError);
                 }
-            } catch (emailError) {
-                console.error('Error sending confirmation email:', emailError);
+                await db.collection('pending_specialist_bookings').doc(checkout_reference).delete();
+                console.log('Specialist booking saved and email sent!');
+            } else {
+                const buyerEmail = parts[2];
+                const courseId = parts[1];
+                console.log('Parsed checkout reference:', { parts, buyerEmail, courseId });
+
+                await db.collection('purchases').doc(transaction_id).set({
+                    email: buyerEmail || '',
+                    courseId: courseId,
+                    transactionId: transaction_id,
+                    amount: amount,
+                    currency: currency,
+                    purchasedAt: new Date(),
+                    status: processedStatus
+                });
+                console.log('Purchase saved to database');
+                
+                try {
+                    const courseRef = db.collection('courses').doc(courseId);
+                    const courseDoc = await courseRef.get();
+
+                    if (courseDoc.exists) {
+                        const courseData = courseDoc.data();
+                        const emailHtml = `
+                            <h1>Olá!</h1>
+                            <p>A sua inscrição na formação "${courseData.title}" foi confirmada com sucesso.</p>
+                            <p>Abaixo estão os detalhes para aceder à formação:</p>
+                            <ul>
+                                ${courseData.dateDisplay ? `<li><strong>Data:</strong> ${courseData.dateDisplay}</li>` : ''}
+                                ${courseData.link ? `<li><strong>Link de Acesso:</strong> <a href="${courseData.link}">${courseData.link}</a></li>` : ''}
+                                ${courseData.meetingId ? `<li><strong>ID da Reunião:</strong> ${courseData.meetingId}</li>` : ''}
+                                ${courseData.meetingPass ? `<li><strong>Password:</strong> ${courseData.meetingPass}</li>` : ''}
+                            </ul>
+                            <p>Guarde este email para referência futura.</p>
+                            <p>Obrigado!</p>
+                        `;
+
+                        await db.collection('mail').add({
+                            to: buyerEmail,
+                            message: {
+                                subject: `Detalhes de Acesso: ${courseData.title}`,
+                                html: emailHtml,
+                            },
+                        });
+                        console.log('Confirmation email queued for:', buyerEmail);
+                    } else {
+                        console.error(`Course with ID ${courseId} not found.`);
+                    }
+                } catch (emailError) {
+                    console.error('Error sending confirmation email:', emailError);
+                }
             }
         } else {
             console.log('Payment status is not PAID:', processedStatus);

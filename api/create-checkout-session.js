@@ -49,20 +49,40 @@ export default async function handler(req, res) {
     }
 
     const body = await json(req);
-    const { courseId, amount, currency, description, successUrl, cancelUrl, buyerEmail } = body;
+    const { courseId, amount, currency, description, successUrl, cancelUrl, buyerEmail, specialistName, specialistDate, specialistTime } = body;
 
     if (!courseId || !amount || !currency || !description || !buyerEmail) {
       res.status(400).json({ error: 'Missing required fields' });
       return;
     }
 
-    const courseDoc = await db.collection('courses').doc(courseId).get();
-    if (!courseDoc.exists) {
-      return res.status(404).json({ error: 'Course not found' });
+    let checkoutReference;
+    let amountToUse = amount;
+    if (courseId.startsWith('specialist|')) {
+      checkoutReference = `specialist-${Date.now()}`;
+      amountToUse = 1.00;
+      await db.collection('pending_specialist_bookings').doc(checkoutReference).set({
+        checkoutReference,
+        name: specialistName,
+        email: buyerEmail,
+        date: specialistDate,
+        time: specialistTime,
+        amount: amountToUse,
+        currency,
+        createdAt: new Date(),
+        status: 'PENDING'
+      });
+    } else {
+      checkoutReference = `course|${courseId}|${buyerEmail}|${Date.now()}`;
+      // Validação de curso
+      const courseDoc = await db.collection('courses').doc(courseId).get();
+      if (!courseDoc.exists) {
+        return res.status(404).json({ error: 'Course not found' });
+      }
     }
 
     const accessToken = await getSumUpAccessToken();
-
+    const amountStr = Number(amountToUse).toFixed(2);
     const response = await fetch('https://api.sumup.com/v0.1/checkouts', {
       method: 'POST',
       headers: {
@@ -70,8 +90,8 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${accessToken}`
       },
       body: JSON.stringify({
-        checkout_reference: `course|${courseId}|${buyerEmail}|${Date.now()}`,
-        amount: parseFloat(amount),
+        checkout_reference: checkoutReference,
+        amount: amountStr,
         currency: currency,
         merchant_code: process.env.SUMUP_MERCHANT_CODE,
         description: description,
