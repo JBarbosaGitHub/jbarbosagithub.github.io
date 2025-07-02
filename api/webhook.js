@@ -90,6 +90,7 @@ export default async function handler(req, res) {
                 }
                 const { name, email, date, time } = pendingDoc.data();
                 const TEAMS_LINK = 'https://teams.microsoft.com/l/meetup-join/placeholder';
+                const dataFormatada = new Date(date).toLocaleDateString('pt-PT');
                 await db.collection('specialist_bookings').doc(transaction_id).set({
                     name,
                     email,
@@ -107,7 +108,7 @@ export default async function handler(req, res) {
                         <h2>Olá ${name}!</h2>
                         <p>A sua marcação foi confirmada com sucesso.</p>
                         <ul>
-                            <li><strong>Data:</strong> ${date}</li>
+                            <li><strong>Data:</strong> ${dataFormatada}</li>
                             <li><strong>Hora:</strong> ${time}</li>
                             <li><strong>Valor:</strong> ${Number(amount).toFixed(2)}€</li>
                             <li><strong>Link da Aula (Teams):</strong> <a href="${TEAMS_LINK}">${TEAMS_LINK}</a></li>

@@ -60,7 +60,7 @@ export default async function handler(req, res) {
     let amountToUse = amount;
     if (courseId.startsWith('specialist|')) {
       checkoutReference = `specialist-${Date.now()}`;
-      amountToUse = 1.00;
+      amountToUse = 29.90;
       await db.collection('pending_specialist_bookings').doc(checkoutReference).set({
         checkoutReference,
         name: specialistName,

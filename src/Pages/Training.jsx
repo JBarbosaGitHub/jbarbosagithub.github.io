@@ -293,7 +293,7 @@ const Training = () => {
                             <form style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }} onSubmit={handleSpecialistBooking}>
                                 <input
                                     type="text"
-                                    placeholder="Nome"
+                                    placeholder="Nome Completo"
                                     value={specialistName}
                                     onChange={e => setSpecialistName(e.target.value)}
                                     style={{ padding: '0.7rem', borderRadius: 8, border: '1px solid #ccc', width: '100%' }}
