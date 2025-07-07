@@ -1,0 +1,87 @@
+.minigames-container {
+  min-height: 100vh;
+  padding: 2rem;
+  background-image: url('../assets/background.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mini-games {
+  text-align: center;
+  margin-top: 30px;
+  color: black;
+}
+
+.game-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin: 30px 0;
+}
+
+.coins {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-right: 40px;
+}
+
+.coin {
+  width: 60px;
+  cursor: grab;
+}
+
+.piggy-bank {
+  width: 180px;
+  height: 180px;
+  border: 2px dashed #ffb347;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fffbe6;
+}
+
+.piggy-bank img {
+  width: 120px;
+  height: auto;
+}
+
+.article-dropzone img {
+  width: 200px;
+  height: auto;
+}
+
+.score {
+  font-size: 1em;
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.coins-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.coins.left,
+.coins.right {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.coins-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

@@ -21,7 +21,7 @@
 }
 
 .contact-content h1 {
-    color: #7d925c;
+    color: #eac862;
     margin-bottom: 1rem;
     text-align: center;
     font-size: 2.5rem;
@@ -75,7 +75,7 @@
 }
 
 .submit-button {
-    background-color: #7d925c;
+    background-color: #eac862;
     color: white;
     padding: 1rem;
     border: none;
@@ -87,7 +87,7 @@
 }
 
 .submit-button:hover {
-    background-color: #708a47;
+    background-color: #eac862;
 }
 
 .status-message {

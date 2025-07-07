@@ -97,6 +97,9 @@ const Login = () => {
                 <p className="register-link">
                     Não tem uma conta? <Link style={{color: '#f4cc6b'}} to="/register">Registar aqui</Link>
                 </p>
+                <p className="register-link">
+                    <Link style={{color: '#f4cc6b'}} to="/reset-password">Esqueceu a password?</Link>
+                </p>
             </div>
         </div>
     );

@@ -4,12 +4,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import logo from '../assets/logo-removebg.png';
 import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
+import AvatarMenu from './AvatarMenu';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const navItems = [
         { title: 'Quem Somos', path: '/quemsomos', titleClass: 'nav-title-1' },
@@ -21,17 +23,13 @@ const Header = () => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setIsLoggedIn(!!user);
+            setUser(user);
         });
         return () => unsubscribe();
     }, []);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
-    };
-
-    const handleLogout = async () => {
-        await signOut(auth);
-        navigate('/');
     };
 
     return (
@@ -42,7 +40,7 @@ const Header = () => {
                         <img className="nav-logo" src={logo} alt="Logo" />
                     </a>
                 </div>
-                <div className="top-right" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div className="top-right" style={{ display: 'flex', alignItems: 'center', gap: '2.5rem' }}>
                     <button className="menu-toggle" onClick={toggleMenu}>
                         {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
                     </button>
@@ -70,13 +68,7 @@ const Header = () => {
                                     Login
                                 </div>
                             ) : (
-                                <div
-                                    className="navigation-item nav-title-1"
-                                    style={{ cursor: 'pointer', fontWeight: 700, fontSize: '1.2rem', marginLeft: '15px' }}
-                                    onClick={handleLogout}
-                                >
-                                    Logout
-                                </div>
+                                <AvatarMenu user={user} />
                             )}
                         </div>
                     </nav>
