@@ -213,61 +213,81 @@ export default function CoinGame() {
                                 Resetar Progresso
                             </button>
                         )}
-                        <div className="game-area">
-                            <div className="coins-side coins-left">
-                                {(level === 0 ? shuffledCoins.slice(0, 4) : coins.slice(0, 4)).map((coin) => (
-                                    <img
-                                        key={coin.value}
-                                        src={coin.img}
-                                        alt={`${coin.value} euro`}
-                                        draggable
-                                        onDragStart={(e) => handleStartDrag(e, coin.value)}
-                                        className="coin"
-                                    />
-                                ))}
-                            </div>
-                            {level === 0 && (
-                                <div
-                                    className="piggy-bank"
-                                    onDragOver={(e) => e.preventDefault()}
-                                    onDrop={handleDropLevel1}
-                                >
-                                    <img src={piggyBank} alt="Porquinho" />
-                                </div>
-                            )}
-                            {level === 1 && (
-                                <div
-                                    className="article-dropzone"
-                                    onDragOver={(e) => e.preventDefault()}
-                                    onDrop={handleDropLevel2}
-                                >
-                                    <img src={articles[currentArticle].img} alt={articles[currentArticle].name} />
-                                    <div className="article-name">{articles[currentArticle].name}</div>
-                                    <div className="article-target">Valor: {articles[currentArticle].price.toFixed(2)}€</div>
-                                    <div className="selected-coins">
-                                        {selectedCoins.map((v, i) => (
-                                            <span key={i} className="selected-coin">{v}€ </span>
-                                        ))}
-                                    </div>
-                                    <div className="article-total">Total: {total.toFixed(2)}€</div>
-                                </div>
-                            )}
-                            <div className="coins-side coins-right">
-                                {(level === 0 ? shuffledCoins.slice(4) : coins.slice(4)).map((coin) => (
-                                    <img
-                                        key={coin.value}
-                                        src={coin.img}
-                                        alt={`${coin.value} euro`}
-                                        draggable
-                                        onDragStart={(e) => handleStartDrag(e, coin.value)}
-                                        className="coin"
-                                    />
-                                ))}
-                            </div>
+                <div className="game-area">
+                    <div className="coins-side coins-left">
+                        {(level === 0 ? shuffledCoins.slice(0, 4) : coins.slice(0, 4)).map((coin) => (
+                            <img
+                                key={coin.value}
+                                src={coin.img}
+                                alt={`${coin.value} euro`}
+                                draggable
+                                onDragStart={(e) => handleStartDrag(e, coin.value)}
+                                className="coin"
+                            />
+                        ))}
+                    </div>
+                    {level === 0 && (
+                        <div
+                            className="piggy-bank"
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={handleDropLevel1}
+                        >
+                            <img src={piggyBank} alt="Porquinho" />
                         </div>
-                        <div className="score">Pontuação do nível {level + 1} : {pontuacao}</div>
+                    )}
+                    {level === 1 && (
+                        <div
+                            className="article-dropzone"
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={handleDropLevel2}
+                        >
+                            <img src={articles[currentArticle].img} alt={articles[currentArticle].name} />
+                            <div className="article-name">{articles[currentArticle].name}</div>
+                            <div className="article-target">Valor: {articles[currentArticle].price.toFixed(2)}€</div>
+                            <div className="selected-coins">
+                                {selectedCoins.map((v, i) => (
+                                    <span key={i} className="selected-coin">{v}€ </span>
+                                ))}
+                            </div>
+                            <div className="article-total">Total: {total.toFixed(2)}€</div>
+                        </div>
+                    )}
+                    <div className="coins-side coins-right">
+                        {(level === 0 ? shuffledCoins.slice(4) : coins.slice(4)).map((coin) => (
+                            <img
+                                key={coin.value}
+                                src={coin.img}
+                                alt={`${coin.value} euro`}
+                                draggable
+                                onDragStart={(e) => handleStartDrag(e, coin.value)}
+                                className="coin"
+                            />
+                        ))}
+                    </div>
+                </div>
+                <div className="score">Pontuação do nível {level + 1} : {pontuacao}</div>
                         {gameCompleted && <div className="success" style={{ color: '#388e3c', fontWeight: 600, marginTop: '1rem' }}>Jogo completo! Usa o botão de reset para recomeçar.</div>}
-                        {error && <div className="error">{error}</div>}
+                {error && <div className="error">{error}</div>}
+                        {/* Botão Voltar abaixo do jogo */}
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+                            <button
+                                className="back-to-selection-btn"
+                                onClick={() => window.location.hash = '#/jogos'}
+                                style={{
+                                    background: '#eee',
+                                    color: '#333',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    padding: '0.5rem 1.2rem',
+                                    fontWeight: 600,
+                                    cursor: 'pointer',
+                                    fontSize: '1rem',
+                                    boxShadow: '0 1px 4px rgba(0,0,0,0.07)'
+                                }}
+                            >
+                                ← Voltar à seleção de minijogos
+                            </button>
+                        </div>
                     </>
                 )}
             </div>

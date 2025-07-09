@@ -85,3 +85,99 @@
   flex-direction: column;
   gap: 16px;
 }
+
+.minigames-selection-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: transparent;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.minigames-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.minigame-card {
+  background: #fff;
+  border-radius: 16px;
+  border: 2.5px solid #7d925c;
+  box-shadow: 0 2px 12px rgba(87,109,67,0.10);
+  padding: 2rem 1.2rem 2.2rem 1.2rem;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+.minigame-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 6px 24px rgba(87,109,67,0.16);
+}
+.minigame-img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  margin-bottom: 1.2rem;
+}
+.minigame-card h3 {
+  color: #7d925c;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.minigame-card p {
+  color: #333;
+  font-size: 1.05rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+.minigame-play-btn {
+  margin-top: 0.5rem;
+  background: #7d925c;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 1px 4px rgba(56,142,60,0.10);
+}
+.minigame-play-btn:disabled {
+  background: #bdbdbd;
+  color: #fff;
+  cursor: not-allowed;
+}
+@media (max-width: 700px) {
+  .minigames-cards {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .minigame-card {
+    width: 100%;
+    padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+  }
+}
+
+.minigames-bg-container {
+  min-height: calc(100vh - 105px - 80px);
+  padding: 1.5rem 0 1rem 0;
+  background-image: url('../assets/background.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,6 +1,6 @@
 .agenda-container {
   min-height: calc(100vh - 105px);
-  padding: 4rem 0;
+  padding: 1.5rem 0 4rem 0;
   background-image: url('../assets/background.jpeg');
   background-size: cover;
   background-position: center;

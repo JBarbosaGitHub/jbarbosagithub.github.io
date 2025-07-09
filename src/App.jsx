@@ -10,7 +10,8 @@ import Success from "./Pages/Success";
 import Cancel from "./Pages/Cancel";
 import ContactUs from "./Pages/ContactUs";
 import ElfsightChatbot from "./Components/ElfsightChatbot";
-import MiniGames from "./Pages/MiniGames";
+import MiniGamesSelection from "./Pages/MiniGames";
+import CoinGame from "./Components/MiniGames";
 import Profile from './Pages/Profile';
 import Agenda from './Pages/Agenda';
 import ProtectedRoute from './Components/ProtectedRoute';
@@ -39,8 +40,12 @@ const AnimatedRoutes = () => {
         <Route path="/success" element={<Success />} />
         <Route path="/cancel" element={<Cancel />} />
         <Route path="/contacte-nos" element={<ContactUs />} />
-        <Route path="/game" element={<MiniGames />} />
-        <Route path="/jogos" element={<ProtectedRoute><MiniGames /></ProtectedRoute>} />
+        {/* Página de seleção de minijogos */}
+        <Route path="/jogos" element={<ProtectedRoute><MiniGamesSelection /></ProtectedRoute>} />
+        {/* CoinGame (minijogo atual) */}
+        <Route path="/game/coin" element={<ProtectedRoute><CoinGame /></ProtectedRoute>} />
+        {/* Porquinho Sábio (placeholder) */}
+        <Route path="/game/piggywise" element={<ProtectedRoute><div style={{padding:'2rem',textAlign:'center'}}><h2>Porquinho Sábio</h2><p>Em breve!</p></div></ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/agenda" element={<ProtectedRoute><Agenda /></ProtectedRoute>} />
       </Routes>

@@ -5,7 +5,7 @@ import logo from '../assets/logo-removebg.png';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { db } from '../firebase';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, setDoc, doc } from 'firebase/firestore';
 import validator from 'validator';
 
 
@@ -15,6 +15,8 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [name, setName] = useState('');
+    const [dataNascimento, setDataNascimento] = useState('');
     const navigate = useNavigate();
 
     const validateEmail = (email) => {
@@ -25,11 +27,30 @@ const Register = () => {
         return validator.isStrongPassword(password);
     };
 
+    const calcularIdade = (dataNascimento) => {
+        const hoje = new Date();
+        const nascimento = new Date(dataNascimento);
+        let idade = hoje.getFullYear() - nascimento.getFullYear();
+        const m = hoje.getMonth() - nascimento.getMonth();
+        if (m < 0 || (m === 0 && hoje.getDate() < nascimento.getDate())) {
+            idade--;
+        }
+        return idade;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess('');
 
+        if (!name.trim()) {
+            setError('Insira o seu nome.');
+            return;
+        }
+        if (!dataNascimento) {
+            setError('Insira a sua data de nascimento.');
+            return;
+        }
         if (!validateEmail(email)) {
             setError('Insira um email válido.');
             return;
@@ -44,8 +65,17 @@ const Register = () => {
         }
 
         try {
-            await createUserWithEmailAndPassword(auth, email, password);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             setSuccess('Registo realizado com sucesso! A redirecionar para o login...');
+
+            // Guardar dados extra no Firestore
+            const idade = calcularIdade(dataNascimento);
+            await setDoc(doc(db, 'users', userCredential.user.uid), {
+                nome: name,
+                dataNascimento,
+                idade,
+                email
+            });
 
             // Send welcome email
             try {
@@ -84,6 +114,26 @@ const Register = () => {
                 {error && <div className="error-message">{error}</div>}
                 {success && <div className="success-message">{success}</div>}
                 <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="name">Nome:</label>
+                        <input
+                            type="text"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="dataNascimento">Data de Nascimento:</label>
+                        <input
+                            type="date"
+                            id="dataNascimento"
+                            value={dataNascimento}
+                            onChange={(e) => setDataNascimento(e.target.value)}
+                            required
+                        />
+                    </div>
                     <div className="form-group">
                         <label htmlFor="email">Email:</label>
                         <input
