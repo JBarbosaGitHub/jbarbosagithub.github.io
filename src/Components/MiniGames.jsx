@@ -63,6 +63,9 @@ export default function CoinGame() {
     const [gameCompleted, setGameCompleted] = useState(false);
     const [loadingProgress, setLoadingProgress] = useState(true);
     const [progressLoaded, setProgressLoaded] = useState(false);
+    // Novo estado: lista embaralhada de valores a pedir no nível 1
+    const [coinRequests, setCoinRequests] = useState(() => shuffleArray(coins.map(c => c.value)));
+    const [currentCoinIdx, setCurrentCoinIdx] = useState(0);
 
     // Atualizar user se autenticação mudar
     useEffect(() => {
@@ -128,6 +131,8 @@ export default function CoinGame() {
         setScoreLevel2(0);
         setCurrentArticle(0);
         setGameCompleted(false);
+        setCoinRequests(shuffleArray(coins.map(c => c.value)));
+        setCurrentCoinIdx(0);
         const docRef = doc(db, 'game_progress', user.uid);
         await deleteDoc(docRef);
     };
@@ -135,10 +140,18 @@ export default function CoinGame() {
     // Nível 1: identificar moeda
     function handleDropLevel1(e) {
         const value = Number(e.dataTransfer.getData("coinValue"));
-        if (value === levels[0].target) {
+        if (value === coinRequests[currentCoinIdx]) {
             setScoreLevel1(scoreLevel1 + 1);
             setError("");
             setShuffledCoins(shuffleArray(coins)); // Baralha moedas ao acertar
+            if (currentCoinIdx < coinRequests.length - 1) {
+                setCurrentCoinIdx(currentCoinIdx + 1);
+            } else {
+                setTimeout(() => {
+                    setCoinRequests(shuffleArray(coins.map(c => c.value)));
+                    setCurrentCoinIdx(0);
+                }, 500);
+            }
         } else {
             setError("Oops! Essa não era a moeda certa. Tenta outra vez!");
         }
@@ -158,19 +171,21 @@ export default function CoinGame() {
     // Soma das moedas selecionadas no nível 2
     const total = selectedCoins.reduce((acc, v) => acc + v, 0);
 
-    // Avançar de nível automaticamente após 3 acertos no nível 1
+    // Avançar de nível automaticamente após 8 acertos no nível 1
     useEffect(() => {
-        if (level === 0 && scoreLevel1 >= 3) {
+        if (level === 0 && scoreLevel1 >= 8) {
             setLevel(1);
             setSelectedCoins([]);
             setError("");
         }
     }, [scoreLevel1, level]);
 
-    // Quando muda para o nível 1, baralha as moedas
+    // Quando muda para o nível 1, baralha as moedas e reinicia pedidos
     useEffect(() => {
         if (level === 0) {
             setShuffledCoins(shuffleArray(coins));
+            setCoinRequests(shuffleArray(coins.map(c => c.value)));
+            setCurrentCoinIdx(0);
         }
     }, [level]);
 
@@ -199,10 +214,14 @@ export default function CoinGame() {
     // Pontuação a mostrar
     const pontuacao = level === 0 ? scoreLevel1 : scoreLevel2;
 
+    // Descrição dinâmica para o pedido de moeda
+    const coinRequestValue = coinRequests[currentCoinIdx];
+    const coinRequestText = coinRequestValue !== undefined ? `Arrasta a moeda de ${coinRequestValue.toLocaleString('pt-PT', { minimumFractionDigits: coinRequestValue < 1 ? 2 : 0 })}€ para o porquinho!` : '';
+
     return (
         <div className="minigames-container">
             <div className="mini-games">
-                <h2>{levels[level].description}</h2>
+                <h2>{level === 0 ? coinRequestText : levels[level].description}</h2>
                 {loadingProgress ? (
                     <div style={{ textAlign: 'center', margin: '2rem', fontWeight: 600 }}>A carregar progresso...</div>
                 ) : (

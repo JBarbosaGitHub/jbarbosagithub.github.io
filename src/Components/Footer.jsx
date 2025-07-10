@@ -33,7 +33,7 @@ const Footer = () => {
                 </div>
                 <div className="bottom-right">
                     <ul>
-                        <li>@ 2025 - Direitos reservados a Contar Contando</li>
+                        <li>@ 2025 - Direitos reservados a Academia Conta Contando</li>
                     </ul>
                 </div>
             </div>
