@@ -181,3 +181,50 @@
   align-items: center;
   justify-content: center;
 }
+
+@media (max-width: 480px) {
+  .minigames-container {
+    padding: 0.5rem 0.1rem;
+    min-height: 100vh;
+  }
+  .minigames-selection-container {
+    max-width: 99vw;
+    padding: 0.5rem 0.1rem;
+  }
+  .minigames-cards {
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100vw;
+  }
+  .minigame-card {
+    width: 99vw;
+    padding: 0.7rem 0.1rem 1rem 0.1rem;
+    font-size: 0.9rem;
+  }
+  .minigame-img {
+    width: 48px;
+    height: 48px;
+  }
+  .game-area {
+    flex-direction: column;
+    gap: 0.7rem;
+    margin: 10px 0;
+    width: 100vw;
+  }
+  .coin {
+    width: 36px;
+  }
+  .piggy-bank {
+    width: 90px;
+    height: 90px;
+  }
+  .piggy-bank img {
+    width: 60px;
+  }
+  .article-dropzone img {
+    width: 90px;
+  }
+  .score {
+    font-size: 0.9em;
+  }
+}

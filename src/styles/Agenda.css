@@ -298,4 +298,35 @@
   .agenda-page {
     padding: 2rem 0.5rem;
   }
+}
+@media (max-width: 600px) {
+  .agenda-page {
+    padding: 0.7rem 0.1rem;
+    max-width: 99vw;
+  }
+  .agenda-calendar-section {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100vw;
+  }
+  .agenda-events-section {
+    min-width: 0;
+    max-width: 100vw;
+    width: 99vw;
+    padding: 1rem 0.2rem;
+  }
+  .react-calendar {
+    width: 98vw;
+    min-width: 0;
+    max-width: 99vw;
+    padding: 0.5rem 0.1rem 0.3rem 0.1rem;
+  }
+  .agenda-event-item {
+    font-size: 0.95rem;
+    padding: 0.5rem 0.5rem;
+  }
+  .agenda-events-title {
+    font-size: 1rem;
+  }
 } 

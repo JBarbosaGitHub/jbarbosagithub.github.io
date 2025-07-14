@@ -36,3 +36,21 @@
     gap: 3rem;
     padding: 2rem 1rem 2rem 1rem;
 }
+
+@media (max-width: 600px) {
+  .training-hero {
+    padding: 1.2rem 0.3rem 0.7rem 0.3rem;
+  }
+  .training-hero h1 {
+    font-size: 1.2rem;
+  }
+  .training-hero .subtitle {
+    font-size: 0.9rem;
+  }
+  .training-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0.5rem 0.1rem 0.5rem 0.1rem;
+    max-width: 99vw;
+  }
+}

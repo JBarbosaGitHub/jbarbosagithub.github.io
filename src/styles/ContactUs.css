@@ -128,3 +128,23 @@
         font-size: 2rem;
     }
 }
+
+@media (max-width: 480px) {
+    .contact-container {
+        padding: 0.5rem 0.1rem;
+    }
+    .contact-content {
+        padding: 0.5rem 0.1rem;
+        max-width: 99vw;
+    }
+    .contact-content h1 {
+        font-size: 1.2rem;
+    }
+    .contact-intro {
+        font-size: 0.9rem;
+    }
+    .form-group input, .form-group textarea, .submit-button {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+}

@@ -1,6 +1,18 @@
 import '../styles/Footer.css';
+import { useEffect } from 'react';
 
 const Footer = () => {
+    useEffect(() => {
+        // Adiciona o script da iubenda apenas uma vez
+        const script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://cdn.iubenda.com/iubenda.js';
+        script.async = true;
+        document.body.appendChild(script);
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -34,6 +46,17 @@ const Footer = () => {
                 <div className="bottom-right">
                     <ul>
                         <li>@ 2025 - Direitos reservados a Academia Conta Contando</li>
+                        <li>
+                            <a
+                                href="https://www.iubenda.com/privacy-policy/64932069"
+                                className="iubenda-nostyle iubenda-noiframe iubenda-embed"
+                                title="Política de Privacidade"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Política de Privacidade
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

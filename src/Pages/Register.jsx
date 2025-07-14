@@ -9,6 +9,8 @@ import { addDoc, collection, setDoc, doc } from 'firebase/firestore';
 import validator from 'validator';
 
 
+const PRIVACY_POLICY_URL = "https://www.iubenda.com/privacy-policy/64932069";
+
 const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,6 +19,7 @@ const Register = () => {
     const [success, setSuccess] = useState('');
     const [name, setName] = useState('');
     const [dataNascimento, setDataNascimento] = useState('');
+    const [aceitouPolitica, setAceitouPolitica] = useState(false);
     const navigate = useNavigate();
 
     const validateEmail = (email) => {
@@ -61,6 +64,10 @@ const Register = () => {
         }
         if (password !== confirmPassword) {
             setError('As senhas não coincidem.');
+            return;
+        }
+        if (!aceitouPolitica) {
+            setError('É necessário aceitar a Política de Privacidade para se registar.');
             return;
         }
 
@@ -163,6 +170,20 @@ const Register = () => {
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                         />
+                    </div>
+                    <div className="form-group privacy-group">
+                        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, width: '100%' }}>
+                            <input
+                                type="checkbox"
+                                checked={aceitouPolitica}
+                                onChange={e => setAceitouPolitica(e.target.checked)}
+                                required
+                                style={{ margin: 0 }}
+                            />
+                            <span>
+                                Li e aceito a <a href={PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer" style={{ color: '#f4cc6b', textDecoration: 'underline' }}>Política de Privacidade</a>
+                            </span>
+                        </label>
                     </div>
                     <button type="submit" className="login-button">Registar</button>
                 </form>

@@ -3,8 +3,9 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  padding: 2rem 0 2rem 0;
   background-image: url('../assets/background.jpeg');
   background-size: cover;
   background-position: center;
@@ -12,10 +13,10 @@
 }
 
 .login-logo {
-  width: 200px;
-  cursor: pointer;
-  margin-bottom: 2rem;
-  margin-top: -2rem;
+  display: block;
+  margin: 2.5rem auto 1.5rem auto;
+  max-width: 180px;
+  height: auto;
 }
 
 .login-box {
@@ -118,4 +119,29 @@
   width: 100%;
   text-align: center;
   font-size: 1rem;
+}
+
+/* Checkbox da política de privacidade */
+.form-group.privacy-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+.form-group.privacy-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #65774a;
+  margin: 0;
+}
+.form-group.privacy-group label {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #333;
+  margin: 0;
+}
+.form-group.privacy-group a {
+  color: #f4cc6b;
+  text-decoration: underline;
+  font-weight: 500;
 } 
