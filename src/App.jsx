@@ -16,6 +16,7 @@ import Profile from './Pages/Profile';
 import Agenda from './Pages/Agenda';
 import ProtectedRoute from './Components/ProtectedRoute';
 import ResetPassword from './Pages/ResetPassword';
+import { useEffect } from 'react';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -56,6 +57,30 @@ const AnimatedRoutes = () => {
 };
 
 const App = () => {
+  useEffect(() => {
+    // Configuração iubenda
+    window._iub = window._iub || [];
+    window._iub.csConfiguration = { "siteId": 4151535, "cookiePolicyId": 64932069, "lang": "en", "storage": { "useSiteId": true } };
+
+    // Script autoblocking
+    const autoblockingScript = document.createElement('script');
+    autoblockingScript.type = 'text/javascript';
+    autoblockingScript.src = 'https://cs.iubenda.com/autoblocking/4151535.js';
+    document.body.appendChild(autoblockingScript);
+
+    // Script principal iubenda
+    const iubendaScript = document.createElement('script');
+    iubendaScript.type = 'text/javascript';
+    iubendaScript.src = '//cdn.iubenda.com/cs/iubenda_cs.js';
+    iubendaScript.charset = 'UTF-8';
+    iubendaScript.async = true;
+    document.body.appendChild(iubendaScript);
+
+    return () => {
+      document.body.removeChild(autoblockingScript);
+      document.body.removeChild(iubendaScript);
+    };
+  }, []);
   return (
     <HashRouter>
       <AnimatedRoutes />
