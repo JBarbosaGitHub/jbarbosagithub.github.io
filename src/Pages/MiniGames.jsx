@@ -3,23 +3,23 @@ import Footer from '../Components/Footer';
 import PageTransition from '../Components/PageTransition';
 import { useNavigate } from 'react-router-dom';
 import piggyBank from '../assets/piggybank.png';
-// import piggyWise from '../assets/piggywise.png'; // futuro
+import piggyWise from '../assets/piggywise.gif';
 import '../styles/MiniGames.css';
 
 const games = [
   {
-    name: 'Coin Game',
+    name: 'Jogo das Moedas',
     description: 'Aprende a identificar moedas e pagar artigos!',
     img: piggyBank,
-    route: '/game/coin',
+    route: '/jogos/moedas',
     available: true
   },
   {
     name: 'Porquinho Sábio',
-    description: 'Em breve: o jogo do Porquinho Sábio!',
-    img: piggyBank, // substituir por piggyWise futuramente
-    route: '/game/piggywise',
-    available: false
+    description: 'Vou ver a sua sabedoria sobre o dinheiro!',
+    img: piggyWise,
+    route: '/jogos/porquinho-sabio',
+    available: true
   }
 ];
 

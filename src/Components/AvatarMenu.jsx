@@ -54,7 +54,7 @@ const AvatarMenu = ({ user }) => {
           <div className="avatar-dropdown-item nav-title-1" onClick={() => { setOpen(false); navigate('/perfil'); }}>Perfil</div>
           <div className="avatar-dropdown-item nav-title-2" onClick={() => { setOpen(false); navigate('/agenda'); }}>Agenda</div>
           <div className="avatar-dropdown-item nav-title-3" onClick={() => { setOpen(false); navigate('/jogos'); }}>Jogos</div>
-          <div className="avatar-dropdown-item nav-title-4" onClick={() => { setOpen(false); window.open('https://moodle.pt', '_blank'); }}>Moodle</div>
+          <div className="avatar-dropdown-item nav-title-4" onClick={() => { setOpen(false); window.open('https://moodlecloud.com/app/en/portal/remotelogin/contacontando', '_blank'); }}>Moodle</div>
           <div className="avatar-dropdown-item logout" onClick={handleLogout}>Logout</div>
         </div>
       )}

@@ -32,6 +32,24 @@ const Footer = () => {
                         <a className="facebook-icon" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
                             <i className="fab fa-facebook"></i>
                         </a>
+                        <a
+                            href="https://www.iubenda.com/privacy-policy/35764406"
+                            className="iubenda-nostyle iubenda-noiframe iubenda-embed iubenda-noiframe"
+                            title="Política de Privacidade"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Política de Privacidade
+                        </a>
+                        <a
+                            href="https://www.iubenda.com/privacy-policy/35764406/cookie-policy"
+                            className="iubenda-nostyle iubenda-noiframe iubenda-embed iubenda-noiframe"
+                            title="Política de Cookies"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Política de Cookies
+                        </a>
                     </div>
                 </div>
                 <div className="bottom-center">
@@ -46,17 +64,6 @@ const Footer = () => {
                 <div className="bottom-right">
                     <ul>
                         <li>@ 2025 - Direitos reservados a Academia Conta Contando</li>
-                        <li>
-                            <a
-                                href="https://www.iubenda.com/privacy-policy/64932069"
-                                className="iubenda-nostyle iubenda-noiframe iubenda-embed"
-                                title="Política de Privacidade"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Política de Privacidade
-                            </a>
-                        </li>
                     </ul>
                 </div>
             </div>

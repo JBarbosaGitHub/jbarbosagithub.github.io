@@ -17,17 +17,14 @@ import Agenda from './Pages/Agenda';
 import ProtectedRoute from './Components/ProtectedRoute';
 import ResetPassword from './Pages/ResetPassword';
 import { useEffect } from 'react';
+import PiggyWise from './Components/PiggyWise';
 
 const AnimatedRoutes = () => {
   const location = useLocation();
 
-  // Supondo que a rota de contacto é "/contacte-nos""
   const isContactPage =
     location.pathname === "/contacte-nos";
-
-  const isHomePage =
-    location.pathname === "/";
-
+    
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
@@ -41,16 +38,12 @@ const AnimatedRoutes = () => {
         <Route path="/success" element={<Success />} />
         <Route path="/cancel" element={<Cancel />} />
         <Route path="/contacte-nos" element={<ContactUs />} />
-        {/* Página de seleção de minijogos */}
         <Route path="/jogos" element={<ProtectedRoute><MiniGamesSelection /></ProtectedRoute>} />
-        {/* CoinGame (minijogo atual) */}
-        <Route path="/game/coin" element={<ProtectedRoute><CoinGame /></ProtectedRoute>} />
-        {/* Porquinho Sábio (placeholder) */}
-        <Route path="/game/piggywise" element={<ProtectedRoute><div style={{padding:'2rem',textAlign:'center'}}><h2>Porquinho Sábio</h2><p>Em breve!</p></div></ProtectedRoute>} />
+        <Route path="/jogos/moedas" element={<ProtectedRoute><CoinGame /></ProtectedRoute>} />
+        <Route path="/jogos/porquinho-sabio" element={<ProtectedRoute><PiggyWise /></ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/agenda" element={<ProtectedRoute><Agenda /></ProtectedRoute>} />
       </Routes>
-      {/* Renderiza o chatbot só se não estiveres na página de contacto */}
       {!isContactPage && <ElfsightChatbot />}
     </AnimatePresence>
   );
@@ -60,7 +53,7 @@ const App = () => {
   useEffect(() => {
     // Configuração iubenda
     window._iub = window._iub || [];
-    window._iub.csConfiguration = { "siteId": 4151535, "cookiePolicyId": 64932069, "lang": "en", "storage": { "useSiteId": true } };
+    window._iub.csConfiguration = { "siteId": 4151535, "cookiePolicyId": 35764406, "lang": "pt", "storage": { "useSiteId": true } };
 
     // Script autoblocking
     const autoblockingScript = document.createElement('script');

@@ -90,6 +90,13 @@ footer {
     margin-left: 0.1rem;
 }
 
+/* Ajuste para alinhar os links da iubenda com o texto e ícones */
+.icon-list .iubenda-nostyle {
+  align-self: flex-start;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .insta-icon, .facebook-icon {
     display: flex;
     align-items: center;
@@ -120,6 +127,46 @@ footer {
 
 .icon-list a {
     text-decoration: none;
+}
+
+/* Links da iubenda no footer */
+.footer-content .iubenda-nostyle {
+  color: #f4cc6b;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 1.2rem;
+  transition: color 0.2s, border-bottom 0.2s;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+}
+.footer-content .iubenda-nostyle:hover {
+  color: #bfa13a;
+  border-bottom: 2px solid #bfa13a;
+}
+
+.bottom-right ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bottom-right li {
+  margin-bottom: 0;
+  font-size: 1rem;
+  color: #65774a;
+}
+
+.iubenda-links {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.7rem;
 }
 
 @media (max-width: 1024px) {
@@ -207,4 +254,35 @@ footer {
     .insta-icon i, .facebook-icon i {
         font-size: 1rem;
     }
+} 
+
+@media (max-width: 800px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 1rem;
+  }
+  .bottom-left, .bottom-center, .bottom-right {
+    align-items: center;
+    width: 100%;
+  }
+  .bottom-right ul {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .icon-list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .icon-list .iubenda-nostyle {
+    margin-left: 0;
+  }
+  .iubenda-links {
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-top: 1rem;
+  }
 } 
