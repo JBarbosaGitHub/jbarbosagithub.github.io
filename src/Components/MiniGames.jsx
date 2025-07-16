@@ -79,7 +79,7 @@ export default function CoinGame() {
             setLoadingProgress(true);
             setProgressLoaded(false);
             if (user) {
-                const docRef = doc(db, 'game_progress', user.uid);
+                const docRef = doc(db, 'coin_game_progress', user.uid);
                 const docSnap = await getDoc(docRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -111,7 +111,7 @@ export default function CoinGame() {
     // Função para salvar progresso
     const saveProgress = async (progress) => {
         if (!user) return;
-        const docRef = doc(db, 'game_progress', user.uid);
+        const docRef = doc(db, 'coin_game_progress', user.uid);
         await setDoc(docRef, progress, { merge: true });
     };
 
@@ -133,7 +133,7 @@ export default function CoinGame() {
         setGameCompleted(false);
         setCoinRequests(shuffleArray(coins.map(c => c.value)));
         setCurrentCoinIdx(0);
-        const docRef = doc(db, 'game_progress', user.uid);
+        const docRef = doc(db, 'coin_game_progress', user.uid);
         await deleteDoc(docRef);
     };
 

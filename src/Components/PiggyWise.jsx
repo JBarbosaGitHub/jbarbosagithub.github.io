@@ -3,6 +3,8 @@ import piggyBank from '../assets/piggybank.png';
 import piggyGif from '../assets/piggywise.gif';
 import '../styles/PiggyWise.css';
 import { useNavigate } from 'react-router-dom';
+import { auth, db } from '../firebase';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 const questions = [
   {
@@ -174,7 +176,17 @@ const PiggyWise = () => {
   const [showNext, setShowNext] = useState(false);
   const [shuffledOptions, setShuffledOptions] = useState([]);
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
+  const [user, setUser] = useState(() => auth.currentUser);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(null);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  // Contadores de respostas
+  const [correct, setCorrect] = useState(0);
+  const [almost, setAlmost] = useState(0);
+  const [wrong, setWrong] = useState(0);
   const navigate = useNavigate();
+  // Novo estado para mostrar acumulado
+  const [accumulated, setAccumulated] = useState(null);
 
   // Função para embaralhar arrays
   function shuffle(array) {
@@ -198,8 +210,45 @@ const PiggyWise = () => {
     }
   }, [current, shuffledQuestions]);
 
+  // Atualizar user se autenticação mudar
+  React.useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((u) => setUser(u));
+    return () => unsubscribe();
+  }, []);
+
+  // Buscar acumulado do Firestore ao terminar quiz
+  React.useEffect(() => {
+    if (user && current >= shuffledQuestions.length) {
+      const fetchAccumulated = async () => {
+        const docRef = doc(db, 'piggywise_progress', user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setAccumulated(docSnap.data());
+        }
+      };
+      fetchAccumulated();
+    }
+  }, [user, current, shuffledQuestions.length]);
+
+  // Salvar progresso ao terminar quiz (hook sempre no topo!)
+  React.useEffect(() => {
+    if (
+      shuffledQuestions.length &&
+      current >= shuffledQuestions.length &&
+      user &&
+      !saveSuccess &&
+      !saving
+    ) {
+      savePiggywiseProgress();
+    }
+    // eslint-disable-next-line
+  }, [user, saveSuccess, saving, current, shuffledQuestions.length]);
+
   const handleOption = (points) => {
     setScore(score + points);
+    if (points === 3) setCorrect((c) => c + 1);
+    else if (points === 1) setAlmost((a) => a + 1);
+    else setWrong((w) => w + 1);
     setFeedback(points === 3 ? 'Certa! 🎉' : points === 1 ? 'Quase! 👍' : 'Errada! 😅');
     setShowNext(true);
     setTimeout(() => {
@@ -219,6 +268,45 @@ const PiggyWise = () => {
     navigate('/jogos');
   };
 
+  // Função para resetar quiz localmente (perguntas, score, contadores)
+  const handleRestartQuiz = () => {
+    setShuffledQuestions(shuffle(questions));
+    setCurrent(0);
+    setScore(0);
+    setCorrect(0);
+    setAlmost(0);
+    setWrong(0);
+    setFeedback(null);
+    setShowNext(false);
+    setSaveSuccess(false);
+    setSaveError(null);
+    setAccumulated(null);
+  };
+
+  // Função para salvar progresso no Firestore
+  const savePiggywiseProgress = async () => {
+    if (!user) return;
+    setSaving(true);
+    setSaveError(null);
+    setSaveSuccess(false);
+    try {
+      const docRef = doc(db, 'piggywise_progress', user.uid);
+      const docSnap = await getDoc(docRef);
+      const prev = docSnap.exists() ? docSnap.data() : {};
+      await setDoc(docRef, {
+        piggywise_coins: (prev.piggywise_coins || 0) + score,
+        piggywise_correct: (prev.piggywise_correct || 0) + correct,
+        piggywise_almost: (prev.piggywise_almost || 0) + almost,
+        piggywise_wrong: (prev.piggywise_wrong || 0) + wrong,
+      }, { merge: true });
+      setSaveSuccess(true);
+    } catch (err) {
+      setSaveError('Erro ao salvar progresso!');
+    } finally {
+      setSaving(false);
+    }
+  };
+
   if (shuffledQuestions.length && current >= shuffledQuestions.length) {
     return (
       <div className="piggywise-main-bg">
@@ -226,8 +314,26 @@ const PiggyWise = () => {
           <img src={piggyGif} alt="Porquinho Sábio" className="piggywise-gif" />
           <h2 style={{color: 'black'}}>Parabéns! Terminaste o quiz!</h2>
           <p style={{color: 'black'}}>Pontuação final: <b>{score}</b> moedas mágicas</p>
+          <p style={{color: 'black'}}>Certas: <b>{correct}</b> | Quase: <b>{almost}</b> | Erradas: <b>{wrong}</b></p>
+          {user && (
+            <div style={{marginTop:8}}>
+              {saving && <span style={{color:'#888'}}>A guardar progresso...</span>}
+              {saveSuccess && <span style={{color:'#388e3c'}}>Progresso guardado!</span>}
+              {saveError && <span style={{color:'#c62828'}}>{saveError}</span>}
+              {accumulated && (
+                <div style={{marginTop:12, color:'#333', fontSize:'1rem'}}>
+                  <b>Total acumulado:</b><br/>
+                  Moedas: <b>{accumulated.piggywise_coins || 0}</b> | Certas: <b>{accumulated.piggywise_correct || 0}</b> | Quase: <b>{accumulated.piggywise_almost || 0}</b> | Erradas: <b>{accumulated.piggywise_wrong || 0}</b>
+                </div>
+              )}
+            </div>
+          )}
+          {!user && <p style={{color:'#c62828',marginTop:8}}>Inicie sessão para guardar o seu progresso!</p>}
           <button className="piggywise-back-btn" onClick={handleBackToGames}>
             Voltar aos jogos
+          </button>
+          <button className="piggywise-back-btn" style={{marginTop:12, background:'#f7e36a', color:'#333'}} onClick={handleRestartQuiz}>
+            Jogar novamente
           </button>
         </div>
       </div>
