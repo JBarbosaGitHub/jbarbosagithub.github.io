@@ -81,6 +81,55 @@ export default async function handler(req, res) {
       }
     }
 
+    // Lógica para inscrições gratuitas
+    if (Number(amount) === 0) {
+      // Buscar nome do utilizador na coleção 'users'
+      let userName = buyerEmail;
+      try {
+        const userSnapshot = await db.collection('users').where('email', '==', buyerEmail).get();
+        if (!userSnapshot.empty) {
+          userName = userSnapshot.docs[0].data().nome;
+        }
+      } catch (e) {
+        console.error('Erro ao buscar nome do utilizador para email da empresa (grátis):', e);
+      }
+      // Buscar nome do curso
+      let courseTitle = description;
+      try {
+        const courseDoc = await db.collection('courses').doc(courseId).get();
+        if (courseDoc.exists) {
+          const courseData = courseDoc.data();
+          courseTitle = courseData.title || description;
+        }
+      } catch (e) {
+        console.error('Erro ao buscar nome do curso para email da empresa (grátis):', e);
+      }
+      // Enviar email para a empresa
+      const empresaHtml = `
+        <p>Nova inscrição gratuita recebida:</p>
+        <ul>
+          <li><b>Nome:</b> ${userName}</li>
+          <li><b>Email:</b> ${buyerEmail}</li>
+          <li><b>Formação:</b> ${courseTitle}</li>
+        </ul>
+      `;
+      console.log('A criar documento para empresa (grátis)...');
+      try {
+        await db.collection('mail').add({
+          to: 'geral@contacontando.pt',
+          message: {
+            subject: 'Nova inscrição gratuita',
+            html: empresaHtml,
+          },
+        });
+        console.log('Documento para empresa criado!');
+      } catch (e) {
+        console.error('Erro ao criar documento para empresa (grátis):', e);
+      }
+      // Podes também garantir que o email do utilizador é enviado aqui, se necessário
+      return res.status(200).json({ success: true });
+    }
+
     const accessToken = await getSumUpAccessToken();
     const amountStr = Number(amountToUse).toFixed(2);
     const response = await fetch('https://api.sumup.com/v0.1/checkouts', {
