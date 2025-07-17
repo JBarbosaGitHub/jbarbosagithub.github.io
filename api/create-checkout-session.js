@@ -91,7 +91,7 @@ export default async function handler(req, res) {
           userName = userSnapshot.docs[0].data().nome;
         }
       } catch (e) {
-        console.error('Erro ao buscar nome do utilizador para email da empresa (grátis):', e);
+        console.error('Erro ao buscar nome do utilizador para email (grátis):', e);
       }
       // Buscar nome do curso
       let courseTitle = description;
@@ -102,7 +102,26 @@ export default async function handler(req, res) {
           courseTitle = courseData.title || description;
         }
       } catch (e) {
-        console.error('Erro ao buscar nome do curso para email da empresa (grátis):', e);
+        console.error('Erro ao buscar nome do curso para email (grátis):', e);
+      }
+      // Enviar email para o utilizador
+      const userHtml = `
+        <h1>Olá ${userName}!</h1>
+        <p>A sua inscrição gratuita na formação "${courseTitle}" foi confirmada com sucesso.</p>
+        <p>Obrigado!</p>
+      `;
+      console.log('A criar documento para utilizador (grátis)...');
+      try {
+        await db.collection('mail').add({
+          to: buyerEmail,
+          message: {
+            subject: 'Confirmação da sua inscrição gratuita',
+            html: userHtml,
+          },
+        });
+        console.log('Documento para utilizador criado!');
+      } catch (e) {
+        console.error('Erro ao criar documento para utilizador (grátis):', e);
       }
       // Enviar email para a empresa
       const empresaHtml = `
@@ -126,7 +145,6 @@ export default async function handler(req, res) {
       } catch (e) {
         console.error('Erro ao criar documento para empresa (grátis):', e);
       }
-      // Podes também garantir que o email do utilizador é enviado aqui, se necessário
       return res.status(200).json({ success: true });
     }
 
