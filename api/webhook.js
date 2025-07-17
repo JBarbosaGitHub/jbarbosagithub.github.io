@@ -123,7 +123,7 @@ export default async function handler(req, res) {
                         },
                     });
                     console.log('Confirmation email queued for specialist:', email);
-                    // Enviar email para a empresa
+                    // Enviar email para a empresa com logs e try/catch
                     const empresaHtml = `
                         <p>Nova marcação recebida:</p>
                         <ul>
@@ -133,13 +133,19 @@ export default async function handler(req, res) {
                             <li><b>Hora:</b> ${time}</li>
                         </ul>
                     `;
-                    await db.collection('mail').add({
-                        to: 'geral@contacontando.pt',
-                        message: {
-                            subject: 'Nova marcação de especialista',
-                            html: empresaHtml,
-                        },
-                    });
+                    console.log('A criar documento para empresa (especialista)...');
+                    try {
+                        await db.collection('mail').add({
+                            to: 'geral@contacontando.pt',
+                            message: {
+                                subject: 'Nova marcação de especialista',
+                                html: empresaHtml,
+                            },
+                        });
+                        console.log('Documento para empresa criado!');
+                    } catch (e) {
+                        console.error('Erro ao criar documento para empresa (especialista):', e);
+                    }
                     console.log('Confirmation email queued for empresa (especialista): geral@contacontando.pt');
                 } catch (emailError) {
                     console.error('Error sending specialist confirmation email:', emailError);
@@ -190,22 +196,38 @@ export default async function handler(req, res) {
                             },
                         });
                         console.log('Confirmation email queued for:', buyerEmail);
-                        // Enviar email para a empresa
+                        // Buscar nome do utilizador na coleção 'users' para o email da empresa
+                        let userName = buyerEmail;
+                        try {
+                            const userSnapshot = await db.collection('users').where('email', '==', buyerEmail).get();
+                            if (!userSnapshot.empty) {
+                                userName = userSnapshot.docs[0].data().nome;
+                            }
+                        } catch (e) {
+                            console.error('Erro ao buscar nome do utilizador para email da empresa:', e);
+                        }
+                        // Enviar email para a empresa com logs e try/catch
                         const empresaHtml = `
                             <p>Nova inscrição recebida:</p>
                             <ul>
-                                <li><b>Nome:</b> ${buyerEmail}</li>
+                                <li><b>Nome:</b> ${userName}</li>
                                 <li><b>Email:</b> ${buyerEmail}</li>
                                 <li><b>Formação:</b> ${courseTitle}</li>
                             </ul>
                         `;
-                        await db.collection('mail').add({
-                            to: 'geral@contacontando.pt',
-                            message: {
-                                subject: 'Nova inscrição em formação',
-                                html: empresaHtml,
-                            },
-                        });
+                        console.log('A criar documento para empresa (curso)...');
+                        try {
+                            await db.collection('mail').add({
+                                to: 'geral@contacontando.pt',
+                                message: {
+                                    subject: 'Nova inscrição em formação',
+                                    html: empresaHtml,
+                                },
+                            });
+                            console.log('Documento para empresa criado!');
+                        } catch (e) {
+                            console.error('Erro ao criar documento para empresa (curso):', e);
+                        }
                         console.log('Confirmation email queued for empresa (curso): geral@contacontando.pt');
                     } else {
                         console.error(`Course with ID ${courseId} not found.`);
