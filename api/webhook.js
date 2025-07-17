@@ -102,7 +102,7 @@ export default async function handler(req, res) {
                     bookedAt: new Date(),
                     status: processedStatus
                 });
-                // Enviar email de confirmação
+                // Enviar email de confirmação para o utilizador
                 try {
                     const emailHtml = `
                         <h2>Olá ${name}!</h2>
@@ -122,7 +122,24 @@ export default async function handler(req, res) {
                             html: emailHtml,
                         },
                     });
-                    console.log('Confirmation email queued for specialist:', email);
+                    // Enviar email para a empresa
+                    const empresaHtml = `
+                        <p>Nova marcação recebida:</p>
+                        <ul>
+                            <li><b>Nome:</b> ${name}</li>
+                            <li><b>Email:</b> ${email}</li>
+                            <li><b>Data:</b> ${dataFormatada}</li>
+                            <li><b>Hora:</b> ${time}</li>
+                        </ul>
+                    `;
+                    await db.collection('mail').add({
+                        to: 'geral@contacontando.pt',
+                        message: {
+                            subject: 'Nova marcação de especialista',
+                            html: empresaHtml,
+                        },
+                    });
+                    console.log('Confirmation email queued for specialist and empresa:', email);
                 } catch (emailError) {
                     console.error('Error sending specialist confirmation email:', emailError);
                 }
@@ -143,7 +160,6 @@ export default async function handler(req, res) {
                     status: processedStatus
                 });
                 console.log('Purchase saved to database');
-                
                 try {
                     const courseRef = db.collection('courses').doc(courseId);
                     const courseDoc = await courseRef.get();
@@ -163,7 +179,6 @@ export default async function handler(req, res) {
                             <p>Guarde este email para referência futura.</p>
                             <p>Obrigado!</p>
                         `;
-
                         await db.collection('mail').add({
                             to: buyerEmail,
                             message: {
@@ -171,7 +186,23 @@ export default async function handler(req, res) {
                                 html: emailHtml,
                             },
                         });
-                        console.log('Confirmation email queued for:', buyerEmail);
+                        // Enviar email para a empresa
+                        const empresaHtml = `
+                            <p>Nova inscrição recebida:</p>
+                            <ul>
+                                <li><b>Nome:</b> ${buyerEmail}</li>
+                                <li><b>Email:</b> ${buyerEmail}</li>
+                                <li><b>Formação:</b> ${courseData.title}</li>
+                            </ul>
+                        `;
+                        await db.collection('mail').add({
+                            to: 'geral@contacontando.pt',
+                            message: {
+                                subject: 'Nova inscrição em formação',
+                                html: empresaHtml,
+                            },
+                        });
+                        console.log('Confirmation email queued for:', buyerEmail, 'and empresa');
                     } else {
                         console.error(`Course with ID ${courseId} not found.`);
                     }

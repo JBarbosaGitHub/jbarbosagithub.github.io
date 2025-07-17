@@ -72,31 +72,6 @@ export default async function handler(req, res) {
         createdAt: new Date(),
         status: 'PENDING'
       });
-      // Encontra o nome do utilizador na coleção 'users'
-      let userName = '';
-      const userSnapshot = await db.collection('users').where('email', '==', buyerEmail).get();
-      if (!userSnapshot.empty) {
-        userName = userSnapshot.docs[0].data().nome;
-      } else {
-        userName = buyerEmail;
-      }
-      // Enviar email para a empresa
-      await db.collection('mail').add({
-        to: 'geral@contacontando.pt',
-        message: {
-          subject: 'Nova marcação de especialista',
-          html: `
-            <p>Nova marcação recebida:</p>
-            <ul>
-              <li><b>Nome:</b> ${userName}</li>
-              <li><b>Email:</b> ${buyerEmail}</li>
-              <li><b>Especialista:</b> ${specialistName}</li>
-              <li><b>Data:</b> ${specialistDate}</li>
-              <li><b>Hora:</b> ${specialistTime}</li>
-            </ul>
-          `
-        }
-      });
     } else {
       checkoutReference = `course|${courseId}|${buyerEmail}|${Date.now()}`;
       // Validação de curso
@@ -104,29 +79,6 @@ export default async function handler(req, res) {
       if (!courseDoc.exists) {
         return res.status(404).json({ error: 'Course not found' });
       }
-      // Buscar nome do utilizador na coleção 'users'
-      let userName = '';
-      const userSnapshot = await db.collection('users').where('email', '==', buyerEmail).get();
-      if (!userSnapshot.empty) {
-        userName = userSnapshot.docs[0].data().nome;
-      } else {
-        userName = buyerEmail;
-      }
-      // Enviar email para a empresa
-      await db.collection('mail').add({
-        to: 'geral@contacontando.pt',
-        message: {
-          subject: 'Nova inscrição em formação',
-          html: `
-            <p>Nova inscrição recebida:</p>
-            <ul>
-              <li><b>Nome:</b> ${userName}</li>
-              <li><b>Email:</b> ${buyerEmail}</li>
-              <li><b>Formação:</b> ${description}</li>
-            </ul>
-          `
-        }
-      });
     }
 
     const accessToken = await getSumUpAccessToken();
