@@ -1,0 +1,248 @@
+/* Simulations.css */
+.simulation-bg {
+  min-height: calc(100vh - 105px - 80px);
+  background-image: url('../assets/background.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 2.5rem 0;
+}
+.simulation-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+}
+.simulation-main-box {
+  background: #fff;
+  border: 3px solid #8cb4bc;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(125,146,92,0.08);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 900px;
+  width: 100%;
+  margin: 2.5rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.simulations-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 2rem;
+  width: 100%;
+}
+.simulation-card {
+  background: #f8f9fa;
+  border-radius: 16px;
+  border: 2.5px solid #eac862;
+  box-shadow: 0 2px 12px rgba(234,200,98,0.10);
+  padding: 2rem 1.2rem;
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.simulation-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 6px 24px rgba(234,200,98,0.16);
+}
+.simulation-card img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  margin-bottom: 18px;
+}
+.simulation-card h3 {
+  color: #7d925c;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.simulation-card p {
+  color: #333;
+  font-size: 1.05rem;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+.simulation-btn, .simulation-back-btn {
+  background: #eac862;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(234,200,98,0.10);
+  transition: background 0.18s;
+  margin-top: 0.5rem;
+}
+.simulation-btn:hover, .simulation-back-btn:hover {
+  background: #bfa100;
+}
+.simulation-modal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.25);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.simulation-modal-content {
+  background: #fff;
+  border-radius: 18px;
+  max-width: 540px;
+  width: 95vw;
+  padding: 2.5rem 1.2rem;
+  box-shadow: 0 8px 32px rgba(140,180,188,0.18);
+  position: relative;
+  color: #222;
+  font-family: Inter, Arial, sans-serif;
+}
+.simulation-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  background: #eac862;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 28px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(234,200,98,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s;
+}
+.simulation-modal-close:hover {
+  background: #bfa100;
+}
+/* Inputs e selects bonitos para simuladores */
+.simulador-input, .simulador-select {
+  border: 2px solid #bcd9de;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 1.1rem;
+  margin: 0 8px 8px 0;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #f7fafb;
+  color: #3a4a4e;
+  box-sizing: border-box;
+}
+.simulador-input:focus, .simulador-select:focus {
+  border-color: #8cb4bc;
+  box-shadow: 0 0 0 2px #eac86255;
+}
+
+/* Alinhamento dos grupos de inputs dos simuladores */
+.simulador-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+@media (max-width: 600px) {
+  .simulador-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Layout de formulário em duas colunas para simuladores */
+.simulador-form {
+  display: grid;
+  grid-template-columns: max-content 80px;
+  gap: 12px 18px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.simulador-form label {
+  text-align: right;
+  font-weight: 500;
+  color: #4a5a5e;
+  font-size: 1.05rem;
+}
+.simulador-form .simulador-input {
+  width: 120px;
+  min-width: 0;
+  margin: 0;
+}
+@media (max-width: 600px) {
+  .simulador-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 7px;
+  }
+  .simulador-form label {
+    text-align: left;
+    margin-bottom: 2px;
+  }
+  .simulador-form .simulador-input {
+    width: 100%;
+    max-width: 120px;
+  }
+}
+
+@media (max-width: 700px) {
+  .simulations-cards {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .simulation-card {
+    width: 100%;
+    padding: 1.2rem 0.5rem 1.5rem 0.5rem;
+  }
+  .simulador-input, .simulador-select {
+    font-size: 1rem;
+    padding: 7px 8px;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .simulation-bg {
+    padding: 0.5rem 0.1rem;
+    min-height: 100vh;
+  }
+  .simulation-main-box {
+    max-width: 99vw;
+    padding: 0.5rem 0.1rem;
+  }
+  .simulations-cards {
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100vw;
+  }
+  .simulation-card {
+    width: 99vw;
+    padding: 0.7rem 0.1rem 1rem 0.1rem;
+    font-size: 0.9rem;
+  }
+  .simulation-card img {
+    width: 48px;
+    height: 48px;
+  }
+  .simulador-input, .simulador-select {
+    font-size: 0.98rem;
+    padding: 6px 6px;
+    width: 90px;
+  }
+} 

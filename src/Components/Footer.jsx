@@ -29,7 +29,7 @@ const Footer = () => {
                         <a className="insta-icon" href="https://www.instagram.com/acontacontando/" target="_blank" rel="noopener noreferrer">
                             <i className="fab fa-instagram"></i>
                         </a>
-                        <a className="facebook-icon" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                        <a className="facebook-icon" href="https://www.facebook.com/share/1FB1ftjjMw/?mibextid=wwXIfr " target="_blank" rel="noopener noreferrer">
                             <i className="fab fa-facebook"></i>
                         </a>
                         <a

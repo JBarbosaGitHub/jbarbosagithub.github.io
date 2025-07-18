@@ -81,6 +81,24 @@ const TrainingModal = ({ open, onClose, training }) => {
                     },
                 });
 
+                // Enviar email para a empresa
+                const empresaHtml = `
+                    <p>Nova inscrição gratuita recebida:</p>
+                    <ul>
+                        <li><b>Nome:</b> ${user.displayName || user.email}</li>
+                        <li><b>Email:</b> ${user.email}</li>
+                        <li><b>Formação:</b> ${training.title}</li>
+                    </ul>
+                `;
+                await addDoc(collection(db, 'mail'), {
+                    to: 'geral@contacontando.pt',
+                    message: {
+                        subject: 'Nova inscrição gratuita',
+                        html: empresaHtml,
+                    },
+                });
+                console.log('Documento para empresa criado!');
+
                 alert('Inscrição na formação gratuita realizada com sucesso! O link de acesso foi enviado para o seu email.');
                 setHasPurchased(true);
             } catch (error) {

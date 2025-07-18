@@ -83,13 +83,15 @@
 .avatar-dropdown-item.nav-title-1 { color: #8cb4bc; }
 .avatar-dropdown-item.nav-title-2 { color: #eac862; }
 .avatar-dropdown-item.nav-title-3 { color: #7d925c; }
-.avatar-dropdown-item.nav-title-4 { color: #b48b31; }
+.avatar-dropdown-item.nav-title-4 { color: #8cb4bc; }
+.avatar-dropdown-item.nav-title-5 { color: #b48b31; }
 .avatar-dropdown-item.logout { color: #b23b3b; }
 
 .avatar-dropdown-item.nav-title-1:hover { background: #e0faff; color: #2b6672; }
 .avatar-dropdown-item.nav-title-2:hover { background: #fffbe6; color: #bfa100; }
 .avatar-dropdown-item.nav-title-3:hover { background: #f0f7e6; color: #5a6d3a; }
-.avatar-dropdown-item.nav-title-4:hover { background: #f9f3e6; color: #8a6a1a; }
+.avatar-dropdown-item.nav-title-4:hover { background: #e0faff; color: #2b6672; }
+.avatar-dropdown-item.nav-title-5:hover { background: #f9f3e6; color: #8a6a1a; }
 .avatar-dropdown-item.logout:hover { background: #ffeaea; color: #b23b3b; }
 
 @media (max-width: 768px) {

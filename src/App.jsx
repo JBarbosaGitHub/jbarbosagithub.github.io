@@ -14,10 +14,12 @@ import MiniGamesSelection from "./Pages/MiniGames";
 import CoinGame from "./Components/MiniGames";
 import Profile from './Pages/Profile';
 import Agenda from './Pages/Agenda';
+import PiggyWise from './Components/PiggyWise';
+import Simulations from "./Pages/Simulations";
 import ProtectedRoute from './Components/ProtectedRoute';
 import ResetPassword from './Pages/ResetPassword';
 import { useEffect } from 'react';
-import PiggyWise from './Components/PiggyWise';
+
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -43,6 +45,7 @@ const AnimatedRoutes = () => {
         <Route path="/jogos/porquinho-sabio" element={<ProtectedRoute><PiggyWise /></ProtectedRoute>} />
         <Route path="/perfil" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/agenda" element={<ProtectedRoute><Agenda /></ProtectedRoute>} />
+        <Route path="/simuladores" element={<ProtectedRoute><Simulations /></ProtectedRoute>} />
       </Routes>
       {!isContactPage && <ElfsightChatbot />}
     </AnimatePresence>
