@@ -21,7 +21,7 @@ const Footer = () => {
     };
 
     return (
-        <footer>
+        <footer className="footer">
             <div className="footer-content">
                 <div className="bottom-left">
                     <span className="social-label">Redes Sociais</span>

@@ -201,6 +201,96 @@
   }
 }
 
+.simulador-buttons-row {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.coin-btn {
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  font-weight: 700;
+  color: #fff;
+  transition: transform 0.12s, box-shadow 0.12s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.coin-btn:active {
+  transform: scale(0.97);
+}
+.coin-red { background: #ff0000; }
+.coin-green { background: #00ff00; }
+.coin-blue { background: #0000ff; }
+
+.fruit-btn {
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  font-weight: 700;
+  color: #fff;
+  transition: transform 0.12s, box-shadow 0.12s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.fruit-btn:active {
+  transform: scale(0.97);
+}
+.fruit-yellow { background: #ffe600; }
+.fruit-red { background: #ff0000; }
+.fruit-green { background: #00c800; }
+
+.market-btn {
+  font-size: 1.15rem;
+  border: none;
+  border-radius: 12px;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  font-weight: 700;
+  color: #222;
+  background: #add8e6;
+  transition: transform 0.12s, box-shadow 0.12s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.market-btn:active {
+  transform: scale(0.97);
+}
+.market-blue { background: #add8e6; color: #222; }
+.market-orange { background: #ff8c00; color: #fff; }
+
+@media (max-width: 600px) {
+  .simulador-buttons-row {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .coin-btn {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 1rem 0.5rem;
+  }
+  .fruit-btn {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 1rem 0.5rem;
+  }
+  .market-btn {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.8rem 0.5rem;
+  }
+  .simulation-modal-content {
+    padding: 1.2rem 0.5rem;
+    min-width: 0;
+    width: 98vw;
+    max-width: 98vw;
+  }
+}
+
 @media (max-width: 700px) {
   .simulations-cards {
     flex-direction: column;
@@ -244,5 +334,97 @@
     font-size: 0.98rem;
     padding: 6px 6px;
     width: 90px;
+  }
+}
+
+/* Melhorias extra para modal e cards em mobile */
+@media (max-width: 480px) {
+  .simulation-modal-content {
+    padding: 0.7rem 0.2rem;
+    border-radius: 12px;
+  }
+  .simulation-card {
+    padding: 0.5rem 0.1rem 0.7rem 0.1rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
+  .simulation-card h3 {
+    font-size: 1.05rem;
+  }
+  .simulation-card p {
+    font-size: 0.95rem;
+  }
+} 
+
+.simulador-submit-row {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.simulador-submit-btn {
+  background: #8cb4bc;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.7rem 1.5rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: background 0.18s;
+  box-shadow: 0 1px 4px rgba(140,180,188,0.10);
+}
+.simulador-submit-btn:hover {
+  background: #7d925c;
+}
+
+@media (max-width: 600px) {
+  .simulador-submit-btn {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.7rem 0.5rem;
+  }
+} 
+
+/* MODAL AJUSTES MOBILE */
+@media (max-width: 600px) {
+  .simulation-modal-content {
+    max-width: 95vw;
+    width: 95vw;
+    padding: 1rem 0.5rem 1.2rem 0.5rem;
+    border-radius: 12px;
+    margin: 0 auto;
+  }
+  .simulador-form {
+    gap: 5px;
+  }
+  .simulador-input {
+    font-size: 0.98rem;
+    padding: 6px 6px;
+    width: 90px;
+  }
+  .simulador-submit-btn {
+    width: 80%;
+    max-width: 220px;
+    margin: 0 auto 10px auto;
+    display: block;
+    font-size: 1rem;
+    padding: 0.6rem 0.5rem;
+  }
+}
+
+/* CARDS AJUSTES MOBILE */
+@media (max-width: 600px) {
+  .simulation-card {
+    max-width: 95vw;
+    width: 95vw;
+    padding: 0.7rem 0.2rem 1rem 0.2rem;
+    font-size: 0.95rem;
+    margin: 0 auto;
+  }
+  .simulations-cards {
+    gap: 0.7rem;
+    margin-top: 1rem;
   }
 } 

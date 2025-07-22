@@ -242,10 +242,12 @@ footer {
         align-items: center;
     }
     .scroll-to-top-button {
-        width: 98%;
+        width: 80%;
         padding: 0.4rem 0.5rem;
         font-size: 0.7rem;
-        max-width: 99vw;
+        max-width: 220px;
+        margin: 0 auto;
+        display: block;
     }
     .insta-icon, .facebook-icon {
         width: 30px;
@@ -253,6 +255,14 @@ footer {
     }
     .insta-icon i, .facebook-icon i {
         font-size: 1rem;
+    }
+    .icon-list {
+        flex-direction: row !important;
+        justify-content: center;
+        align-items: center;
+        gap: 0.7rem;
+        width: 100%;
+        margin: 0.2rem 0 0.2rem 0;
     }
 } 
 

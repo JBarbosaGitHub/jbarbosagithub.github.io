@@ -3,131 +3,16 @@ import Footer from "../Components/Footer";
 import PageTransition from "../Components/PageTransition";
 import { useState } from "react";
 import '../styles/Simulations.css';
-
-// Pré-escolar (3-5 anos): Contador de Moedas Coloridas
-const ContadorMoedasColoridas = () => {
-  const [total, setTotal] = useState(0);
-  return (
-    <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-      <h2 style={{ color: '#8cb4bc', fontWeight: 700 }}>Conta as Moedas Coloridas!</h2>
-      <p style={{ color: '#444', marginBottom: 16 }}>Clica nas moedas para adicionar ao mealheiro!</p>
-      <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginBottom: 24 }}>
-        <button style={{ backgroundColor: '#ff0000', color: '#fff', fontSize: 24, border: 'none', borderRadius: 12, padding: '1rem 2rem', cursor: 'pointer', fontWeight: 700 }} onClick={() => setTotal(t => t + 1)}>+1€ Vermelha</button>
-        <button style={{ backgroundColor: '#00ff00', color: '#fff', fontSize: 24, border: 'none', borderRadius: 12, padding: '1rem 2rem', cursor: 'pointer', fontWeight: 700 }} onClick={() => setTotal(t => t + 2)}>+2€ Verde</button>
-      </div>
-      <p style={{ fontSize: 28, color: '#eac862', fontWeight: 800 }}>Total: {total}€</p>
-      <p style={{ color: '#7d925c', fontWeight: 600 }}>{total > 0 ? 'Boa! Continua!' : ''}</p>
-    </div>
-  );
-};
-
-// 1º Ciclo (6-9 anos): Poupança para um Livro
-const PoupancaLivro = () => {
-  const [deposito, setDeposito] = useState(0);
-  const [meses, setMeses] = useState(0);
-  const [total, setTotal] = useState(null);
-  return (
-    <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-      <h2 style={{ color: '#8cb4bc', fontWeight: 700 }}>Poupa para Comprar um Livro!</h2>
-      <form className="simulador-form" onSubmit={e => { e.preventDefault(); setTotal(deposito * meses); }}>
-        <label>Poupa por mês (€):</label>
-        <input type="number" value={deposito} onChange={e => setDeposito(Number(e.target.value))} placeholder="Ex: 2" className="simulador-input" />
-        <label>Meses:</label>
-        <input type="number" value={meses} onChange={e => setMeses(Number(e.target.value))} placeholder="Ex: 4" className="simulador-input" />
-        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', marginTop: 10 }}>
-          <button type="submit" style={{ background: '#8cb4bc', color: '#fff', border: 'none', borderRadius: 10, padding: '0.7rem 1.5rem', fontWeight: 700, fontSize: '1.1rem', cursor: 'pointer', marginBottom: 16 }}>Calcular</button>
-        </div>
-      </form>
-      {total !== null && (
-        <p style={{ fontSize: 22, color: '#eac862', fontWeight: 800 }}>Total poupado: €{total} - {total >= 15 ? 'Podes comprar!' : 'Continua!'}</p>
-      )}
-    </div>
-  );
-};
-
-// 2º Ciclo (10-12 anos): Orçamento para Viagem Escolar
-const OrcamentoViagem = () => {
-  const [disponivel, setDisponivel] = useState(0);
-  const [transporte, setTransporte] = useState(0);
-  const [lanche, setLanche] = useState(0);
-  const [saldo, setSaldo] = useState(null);
-  return (
-    <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-      <h2 style={{ color: '#8cb4bc', fontWeight: 700 }}>Planeia a Viagem Escolar!</h2>
-      <form className="simulador-form" onSubmit={e => { e.preventDefault(); setSaldo(disponivel - (transporte + lanche)); }}>
-        <label>Dinheiro disponível (€):</label>
-        <input type="number" value={disponivel} onChange={e => setDisponivel(Number(e.target.value))} placeholder="Ex: 20" className="simulador-input" />
-        <label>Transporte (€):</label>
-        <input type="number" value={transporte} onChange={e => setTransporte(Number(e.target.value))} placeholder="Ex: 5" className="simulador-input" />
-        <label>Lanche (€):</label>
-        <input type="number" value={lanche} onChange={e => setLanche(Number(e.target.value))} placeholder="Ex: 3" className="simulador-input" />
-        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', marginTop: 10 }}>
-          <button type="submit" style={{ background: '#8cb4bc', color: '#fff', border: 'none', borderRadius: 10, padding: '0.7rem 1.5rem', fontWeight: 700, fontSize: '1.1rem', cursor: 'pointer', marginBottom: 16 }}>Calcular</button>
-        </div>
-      </form>
-      {saldo !== null && (
-        <p style={{ fontSize: 22, color: saldo >= 0 ? '#7d925c' : '#ff0000', fontWeight: 800 }}>Saldo: €{saldo.toFixed(2)} - {saldo < 0 ? 'Ajusta se negativo!' : 'Boa gestão!'}</p>
-      )}
-    </div>
-  );
-};
-
-// 3º Ciclo (13-15 anos): Poupança com Juros Compostos
-const PoupancaJurosCompostos = () => {
-  const [inicial, setInicial] = useState(0);
-  const [taxa, setTaxa] = useState(0);
-  const [anos, setAnos] = useState(0);
-  const [total, setTotal] = useState(null);
-  return (
-    <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-      <h2 style={{ color: '#8cb4bc', fontWeight: 700 }}>Poupança com Juros Compostos!</h2>
-      <form className="simulador-form" onSubmit={e => { e.preventDefault(); setTotal(inicial * Math.pow(1 + taxa / 100, anos)); }}>
-        <label>Valor inicial (€):</label>
-        <input type="number" value={inicial} onChange={e => setInicial(Number(e.target.value))} placeholder="Ex: 50" className="simulador-input" />
-        <label>Taxa anual (%):</label>
-        <input type="number" value={taxa} onChange={e => setTaxa(Number(e.target.value))} placeholder="Ex: 3" className="simulador-input" />
-        <label>Anos:</label>
-        <input type="number" value={anos} onChange={e => setAnos(Number(e.target.value))} placeholder="Ex: 2" className="simulador-input" />
-        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', marginTop: 10 }}>
-          <button type="submit" style={{ background: '#8cb4bc', color: '#fff', border: 'none', borderRadius: 10, padding: '0.7rem 1.5rem', fontWeight: 700, fontSize: '1.1rem', cursor: 'pointer', marginBottom: 16 }}>Calcular</button>
-        </div>
-      </form>
-      {total !== null && (
-        <p style={{ fontSize: 22, color: '#eac862', fontWeight: 800 }}>Total: €{total.toFixed(2)}</p>
-      )}
-    </div>
-  );
-};
-
-// Secundário (16-18 anos): Investimento Composto
-const InvestimentoComposto = () => {
-  const [inicial, setInicial] = useState(0);
-  const [depositos, setDepositos] = useState(0);
-  const [taxa, setTaxa] = useState(0);
-  const [anos, setAnos] = useState(0);
-  const [total, setTotal] = useState(null);
-  return (
-    <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-      <h2 style={{ color: '#8cb4bc', fontWeight: 700 }}>Investimento Composto!</h2>
-      <form className="simulador-form" onSubmit={e => { e.preventDefault(); let total = inicial; for (let i = 0; i < anos; i++) { total = (total + depositos) * (1 + taxa / 100); } setTotal(total); }}>
-        <label>Valor inicial (€):</label>
-        <input type="number" value={inicial} onChange={e => setInicial(Number(e.target.value))} placeholder="Ex: 1000" className="simulador-input" />
-        <label>Depósitos anuais (€):</label>
-        <input type="number" value={depositos} onChange={e => setDepositos(Number(e.target.value))} placeholder="Ex: 500" className="simulador-input" />
-        <label>Taxa anual (%):</label>
-        <input type="number" value={taxa} onChange={e => setTaxa(Number(e.target.value))} placeholder="Ex: 7" className="simulador-input" />
-        <label>Anos:</label>
-        <input type="number" value={anos} onChange={e => setAnos(Number(e.target.value))} placeholder="Ex: 10" className="simulador-input" />
-        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', marginTop: 10 }}>
-          <button type="submit" style={{ background: '#8cb4bc', color: '#fff', border: 'none', borderRadius: 10, padding: '0.7rem 1.5rem', fontWeight: 700, fontSize: '1.1rem', cursor: 'pointer', marginBottom: 16 }}>Calcular</button>
-        </div>
-      </form>
-      {total !== null && (
-        <p style={{ fontSize: 22, color: '#eac862', fontWeight: 800 }}>Total: €{total.toFixed(2)}</p>
-      )}
-    </div>
-  );
-};
+import ColoredCoinCounter from "../Components/Simuladores/ColoredCoinCounter";
+import BookSaving from "../Components/Simuladores/BookSaving";
+import TripBudget from "../Components/Simuladores/TripBudget";
+import CompoundInterestSaving from "../Components/Simuladores/CompoundInterestSaving";
+import CompoundInvestment from "../Components/Simuladores/CompoundInvestment";
+import MarketFruitCounter from "../Components/Simuladores/MarketFruitCounter";
+import SupermarketPurchase from "../Components/Simuladores/SupermarketPurchase";
+import SimpleInterestSaving from "../Components/Simuladores/SimpleInterestSaving";
+import FamilyMonthlyBudget from "../Components/Simuladores/FamilyMonthlyBudget";
+import StudyLoan from "../Components/Simuladores/StudyLoan";
 
 const faixasEtarias = [
   {
@@ -138,7 +23,12 @@ const faixasEtarias = [
       {
         nome: 'Contador de Moedas Coloridas',
         descricao: 'Conta moedas virtuais de cores diferentes para aprender valores básicos.',
-        componente: <ContadorMoedasColoridas />,
+        componente: <ColoredCoinCounter />,
+      },
+      {
+        nome: 'Conta Frutas no Mercado',
+        descricao: 'Conta frutas como moedas para comprar, associando números a valores.',
+        componente: <MarketFruitCounter />,
       },
     ],
   },
@@ -150,7 +40,12 @@ const faixasEtarias = [
       {
         nome: 'Poupa para Comprar um Livro',
         descricao: 'Calcula quanto precisas de poupar por mês para atingir o teu objetivo.',
-        componente: <PoupancaLivro />,
+        componente: <BookSaving />,
+      },
+      {
+        nome: 'Compra no Supermercado',
+        descricao: 'Adiciona itens e calcula o total gasto.',
+        componente: <SupermarketPurchase />,
       },
     ],
   },
@@ -162,7 +57,12 @@ const faixasEtarias = [
       {
         nome: 'Orçamento para Viagem Escolar',
         descricao: 'Planeia os gastos para uma viagem escolar e vê se o dinheiro chega.',
-        componente: <OrcamentoViagem />,
+        componente: <TripBudget />,
+      },
+      {
+        nome: 'Poupança com Juros Simples',
+        descricao: 'Introduz juros básicos em poupança.',
+        componente: <SimpleInterestSaving />,
       },
     ],
   },
@@ -174,7 +74,12 @@ const faixasEtarias = [
       {
         nome: 'Poupança com Juros Compostos',
         descricao: 'Descobre como o dinheiro cresce ao longo do tempo com juros compostos.',
-        componente: <PoupancaJurosCompostos />,
+        componente: <CompoundInterestSaving />,
+      },
+      {
+        nome: 'Orçamento Mensal Familiar',
+        descricao: 'Gerencia receitas e despesas mensais.',
+        componente: <FamilyMonthlyBudget />,
       },
     ],
   },
@@ -186,7 +91,12 @@ const faixasEtarias = [
       {
         nome: 'Investimento Composto',
         descricao: 'Projeta o crescimento de um investimento ao longo do tempo.',
-        componente: <InvestimentoComposto />,
+        componente: <CompoundInvestment />,
+      },
+      {
+        nome: 'Empréstimo para Estudos',
+        descricao: 'Calcula custos de empréstimo para educação.',
+        componente: <StudyLoan />,
       },
     ],
   },
