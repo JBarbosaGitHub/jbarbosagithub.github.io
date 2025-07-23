@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const CompoundInterestSaving = () => {
   const [initial, setInitial] = useState(0);
@@ -16,7 +17,14 @@ const CompoundInterestSaving = () => {
         <label>Anos:</label>
         <input type="number" value={years} onChange={e => setYears(Number(e.target.value))} placeholder="Ex: 2" className="simulador-input" />
         <div className="simulador-submit-row">
-          <button type="submit" className="simulador-submit-btn">Calcular</button>
+          <motion.button
+            type="submit"
+            className="simulador-submit-btn"
+            whileHover={{ scale: 1.08, boxShadow: '0 4px 24px #8cb4bc55', filter: 'brightness(0.85)' }}
+            whileTap={{ scale: 0.96 }}
+          >
+            Calcular
+          </motion.button>
         </div>
       </form>
       {total !== null && (

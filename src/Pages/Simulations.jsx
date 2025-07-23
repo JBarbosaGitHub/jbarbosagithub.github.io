@@ -13,6 +13,7 @@ import SupermarketPurchase from "../Components/Simuladores/SupermarketPurchase";
 import SimpleInterestSaving from "../Components/Simuladores/SimpleInterestSaving";
 import FamilyMonthlyBudget from "../Components/Simuladores/FamilyMonthlyBudget";
 import StudyLoan from "../Components/Simuladores/StudyLoan";
+import { motion, AnimatePresence } from "framer-motion";
 
 const faixasEtarias = [
   {
@@ -108,19 +109,51 @@ const Simulations = () => {
 
   // Modal simples
   const Modal = ({ open, onClose, children }) => {
-    if (!open) return null;
     return (
-      <div className="simulation-modal">
-        <div className="simulation-modal-content">
-          <button className="simulation-modal-close" onClick={onClose} aria-label="Fechar modal">
-            &times;
-          </button>
-          <div style={{ color: '#222', fontFamily: 'Inter, Arial, sans-serif', paddingTop: 8 }}>
-            {children}
-          </div>
-        </div>
-      </div>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="simulation-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            style={{ zIndex: 1000 }}
+          >
+            <motion.div
+              className="simulation-modal-content"
+              initial={{ y: 60, scale: 0.98, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              exit={{ y: 60, scale: 0.98, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 22, duration: 0.32 }}
+            >
+              <button className="simulation-modal-close" onClick={onClose} aria-label="Fechar modal">
+                &times;
+              </button>
+              <div style={{ color: '#222', fontFamily: 'Inter, Arial, sans-serif', paddingTop: 8 }}>
+                {children}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     );
+  };
+
+  // Variantes para animação dos cards
+  const cardContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.13 }
+    }
+  };
+  const cardItemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1, y: 0,
+      transition: { type: "spring", stiffness: 260, damping: 20 }
+    }
   };
 
   return (
@@ -135,29 +168,54 @@ const Simulations = () => {
               </h1>
               {/* Navegação: Faixas etárias ou simuladores da faixa */}
               {faixaSelecionada === null ? (
-                <div className="simulations-cards">
+                <motion.div
+                  className="simulations-cards"
+                  variants={cardContainerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
                   {faixasEtarias.map((faixa, idx) => (
-                    <div key={faixa.nome} className="simulation-card" onClick={() => setFaixaSelecionada(idx)}>
+                    <motion.div
+                      key={faixa.nome}
+                      className="simulation-card"
+                      variants={cardItemVariants}
+                      whileHover={{ scale: 1.05, boxShadow: '0 8px 32px #8cb4bc33' }}
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => setFaixaSelecionada(idx)}
+                    >
                       <img src={faixa.img} alt={faixa.nome} />
                       <h3>{faixa.nome}</h3>
                       <p>{faixa.descricao}</p>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               ) : (
                 <>
-                  <div className="simulations-cards" style={{ marginTop: '1rem' }}>
+                  <motion.div
+                    className="simulations-cards"
+                    variants={cardContainerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    style={{ marginTop: '1rem' }}
+                  >
                     {faixasEtarias[faixaSelecionada].simuladores.map((sim, i) => (
-                      <div key={sim.nome} className="simulation-card" style={{ position: 'relative' }}>
+                      <motion.div
+                        key={sim.nome}
+                        className="simulation-card"
+                        style={{ position: 'relative' }}
+                        variants={cardItemVariants}
+                        whileHover={{ scale: 1.05, boxShadow: '0 8px 32px #8cb4bc33' }}
+                        whileTap={{ scale: 0.97 }}
+                      >
                         <img src={faixasEtarias[faixaSelecionada].img} alt={sim.nome} style={{ width: 70, height: 70, objectFit: 'contain', marginBottom: 12 }} />
                         <h3 style={{ color: '#7d925c', fontSize: '1.15rem', fontWeight: 800, marginBottom: '0.5rem', textAlign: 'center' }}>{sim.nome}</h3>
-                        <p style={{ color: '#333', fontSize: '0.98rem', marginBottom: '1.2rem', textAlign: 'center' }}>{sim.descricao}</p>
+                        <p style={{ color: '#333', fontSize: '0.98rem', marginBottom: '1.2rem', textAlign: 'center', fontWeight: 500 }}>{sim.descricao}</p>
                         <button className="simulation-btn" onClick={() => setSimuladorSelecionado(sim)}>
                           Simular
                         </button>
-                      </div>
+                      </motion.div>
                     ))}
-                  </div>
+                  </motion.div>
                   <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
                     <button className="simulation-back-btn" onClick={() => setFaixaSelecionada(null)}>
                       ← Voltar às faixas etárias
