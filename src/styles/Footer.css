@@ -97,7 +97,7 @@ footer {
   margin-bottom: 0;
 }
 
-.insta-icon, .facebook-icon {
+.insta-icon, .facebook-icon, .linkedin-icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -120,7 +120,12 @@ footer {
     font-size: 1.7rem;
 }
 
-.insta-icon:hover, .facebook-icon:hover {
+.linkedin-icon i {
+    color: #0077b5;
+    font-size: 1.7rem;
+}
+
+.insta-icon:hover, .facebook-icon:hover, .linkedin-icon:hover {
     background: #ececec;
     box-shadow: 0 4px 16px rgba(0,0,0,0.10);
 }
@@ -249,11 +254,11 @@ footer {
         margin: 0 auto;
         display: block;
     }
-    .insta-icon, .facebook-icon {
+    .insta-icon, .facebook-icon, .linkedin-icon {
         width: 30px;
         height: 30px;
     }
-    .insta-icon i, .facebook-icon i {
+    .insta-icon i, .facebook-icon i, .linkedin-icon i {
         font-size: 1rem;
     }
     .icon-list {
@@ -266,33 +271,41 @@ footer {
     }
 } 
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .footer-content {
     flex-direction: column;
     align-items: center;
     gap: 2rem;
-    padding: 0 1rem;
+    padding: 0 0.5rem;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
   }
   .bottom-left, .bottom-center, .bottom-right {
     align-items: center;
     width: 100%;
+    margin: 0;
+    min-width: 0;
+    justify-content: center;
+    text-align: center;
   }
   .bottom-right ul {
     flex-direction: column;
     gap: 0.2rem;
+    align-items: center;
   }
   .icon-list {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-  .icon-list .iubenda-nostyle {
-    margin-left: 0;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    margin: 0.2rem 0 0.2rem 0;
   }
   .iubenda-links {
     flex-direction: column;
     gap: 0.2rem;
     margin-top: 1rem;
-    }
+    align-items: center;
+  }
 } 

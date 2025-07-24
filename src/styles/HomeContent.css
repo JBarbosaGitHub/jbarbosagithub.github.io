@@ -58,10 +58,12 @@
 
 .navigation-items {
     display: flex;
-    gap: 2.5rem;
+    gap: 2.2rem;
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 0;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .navigation-item {
@@ -204,18 +206,18 @@
     border-radius: 16px;
     background: #fff;
     box-shadow: 0 4px 24px rgba(234,200,98,0.08);
-    padding: 2.8rem 2.2rem;
+    padding: 2.2rem 1.5rem;
     width: 100%;
-    min-width: 260px;
-    max-width: 340px;
-    height: 110px;
+    min-width: 220px;
+    max-width: 300px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
     font-weight: 700;
-    font-size: 1.6rem;
+    font-size: 1.35rem;
 }
 
 .home-access-card:hover {
@@ -291,9 +293,31 @@
     }
 }
 
-@media (max-width: 1200px) {
-    .home-inspiration-bar {
+@media (max-width: 1400px) {
+    .navigation-items {
+        gap: 1.5rem;
         max-width: 98vw;
+    }
+    .home-access-card {
+        padding: 1.7rem 1.1rem;
+        min-width: 180px;
+        max-width: 260px;
+        height: 90px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .navigation-items {
+        gap: 1.1rem;
+        max-width: 99vw;
+    }
+    .home-access-card {
+        padding: 1.2rem 0.7rem;
+        min-width: 150px;
+        max-width: 220px;
+        height: 80px;
+        font-size: 1rem;
     }
 }
 
@@ -314,6 +338,22 @@
         top: 10px;
         right: 6px;
         gap: 0.3rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .navigation-items {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .home-access-card {
+        width: 100%;
+        max-width: 95vw;
+        min-width: 120px;
+        padding: 1rem 0.5rem;
+        height: 60px;
+        font-size: 0.95rem;
     }
 }
 

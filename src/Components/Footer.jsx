@@ -32,6 +32,9 @@ const Footer = () => {
                         <a className="facebook-icon" href="https://www.facebook.com/share/1FB1ftjjMw/?mibextid=wwXIfr " target="_blank" rel="noopener noreferrer">
                             <i className="fab fa-facebook"></i>
                         </a>
+                        <a className="linkedin-icon" href="https://www.linkedin.com/company/academia-conta-contando/" target="_blank" rel="noopener noreferrer">
+                            <i className="fab fa-linkedin"></i>
+                        </a>
                         <a
                             href="https://www.iubenda.com/privacy-policy/35764406"
                             className="iubenda-nostyle iubenda-noiframe iubenda-embed iubenda-noiframe"
