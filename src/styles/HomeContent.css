@@ -183,6 +183,8 @@
 }
 
 .home-inspiration-bar {
+    max-width: 1200px;
+    width: 100%;
     margin: 0 auto 2.5rem auto;
     padding: 1.4rem 2.2rem;
     background: #7d925c;
@@ -191,14 +193,13 @@
     color: #eac862;
     text-align: center;
     box-shadow: 0 2px 12px rgba(125,146,92,0.10);
-    max-width: 975px;
-    width: 100%;
     font-weight: 600;
     border: 2.5px solid #eac862;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 70px;
+    box-sizing: border-box;
 }
 
 .home-access-card {
@@ -294,38 +295,32 @@
 }
 
 @media (max-width: 1400px) {
-    .navigation-items {
-        gap: 1.5rem;
+    .home-inspiration-bar, .navigation-items {
         max-width: 98vw;
     }
-    .home-access-card {
-        padding: 1.7rem 1.1rem;
-        min-width: 180px;
-        max-width: 260px;
-        height: 90px;
-        font-size: 1.1rem;
+    .home-inspiration-bar {
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
     }
 }
 
 @media (max-width: 1200px) {
-    .navigation-items {
-        gap: 1.1rem;
+    .home-inspiration-bar, .navigation-items {
         max-width: 99vw;
     }
-    .home-access-card {
-        padding: 1.2rem 0.7rem;
-        min-width: 150px;
-        max-width: 220px;
-        height: 80px;
-        font-size: 1rem;
+    .home-inspiration-bar {
+        padding-left: 0.7rem;
+        padding-right: 0.7rem;
     }
 }
 
 @media (max-width: 900px) {
+    .home-inspiration-bar, .navigation-items {
+        max-width: 95vw;
+    }
     .home-inspiration-bar {
-        max-width: 99vw;
-        font-size: 1rem;
-        padding: 1rem 0.7rem;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
     }
     .home-access-card, .home-login-card {
         min-width: 160px;
