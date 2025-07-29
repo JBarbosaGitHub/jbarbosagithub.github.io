@@ -13,6 +13,11 @@ import SupermarketPurchase from "../Components/Simuladores/SupermarketPurchase";
 import SimpleInterestSaving from "../Components/Simuladores/SimpleInterestSaving";
 import FamilyMonthlyBudget from "../Components/Simuladores/FamilyMonthlyBudget";
 import StudyLoan from "../Components/Simuladores/StudyLoan";
+import ChooseToy from "../Components/Simuladores/ChooseToy";
+import WeeklyAllowance from "../Components/Simuladores/WeeklyAllowance";
+import WeeklySavingGoal from "../Components/Simuladores/WeeklySavingGoal";
+import InvestmentReturn from "../Components/Simuladores/InvestmentReturn";
+import RetirementPlanning from "../Components/Simuladores/RetirementPlanning";
 import { motion, AnimatePresence } from "framer-motion";
 
 const faixasEtarias = [
@@ -31,6 +36,11 @@ const faixasEtarias = [
         descricao: 'Conta frutas como moedas para comprar, associando números a valores.',
         componente: <MarketFruitCounter />,
       },
+      {
+        nome: 'Escolhe um brinquedo',
+        descricao: 'Escolhe um brinquedo e aprende a poupar para o comprar.',
+        componente: <ChooseToy />,
+      }
     ],
   },
   {
@@ -48,6 +58,11 @@ const faixasEtarias = [
         descricao: 'Adiciona itens e calcula o total gasto.',
         componente: <SupermarketPurchase />,
       },
+      {
+        nome: 'Mesada Semanal',
+        descricao: 'Calcula a mesada semanal e aprende a poupar para o gastar.',
+        componente: <WeeklyAllowance />,
+      }
     ],
   },
   {
@@ -65,6 +80,11 @@ const faixasEtarias = [
         descricao: 'Introduz juros básicos em poupança.',
         componente: <SimpleInterestSaving />,
       },
+      {
+        nome: 'Meta de Poupança Semanal',
+        descricao: 'Calcula quanto precisas de poupar por semana para atingir o teu objetivo.',
+        componente: <WeeklySavingGoal />,
+      }
     ],
   },
   {
@@ -82,6 +102,11 @@ const faixasEtarias = [
         descricao: 'Gerencia receitas e despesas mensais.',
         componente: <FamilyMonthlyBudget />,
       },
+      {
+        nome: 'Retorno de Ações',
+        descricao: 'Avalia o retorno de um investimento em ações e o risco associado.',
+        componente: <InvestmentReturn />,
+      },
     ],
   },
   {
@@ -98,6 +123,11 @@ const faixasEtarias = [
         nome: 'Empréstimo para Estudos',
         descricao: 'Calcula custos de empréstimo para educação.',
         componente: <StudyLoan />,
+      },
+      {
+        nome: 'Planejamento de Reforma',
+        descricao: 'Estima o montante necessário para a reforma básica.',
+        componente: <RetirementPlanning />,
       },
     ],
   },

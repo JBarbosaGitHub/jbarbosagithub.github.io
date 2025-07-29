@@ -2,14 +2,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 const FamilyMonthlyBudget = () => {
-  const [income, setIncome] = useState(0);
-  const [fixedExpenses, setFixedExpenses] = useState(0);
-  const [variableExpenses, setVariableExpenses] = useState(0);
+  const [income, setIncome] = useState('');
+  const [fixedExpenses, setFixedExpenses] = useState('');
+  const [variableExpenses, setVariableExpenses] = useState('');
   const [balance, setBalance] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const result = income - (fixedExpenses + variableExpenses);
+    const result = (parseFloat(income) || 0) - ((parseFloat(fixedExpenses) || 0) + (parseFloat(variableExpenses) || 0));
     setBalance(result);
   };
 
@@ -18,11 +18,11 @@ const FamilyMonthlyBudget = () => {
       <h2 style={{ color: '#8cb4bc', fontWeight: 700 }}>Orçamento Mensal!</h2>
       <form className="simulador-form" onSubmit={handleSubmit}>
         <label>Receitas (€):</label>
-        <input type="number" value={income} onChange={e => setIncome(Number(e.target.value))} placeholder="Ex: 100" className="simulador-input" />
+        <input type="number" value={income} onChange={e => setIncome(e.target.value)} placeholder="Ex: 100" min="0" className="simulador-input" />
         <label>Despesas fixas (€):</label>
-        <input type="number" value={fixedExpenses} onChange={e => setFixedExpenses(Number(e.target.value))} placeholder="Ex: 40" className="simulador-input" />
+        <input type="number" value={fixedExpenses} onChange={e => setFixedExpenses(e.target.value)} placeholder="Ex: 40" min="0" className="simulador-input" />
         <label>Despesas variáveis (€):</label>
-        <input type="number" value={variableExpenses} onChange={e => setVariableExpenses(Number(e.target.value))} placeholder="Ex: 30" className="simulador-input" />
+        <input type="number" value={variableExpenses} onChange={e => setVariableExpenses(e.target.value)} placeholder="Ex: 30" min="0" className="simulador-input" />
         <div className="simulador-submit-row">
           <motion.button
             type="submit"

@@ -2,25 +2,20 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 
 const SimpleInterestSaving = () => {
-  const [initial, setInitial] = useState(0);
-  const [months, setMonths] = useState(0);
-  const [result, setResult] = useState(null);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const interest = initial * 0.01 * months;
-    const total = initial + interest;
-    setResult({ total, interest });
-  };
-
+  const [initial, setInitial] = useState('');
+  const [rate, setRate] = useState('');
+  const [years, setYears] = useState('');
+  const [total, setTotal] = useState(null);
   return (
     <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-      <h2 style={{ color: '#8cb4bc', fontWeight: 700 }}>Poupança com Juros!</h2>
-      <form className="simulador-form" onSubmit={handleSubmit}>
+      <h2 style={{ color: '#8cb4bc', fontWeight: 700 }}>Poupança com Juros Simples!</h2>
+      <form className="simulador-form" onSubmit={e => { e.preventDefault(); setTotal((parseFloat(initial) || 0) * (1 + (parseFloat(rate) || 0) / 100 * (parseInt(years) || 0))); }}>
         <label>Valor inicial (€):</label>
-        <input type="number" value={initial} onChange={e => setInitial(Number(e.target.value))} placeholder="Ex: 10" className="simulador-input" />
-        <label>Meses:</label>
-        <input type="number" value={months} onChange={e => setMonths(Number(e.target.value))} placeholder="Ex: 6" className="simulador-input" />
+        <input type="number" value={initial} onChange={e => setInitial(e.target.value)} placeholder="Ex: 50" min="0" className="simulador-input" />
+        <label>Taxa anual (%):</label>
+        <input type="number" value={rate} onChange={e => setRate(e.target.value)} placeholder="Ex: 3" min="0" className="simulador-input" />
+        <label>Anos:</label>
+        <input type="number" value={years} onChange={e => setYears(e.target.value)} placeholder="Ex: 2" min="0" className="simulador-input" />
         <div className="simulador-submit-row">
           <motion.button
             type="submit"
@@ -32,10 +27,8 @@ const SimpleInterestSaving = () => {
           </motion.button>
         </div>
       </form>
-      {result && (
-        <p style={{ fontSize: 24, color: '#228b22', fontWeight: 800 }}>
-          Total: €{result.total.toFixed(2)} (Juros: €{result.interest.toFixed(2)})
-        </p>
+      {total !== null && (
+        <p style={{ fontSize: 22, color: '#eac862', fontWeight: 800 }}>Total: €{total.toFixed(2)}</p>
       )}
     </div>
   );
