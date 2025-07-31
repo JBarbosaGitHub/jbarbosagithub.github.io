@@ -18,9 +18,13 @@ import WeeklyAllowance from "../Components/Simuladores/WeeklyAllowance";
 import WeeklySavingGoal from "../Components/Simuladores/WeeklySavingGoal";
 import InvestmentReturn from "../Components/Simuladores/InvestmentReturn";
 import RetirementPlanning from "../Components/Simuladores/RetirementPlanning";
+import EuriborSimulator from "../Components/Simuladores/EuriborSimulator";
+import MaxHouseValue from "../Components/Simuladores/MaxHouseValue";
+import HousingLoan from "../Components/Simuladores/HousingLoan";
 import { motion, AnimatePresence } from "framer-motion";
 
-const faixasEtarias = [
+// Simuladores para estudantes (até 18 anos)
+const simuladoresEstudantes = [
   {
     nome: 'Pré-escolar (3-5 anos)',
     descricao: 'Jogos e simulações lúdicas para os mais pequenos aprenderem a contar e reconhecer valores.',
@@ -133,7 +137,31 @@ const faixasEtarias = [
   },
 ];
 
+// Simuladores para adultos
+const simuladoresAdultos = [
+  {
+    nome: 'Simulador Euribor 2025',
+    descricao: 'Simula o impacto da Taxa Euribor na prestação de crédito habitação.',
+    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922017.png',
+    componente: <EuriborSimulator />,
+  },
+  {
+    nome: 'Valor máximo da casa',
+    descricao: 'Calcula o preço máximo de casa que podes comprar com base na tua situação financeira.',
+    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922022.png',
+    componente: <MaxHouseValue />,
+  },
+  {
+    nome: 'Crédito à habitação',
+    descricao: 'Simula o teu empréstimo para habitação com diferentes tipos de taxa de juro.',
+    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922027.png',
+    componente: <HousingLoan />,
+  },
+  // Aqui serão adicionados mais simuladores para adultos
+];
+
 const Simulations = () => {
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState(null); // null = mostra categorias, 'estudantes' ou 'adultos'
   const [faixaSelecionada, setFaixaSelecionada] = useState(null); // null = mostra faixas
   const [simuladorSelecionado, setSimuladorSelecionado] = useState(null); // objeto simulador
 
@@ -186,6 +214,21 @@ const Simulations = () => {
     }
   };
 
+  // Função para obter os simuladores da categoria selecionada
+  const getSimuladoresAtuais = () => {
+    if (categoriaSelecionada === 'estudantes') {
+      return simuladoresEstudantes;
+    } else if (categoriaSelecionada === 'adultos') {
+      return simuladoresAdultos;
+    }
+    return [];
+  };
+
+  // Função para verificar se é categoria de adultos (não tem subcategorias)
+  const isAdultosCategory = () => {
+    return categoriaSelecionada === 'adultos';
+  };
+
   return (
     <>
       <Header />
@@ -196,30 +239,41 @@ const Simulations = () => {
               <h1 style={{ color: '#8cb4bc', fontWeight: 800, fontSize: '2rem', marginBottom: '1.5rem', textAlign: 'center', letterSpacing: '-1px' }}>
                 Simuladores Financeiros
               </h1>
-              {/* Navegação: Faixas etárias ou simuladores da faixa */}
-              {faixaSelecionada === null ? (
+              
+              {/* Navegação: Categorias principais */}
+              {categoriaSelecionada === null ? (
                 <motion.div
                   className="simulations-cards"
                   variants={cardContainerVariants}
                   initial="hidden"
                   animate="visible"
                 >
-                  {faixasEtarias.map((faixa, idx) => (
-                    <motion.div
-                      key={faixa.nome}
-                      className="simulation-card"
-                      variants={cardItemVariants}
-                      whileHover={{ scale: 1.05, boxShadow: '0 8px 32px #8cb4bc33' }}
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => setFaixaSelecionada(idx)}
-                    >
-                      <img src={faixa.img} alt={faixa.nome} />
-                      <h3>{faixa.nome}</h3>
-                      <p>{faixa.descricao}</p>
-                    </motion.div>
-                  ))}
+                  <motion.div
+                    className="simulation-card"
+                    variants={cardItemVariants}
+                    whileHover={{ scale: 1.05, boxShadow: '0 8px 32px #8cb4bc33' }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => setCategoriaSelecionada('estudantes')}
+                  >
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922017.png" alt="Estudantes" />
+                    <h3>Estudantes (até 18 anos)</h3>
+                    <p>Simuladores educativos adaptados por faixa etária para crianças e jovens em idade escolar.</p>
+                  </motion.div>
+                  
+                  <motion.div
+                    className="simulation-card"
+                    variants={cardItemVariants}
+                    whileHover={{ scale: 1.05, boxShadow: '0 8px 32px #8cb4bc33' }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => setCategoriaSelecionada('adultos')}
+                  >
+                    <img src="https://cdn-icons-png.flaticon.com/512/2922/2922036.png" alt="Adultos" />
+                    <h3>Adultos</h3>
+                    <p>Simuladores avançados para planeamento financeiro pessoal e familiar.</p>
+                  </motion.div>
                 </motion.div>
-              ) : (
+              ) : isAdultosCategory() ? (
+                // Mostrar diretamente os simuladores de adultos
                 <>
                   <motion.div
                     className="simulations-cards"
@@ -228,7 +282,7 @@ const Simulations = () => {
                     animate="visible"
                     style={{ marginTop: '1rem' }}
                   >
-                    {faixasEtarias[faixaSelecionada].simuladores.map((sim, i) => (
+                    {simuladoresAdultos.map((sim, i) => (
                       <motion.div
                         key={sim.nome}
                         className="simulation-card"
@@ -237,7 +291,72 @@ const Simulations = () => {
                         whileHover={{ scale: 1.05, boxShadow: '0 8px 32px #8cb4bc33' }}
                         whileTap={{ scale: 0.97 }}
                       >
-                        <img src={faixasEtarias[faixaSelecionada].img} alt={sim.nome} style={{ width: 70, height: 70, objectFit: 'contain', marginBottom: 12 }} />
+                        <img src={sim.img} alt={sim.nome} style={{ width: 70, height: 70, objectFit: 'contain', marginBottom: 12 }} />
+                        <h3 style={{ color: '#7d925c', fontSize: '1.15rem', fontWeight: 800, marginBottom: '0.5rem', textAlign: 'center' }}>{sim.nome}</h3>
+                        <p style={{ color: '#333', fontSize: '0.98rem', marginBottom: '1.2rem', textAlign: 'center', fontWeight: 500 }}>{sim.descricao}</p>
+                        <button className="simulation-btn" onClick={() => setSimuladorSelecionado(sim)}>
+                          Simular
+                        </button>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
+                    <button className="simulation-back-btn" onClick={() => setCategoriaSelecionada(null)}>
+                      ← Voltar às categorias
+                    </button>
+                  </div>
+                </>
+              ) : faixaSelecionada === null ? (
+                // Mostrar faixas etárias para estudantes
+                <>
+                  <motion.div
+                    className="simulations-cards"
+                    variants={cardContainerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    style={{ marginTop: '1rem' }}
+                  >
+                    {simuladoresEstudantes.map((faixa, idx) => (
+                      <motion.div
+                        key={faixa.nome}
+                        className="simulation-card"
+                        variants={cardItemVariants}
+                        whileHover={{ scale: 1.05, boxShadow: '0 8px 32px #8cb4bc33' }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => setFaixaSelecionada(idx)}
+                      >
+                        <img src={faixa.img} alt={faixa.nome} />
+                        <h3>{faixa.nome}</h3>
+                        <p>{faixa.descricao}</p>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                  <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
+                    <button className="simulation-back-btn" onClick={() => setCategoriaSelecionada(null)}>
+                      ← Voltar às categorias
+                    </button>
+                  </div>
+                </>
+              ) : (
+                // Mostrar simuladores da faixa selecionada (estudantes)
+                <>
+                  <motion.div
+                    className="simulations-cards"
+                    variants={cardContainerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    style={{ marginTop: '1rem' }}
+                  >
+                    {simuladoresEstudantes[faixaSelecionada].simuladores.map((sim, i) => (
+                      <motion.div
+                        key={sim.nome}
+                        className="simulation-card"
+                        style={{ position: 'relative' }}
+                        variants={cardItemVariants}
+                        whileHover={{ scale: 1.05, boxShadow: '0 8px 32px #8cb4bc33' }}
+                        whileTap={{ scale: 0.97 }}
+                      >
+                        <img src={simuladoresEstudantes[faixaSelecionada].img} alt={sim.nome} style={{ width: 70, height: 70, objectFit: 'contain', marginBottom: 12 }} />
                         <h3 style={{ color: '#7d925c', fontSize: '1.15rem', fontWeight: 800, marginBottom: '0.5rem', textAlign: 'center' }}>{sim.nome}</h3>
                         <p style={{ color: '#333', fontSize: '0.98rem', marginBottom: '1.2rem', textAlign: 'center', fontWeight: 500 }}>{sim.descricao}</p>
                         <button className="simulation-btn" onClick={() => setSimuladorSelecionado(sim)}>
