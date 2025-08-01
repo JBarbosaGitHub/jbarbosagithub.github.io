@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import euriborService from "../../services/euriborService";
+import EuriborStatus from "../EuriborStatus";
 
 const HousingLoan = () => {
   const [youth, setYouth] = useState("no");
@@ -10,11 +12,22 @@ const HousingLoan = () => {
   const [termYears, setTermYears] = useState("40");
   const [indexer, setIndexer] = useState("");
   const [result, setResult] = useState(null);
+  const [euriborRates, setEuriborRates] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const euriborRates = {
-    '3m': 2.026,
-    '6m': 2.083,
-    '12m': 2.116
+  useEffect(() => {
+    loadEuriborRates();
+  }, []);
+
+  const loadEuriborRates = async () => {
+    try {
+      const rates = await euriborService.getCurrentEuriborRates();
+      setEuriborRates(rates);
+      setLoading(false);
+    } catch (error) {
+      console.error('Erro ao carregar taxas Euribor:', error);
+      setLoading(false);
+    }
   };
 
   const fixedBaseRates = {
@@ -43,7 +56,7 @@ const HousingLoan = () => {
     if (type === 'variable') {
       return Object.keys(euriborRates).map(key => ({
         value: key,
-        label: `Euribor ${key} (${euriborRates[key]}%)`
+        label: `Euribor ${key} (${euriborRates[key]?.toFixed(3) || 'N/A'}%)`
       }));
     } else {
       const rates = type === 'fixed' ? fixedBaseRates : mixedBaseRates;
@@ -82,7 +95,7 @@ const HousingLoan = () => {
     let baseRate;
     let baseDisplay;
     if (rateType === 'variable') {
-      baseRate = euriborRates[indexer];
+      baseRate = euriborRates[indexer] || 0;
       baseDisplay = `Euribor ${indexer} meses: ${baseRate.toFixed(3)} %`;
     } else {
       baseRate = (rateType === 'fixed' ? fixedBaseRates : mixedBaseRates)[indexer];
@@ -138,141 +151,151 @@ Ao selecionar esta oferta declaro que todos os proponentes:
 
   return (
     <div style={{ textAlign: "center", padding: "1rem 0" }}>
-      <h2 style={{ color: "#8cb4bc", fontWeight: 700 }}>Simule o Seu Empréstimo para Habitação</h2>
-      
-      <form className="simulador-form" onSubmit={handleSubmit}>
-        <label>Possui menos de 36 anos e deseja simular com Garantia Estatal?</label>
-        <div style={{ display: "flex", gap: "20px", justifyContent: "center", marginBottom: "10px" }}>
-          <label style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-            <input 
-              type="radio" 
-              name="youth" 
-              value="no" 
-              checked={youth === "no"}
-              onChange={e => handleYouthChange(e.target.value)}
-            />
-            Não
-          </label>
-          <label style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-            <input 
-              type="radio" 
-              name="youth" 
-              value="yes" 
-              checked={youth === "yes"}
-              onChange={e => handleYouthChange(e.target.value)}
-            />
-            Sim
-          </label>
+      {loading ? (
+        <div style={{ padding: "2rem", color: "#666" }}>
+          <p>A carregar taxas Euribor atualizadas...</p>
         </div>
-        
-        <label>Valor da Compra do Imóvel (€):</label>
-        <input 
-          type="number" 
-          value={acquisitionValue} 
-          onChange={e => setAcquisitionValue(e.target.value)} 
-          placeholder="Ex: 150000" 
-          min="0" 
-          className="simulador-input" 
-        />
-        
-        <label>Montante do Empréstimo (€):</label>
-        <input 
-          type="number" 
-          value={loanValue} 
-          onChange={e => setLoanValue(e.target.value)} 
-          placeholder="Ex: 120000" 
-          min="0" 
-          className="simulador-input" 
-        />
-        
-        <label>Transferência de outro banco?</label>
-        <div style={{ display: "flex", gap: "20px", justifyContent: "center", marginBottom: "10px" }}>
-          <label style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+      ) : (
+        <>
+          <EuriborStatus onRatesUpdate={loadEuriborRates} />
+          
+          <h2 style={{ color: "#8cb4bc", fontWeight: 700 }}>Simule o Seu Empréstimo para Habitação</h2>
+          
+          <form className="simulador-form" onSubmit={handleSubmit}>
+            <label>Possui menos de 36 anos e deseja simular com Garantia Estatal?</label>
+            <div style={{ display: "flex", gap: "20px", justifyContent: "center", marginBottom: "10px" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <input 
+                  type="radio" 
+                  name="youth" 
+                  value="no" 
+                  checked={youth === "no"}
+                  onChange={e => handleYouthChange(e.target.value)}
+                />
+                Não
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <input 
+                  type="radio" 
+                  name="youth" 
+                  value="yes" 
+                  checked={youth === "yes"}
+                  onChange={e => handleYouthChange(e.target.value)}
+                />
+                Sim
+              </label>
+            </div>
+            
+            <label>Valor da Compra do Imóvel (€):</label>
             <input 
-              type="radio" 
-              name="transfer" 
-              value="no" 
-              checked={transfer === "no"}
-              onChange={e => setTransfer(e.target.value)}
+              type="number" 
+              value={acquisitionValue} 
+              onChange={e => setAcquisitionValue(e.target.value)} 
+              placeholder="Ex: 150000" 
+              min="0" 
+              className="simulador-input" 
             />
-            Não
-          </label>
-          <label style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            
+            <label>Montante do Empréstimo (€):</label>
             <input 
-              type="radio" 
-              name="transfer" 
-              value="yes" 
-              checked={transfer === "yes"}
-              onChange={e => setTransfer(e.target.value)}
+              type="number" 
+              value={loanValue} 
+              onChange={e => setLoanValue(e.target.value)} 
+              placeholder="Ex: 120000" 
+              min="0" 
+              className="simulador-input" 
             />
-            Sim
-          </label>
-        </div>
-        
-        <label>Tipo de Taxa de Juro:</label>
-        <select 
-          value={rateType} 
-          onChange={e => setRateType(e.target.value)} 
-          className="simulador-select"
-        >
-          <option value="variable">Taxa Variável</option>
-          <option value="fixed">Taxa Fixa</option>
-          <option value="mixed">Taxa Mista</option>
-        </select>
-        
-        <label>Prazo Total (anos):</label>
-        <input 
-          type="number" 
-          value={termYears} 
-          onChange={e => setTermYears(e.target.value)} 
-          placeholder="Ex: 40" 
-          min="1" 
-          max="40" 
-          className="simulador-input" 
-        />
-        
-        <label>Indexante:</label>
-        <select 
-          value={indexer} 
-          onChange={e => setIndexer(e.target.value)} 
-          className="simulador-select"
-        >
-          {populateIndexer(rateType).map(option => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        
-        <div className="simulador-submit-row">
-          <motion.button
-            type="submit"
-            className="simulador-submit-btn"
-            whileHover={{ scale: 1.08, boxShadow: "0 4px 24px #8cb4bc55", filter: "brightness(0.85)" }}
-            whileTap={{ scale: 0.96 }}
-          >
-            Calcular
-          </motion.button>
-        </div>
-      </form>
-      
-      {result && (
-        <div style={{ marginTop: 20, padding: "1rem", backgroundColor: "#f8f9fa", borderRadius: "10px", border: "2px solid #eac862" }}>
-          <h3 style={{ color: "#8cb4bc", fontWeight: 700, marginBottom: "0.5rem" }}>Opções Disponíveis</h3>
-          <div style={{ textAlign: "left", fontSize: "0.95rem", color: "#666" }}>
-            <p style={{ fontWeight: 600, marginBottom: "0.5rem" }}>Prestação Base</p>
-            <p style={{ fontSize: "1.3rem", color: "#4b0082", fontWeight: 700, marginBottom: "0.5rem" }}>
-              {result.payment} €
-            </p>
-            <p style={{ fontSize: "0.9rem", color: "#888", marginBottom: "0.5rem" }}>sem produtos de venda cruzada</p>
-            <p><strong>Tipo taxa:</strong> {result.rateType}</p>
-            <p><strong>{result.baseDisplay}</strong></p>
-            <p><strong>Spread Base:</strong> 1,500 %</p>
-            <p><strong>TAN:</strong> {result.annualRate} %</p>
-            <p><strong>TAEG:</strong> {result.taeg} %</p>
-            <p><strong>MTIC:</strong> {result.mtic} €</p>
-          </div>
-        </div>
+            
+            <label>Transferência de outro banco?</label>
+            <div style={{ display: "flex", gap: "20px", justifyContent: "center", marginBottom: "10px" }}>
+              <label style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <input 
+                  type="radio" 
+                  name="transfer" 
+                  value="no" 
+                  checked={transfer === "no"}
+                  onChange={e => setTransfer(e.target.value)}
+                />
+                Não
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                <input 
+                  type="radio" 
+                  name="transfer" 
+                  value="yes" 
+                  checked={transfer === "yes"}
+                  onChange={e => setTransfer(e.target.value)}
+                />
+                Sim
+              </label>
+            </div>
+            
+            <label>Tipo de Taxa de Juro:</label>
+            <select 
+              value={rateType} 
+              onChange={e => setRateType(e.target.value)} 
+              className="simulador-select"
+            >
+              <option value="variable">Taxa Variável</option>
+              <option value="fixed">Taxa Fixa</option>
+              <option value="mixed">Taxa Mista</option>
+            </select>
+            
+            <label>Prazo Total (anos):</label>
+            <input 
+              type="number" 
+              value={termYears} 
+              onChange={e => setTermYears(e.target.value)} 
+              placeholder="Ex: 40" 
+              min="1" 
+              max="40" 
+              className="simulador-input" 
+            />
+            
+            <label>Indexante:</label>
+            <select 
+              value={indexer} 
+              onChange={e => setIndexer(e.target.value)} 
+              className="simulador-select"
+            >
+              {populateIndexer(rateType).map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            
+            <div className="simulador-submit-row">
+              <motion.button
+                type="submit"
+                className="simulador-submit-btn"
+                whileHover={{ scale: 1.08, boxShadow: "0 4px 24px #8cb4bc55", filter: "brightness(0.85)" }}
+                whileTap={{ scale: 0.96 }}
+              >
+                Calcular
+              </motion.button>
+            </div>
+          </form>
+          
+          {result && (
+            <div style={{ marginTop: 20, padding: "1rem", backgroundColor: "#f8f9fa", borderRadius: "10px", border: "2px solid #eac862" }}>
+              <h3 style={{ color: "#8cb4bc", fontWeight: 700, marginBottom: "0.5rem" }}>Opções Disponíveis</h3>
+              <div style={{ textAlign: "left", fontSize: "0.95rem", color: "#666" }}>
+                <p style={{ fontWeight: 600, marginBottom: "0.5rem" }}>Prestação Base</p>
+                <p style={{ fontSize: "1.3rem", color: "#4b0082", fontWeight: 700, marginBottom: "0.5rem" }}>
+                  {result.payment} €
+                </p>
+                <p style={{ fontSize: "0.9rem", color: "#888", marginBottom: "0.5rem" }}>sem produtos de venda cruzada</p>
+                <p><strong>Tipo taxa:</strong> {result.rateType}</p>
+                <p><strong>{result.baseDisplay}</strong></p>
+                <p><strong>Spread Base:</strong> 1,500 %</p>
+                <p><strong>TAN:</strong> {result.annualRate} %</p>
+                <p><strong>TAEG:</strong> {result.taeg} %</p>
+                <p><strong>MTIC:</strong> {result.mtic} €</p>
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

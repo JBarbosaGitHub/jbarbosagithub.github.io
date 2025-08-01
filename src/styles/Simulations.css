@@ -203,7 +203,11 @@
   }
   .simulador-form .simulador-input {
     width: 100%;
-    max-width: 120px;
+    max-width: 200px;
+  }
+  .simulador-form .simulador-select {
+    width: 100%;
+    max-width: 200px;
   }
 }
 
@@ -339,7 +343,8 @@
   .simulador-input, .simulador-select {
     font-size: 0.98rem;
     padding: 6px 6px;
-    width: 90px;
+    width: 100%;
+    max-width: 180px;
   }
 }
 
@@ -401,6 +406,8 @@
     padding: 1rem 0.5rem 1.2rem 0.5rem;
     border-radius: 12px;
     margin: 0 auto;
+    overflow-y: auto;
+    max-height: 90vh;
   }
   .simulador-form {
     gap: 5px;
@@ -408,7 +415,14 @@
   .simulador-input {
     font-size: 0.98rem;
     padding: 6px 6px;
-    width: 90px;
+    width: 100%;
+    max-width: 200px;
+  }
+  .simulador-select {
+    font-size: 0.98rem;
+    padding: 6px 6px;
+    width: 100%;
+    max-width: 200px;
   }
   .simulador-submit-btn {
     width: 80%;
