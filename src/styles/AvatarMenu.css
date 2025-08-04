@@ -108,4 +108,44 @@
     height: 34px;
     font-size: 1rem;
   }
+}
+
+@media (max-width: 600px) {
+  .avatar-btn {
+    width: 32px;
+    height: 32px;
+  }
+  .avatar-img, .avatar-initials {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+  }
+  .avatar-dropdown {
+    right: -15px;
+    min-width: 120px;
+  }
+  .avatar-dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .avatar-btn {
+    width: 28px;
+    height: 28px;
+  }
+  .avatar-img, .avatar-initials {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+  }
+  .avatar-dropdown {
+    right: -10px;
+    min-width: 100px;
+  }
+  .avatar-dropdown-item {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
 } 

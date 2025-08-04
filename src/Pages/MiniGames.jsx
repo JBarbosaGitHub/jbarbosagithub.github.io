@@ -37,7 +37,7 @@ const MiniGamesSelection = () => {
               borderRadius: '18px',
               boxShadow: '0 2px 16px rgba(125,146,92,0.08)',
               padding: '2.5rem 2rem 2rem 2rem',
-              maxWidth: 900,
+              maxWidth: 'min(900px, 95vw)',
               width: '100%',
               margin: '2.5rem 0',
               display: 'flex',

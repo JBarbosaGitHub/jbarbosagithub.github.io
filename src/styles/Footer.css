@@ -247,27 +247,49 @@ footer {
         align-items: center;
     }
     .scroll-to-top-button {
-        width: 80%;
-        padding: 0.4rem 0.5rem;
-        font-size: 0.7rem;
-        max-width: 220px;
-        margin: 0 auto;
+        width: 70%;
+        padding: 0.15rem 0.5rem !important;
+        font-size: 0.75rem !important;
+        font-weight: 500 !important;
+        max-width: 120px;
+        margin: 0.5rem auto 0.2rem auto;
         display: block;
+        height: 1.7rem;
+        line-height: 1.1;
+        letter-spacing: 0;
     }
     .insta-icon, .facebook-icon, .linkedin-icon {
-        width: 30px;
-        height: 30px;
+        width: 26px;
+        height: 26px;
     }
     .insta-icon i, .facebook-icon i, .linkedin-icon i {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
     .icon-list {
+        display: flex !important;
         flex-direction: row !important;
         justify-content: center;
         align-items: center;
-        gap: 0.7rem;
+        gap: 0.5rem;
         width: 100%;
-        margin: 0.2rem 0 0.2rem 0;
+        margin: 0.2rem 0;
+    }
+    .iubenda-links {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.2rem;
+        font-size: 0.7rem;
+    }
+    .footer-copyright, .bottom-center > div, .bottom-center {
+        font-size: 0.5rem !important;
+        line-height: 1.1;
+        margin-top: 0.5rem;
+        text-align: center;
+        word-break: break-word;
+        width: 100%;
     }
 } 
 

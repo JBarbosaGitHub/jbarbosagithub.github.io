@@ -35,6 +35,8 @@ const Footer = () => {
                         <a className="linkedin-icon" href="https://www.linkedin.com/company/academia-conta-contando/" target="_blank" rel="noopener noreferrer">
                             <i className="fab fa-linkedin"></i>
                         </a>
+                    </div>
+                    <div className="iubenda-links">
                         <a
                             href="https://www.iubenda.com/privacy-policy/35764406"
                             className="iubenda-nostyle iubenda-noiframe iubenda-embed iubenda-noiframe"

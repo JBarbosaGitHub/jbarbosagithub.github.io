@@ -235,7 +235,7 @@ const Simulations = () => {
       <PageTransition>
         <div className="simulation-bg">
           <div className="simulation-container">
-            <div className="simulation-main-box">
+            <div className="simulations-main-container">
               <h1 style={{ color: '#8cb4bc', fontWeight: 800, fontSize: '2rem', marginBottom: '1.5rem', textAlign: 'center', letterSpacing: '-1px' }}>
                 Simuladores Financeiros
               </h1>

@@ -113,27 +113,27 @@
 @media (max-width: 900px) {
   .piggywise-quiz-box {
     max-width: 99vw;
-    padding: 0.5rem 0.1rem;
+    padding: 0.5rem 0.7rem;
   }
   .piggywise-options {
     flex-direction: column;
-    gap: 1.2rem;
-    width: 100vw;
+    gap: 0.7rem;
+    width: 100%;
   }
   .piggywise-option-btn {
-    width: 99vw;
-    max-width: 99vw;
+    width: 100%;
+    max-width: 100%;
     min-width: 120px;
     min-height: 70px;
     font-size: 1.1rem;
-    padding: 0.9rem 0.2rem;
+    padding: 0.9rem 0.5rem;
   }
   .piggywise-back-btn {
-    width: 99vw;
-    max-width: 99vw;
+    width: 100%;
+    max-width: 100%;
     min-width: 120px;
     font-size: 1.1rem;
-    padding: 0.9rem 0.2rem;
+    padding: 0.9rem 0.5rem;
   }
   .piggywise-gif {
     width: 100px;
