@@ -168,10 +168,16 @@ footer {
 .iubenda-links {
   display: flex;
   flex-direction: row;
-  gap: 1.2rem;
   justify-content: center;
   align-items: center;
-  margin-top: 0.7rem;
+}
+
+.footer-social-policy-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 0;
 }
 
 @media (max-width: 1024px) {
@@ -329,5 +335,23 @@ footer {
     gap: 0.2rem;
     margin-top: 1rem;
     align-items: center;
+  }
+  .footer-social-policy-row {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+    width: 100%;
+  }
+} 
+
+@media (max-width: 480px) {
+  .footer-social-policy-row {
+    flex-direction: column;
+    gap: 0.3rem;
+    align-items: center;
+    width: 100%;
+  }
+  .iubenda-links, .footer-content .iubenda-nostyle {
+    font-size: 0.8rem;
   }
 } 

@@ -25,36 +25,38 @@ const Footer = () => {
             <div className="footer-content">
                 <div className="bottom-left">
                     <span className="social-label">Redes Sociais</span>
-                    <div className="icon-list">
-                        <a className="insta-icon" href="https://www.instagram.com/acontacontando/" target="_blank" rel="noopener noreferrer">
-                            <i className="fab fa-instagram"></i>
-                        </a>
-                        <a className="facebook-icon" href="https://www.facebook.com/share/1FB1ftjjMw/?mibextid=wwXIfr " target="_blank" rel="noopener noreferrer">
-                            <i className="fab fa-facebook"></i>
-                        </a>
-                        <a className="linkedin-icon" href="https://www.linkedin.com/company/academia-conta-contando/" target="_blank" rel="noopener noreferrer">
-                            <i className="fab fa-linkedin"></i>
-                        </a>
-                    </div>
-                    <div className="iubenda-links">
-                        <a
-                            href="https://www.iubenda.com/privacy-policy/35764406"
-                            className="iubenda-nostyle iubenda-noiframe iubenda-embed iubenda-noiframe"
-                            title="Política de Privacidade"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Política de Privacidade
-                        </a>
-                        <a
-                            href="https://www.iubenda.com/privacy-policy/35764406/cookie-policy"
-                            className="iubenda-nostyle iubenda-noiframe iubenda-embed iubenda-noiframe"
-                            title="Política de Cookies"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Política de Cookies
-                        </a>
+                    <div className="footer-social-policy-row">
+                        <div className="icon-list">
+                            <a className="insta-icon" href="https://www.instagram.com/acontacontando/" target="_blank" rel="noopener noreferrer">
+                                <i className="fab fa-instagram"></i>
+                            </a>
+                            <a className="facebook-icon" href="https://www.facebook.com/share/1FB1ftjjMw/?mibextid=wwXIfr " target="_blank" rel="noopener noreferrer">
+                                <i className="fab fa-facebook"></i>
+                            </a>
+                            <a className="linkedin-icon" href="https://www.linkedin.com/company/academia-conta-contando/" target="_blank" rel="noopener noreferrer">
+                                <i className="fab fa-linkedin"></i>
+                            </a>
+                        </div>
+                        <div className="iubenda-links">
+                            <a
+                                href="https://www.iubenda.com/privacy-policy/35764406"
+                                className="iubenda-nostyle iubenda-noiframe iubenda-embed iubenda-noiframe"
+                                title="Política de Privacidade"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Política de Privacidade
+                            </a>
+                            <a
+                                href="https://www.iubenda.com/privacy-policy/35764406/cookie-policy"
+                                className="iubenda-nostyle iubenda-noiframe iubenda-embed iubenda-noiframe"
+                                title="Política de Cookies"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Política de Cookies
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div className="bottom-center">
