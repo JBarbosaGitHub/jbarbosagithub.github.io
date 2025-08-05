@@ -21,6 +21,9 @@ import RetirementPlanning from "../Components/Simuladores/RetirementPlanning";
 import EuriborSimulator from "../Components/Simuladores/EuriborSimulator";
 import MaxHouseValue from "../Components/Simuladores/MaxHouseValue";
 import HousingLoan from "../Components/Simuladores/HousingLoan";
+import FinancialIndependence from "../Components/Simuladores/FinancialIndependence";
+import FirstMillion from "../Components/Simuladores/FirstMillion";
+import LifeTimeCost from "../Components/Simuladores/LifeTimeCost";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Simuladores para estudantes (até 18 anos)
@@ -28,111 +31,126 @@ const simuladoresEstudantes = [
   {
     nome: 'Pré-escolar (3-5 anos)',
     descricao: 'Jogos e simulações lúdicas para os mais pequenos aprenderem a contar e reconhecer valores.',
-    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922017.png',
+    img: 'https://cdn-icons-png.flaticon.com/512/616/616490.png', // moeda
     simuladores: [
       {
         nome: 'Contador de Moedas Coloridas',
         descricao: 'Conta moedas virtuais de cores diferentes para aprender valores básicos.',
         componente: <ColoredCoinCounter />,
+        img: 'https://cdn-icons-png.flaticon.com/512/616/616490.png',
       },
       {
         nome: 'Conta Frutas no Mercado',
         descricao: 'Conta frutas como moedas para comprar, associando números a valores.',
         componente: <MarketFruitCounter />,
+        img: 'https://cdn-icons-png.flaticon.com/512/135/135620.png',
       },
       {
         nome: 'Escolhe um brinquedo',
         descricao: 'Escolhe um brinquedo e aprende a poupar para o comprar.',
         componente: <ChooseToy />,
+        img: 'https://cdn-icons-png.flaticon.com/512/616/616494.png',
       }
     ],
   },
   {
     nome: '1º Ciclo (6-9 anos)',
     descricao: 'Simulações para aprender a poupar, gastar e planear pequenas compras.',
-    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922022.png',
+    img: 'https://cdn-icons-png.flaticon.com/512/29/29302.png', // livro
     simuladores: [
       {
         nome: 'Poupa para Comprar um Livro',
         descricao: 'Calcula quanto precisas de poupar por mês para atingir o teu objetivo.',
         componente: <BookSaving />,
+        img: 'https://cdn-icons-png.flaticon.com/512/29/29302.png',
       },
       {
         nome: 'Compra no Supermercado',
         descricao: 'Adiciona itens e calcula o total gasto.',
         componente: <SupermarketPurchase />,
+        img: 'https://cdn-icons-png.flaticon.com/512/1170/1170678.png',
       },
       {
         nome: 'Mesada Semanal',
         descricao: 'Calcula a mesada semanal e aprende a poupar para o gastar.',
         componente: <WeeklyAllowance />,
+        img: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
       }
     ],
   },
   {
     nome: '2º Ciclo (10-12 anos)',
     descricao: 'Orçamentos e decisões financeiras simples para o dia a dia.',
-    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922027.png',
+    img: 'https://cdn-icons-png.flaticon.com/512/69/69906.png', // autocarro
     simuladores: [
       {
         nome: 'Orçamento para Viagem Escolar',
         descricao: 'Planeia os gastos para uma viagem escolar e vê se o dinheiro chega.',
         componente: <TripBudget />,
+        img: 'https://cdn-icons-png.flaticon.com/512/69/69906.png',
       },
       {
         nome: 'Poupança com Juros Simples',
         descricao: 'Introduz juros básicos em poupança.',
         componente: <SimpleInterestSaving />,
+        img: 'https://cdn-icons-png.flaticon.com/512/190/190411.png',
       },
       {
         nome: 'Meta de Poupança Semanal',
         descricao: 'Calcula quanto precisas de poupar por semana para atingir o teu objetivo.',
         componente: <WeeklySavingGoal />,
+        img: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png',
       }
     ],
   },
   {
     nome: '3º Ciclo (13-15 anos)',
     descricao: 'Simulações com juros, empréstimos e conceitos de investimento.',
-    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922030.png',
+    img: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png', // gráfico
     simuladores: [
       {
         nome: 'Poupança com Juros Compostos',
         descricao: 'Descobre como o dinheiro cresce ao longo do tempo com juros compostos.',
         componente: <CompoundInterestSaving />,
+        img: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png',
       },
       {
         nome: 'Orçamento Mensal Familiar',
         descricao: 'Gerencia receitas e despesas mensais.',
         componente: <FamilyMonthlyBudget />,
+        img: 'https://cdn-icons-png.flaticon.com/512/1946/1946436.png',
       },
       {
         nome: 'Retorno de Ações',
         descricao: 'Avalia o retorno de um investimento em ações e o risco associado.',
         componente: <InvestmentReturn />,
-      },
+        img: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+      }
     ],
   },
   {
     nome: 'Secundário (16-18 anos)',
     descricao: 'Planeamento financeiro avançado e simulações de investimento para jovens adultos.',
-    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922036.png',
+    img: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', // gráfico de crescimento
     simuladores: [
       {
         nome: 'Investimento Composto',
         descricao: 'Projeta o crescimento de um investimento ao longo do tempo.',
         componente: <CompoundInvestment />,
+        img: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
       },
       {
         nome: 'Empréstimo para Estudos',
         descricao: 'Calcula custos de empréstimo para educação.',
         componente: <StudyLoan />,
+        img: 'https://cdn-icons-png.flaticon.com/512/3135/3135768.png',
       },
       {
         nome: 'Planejamento de Reforma',
         descricao: 'Estima o montante necessário para a reforma básica.',
         componente: <RetirementPlanning />,
-      },
+        img: 'https://cdn-icons-png.flaticon.com/512/2922/2922510.png',
+      }
     ],
   },
 ];
@@ -142,20 +160,38 @@ const simuladoresAdultos = [
   {
     nome: 'Simulador Euribor 2025',
     descricao: 'Simula o impacto da Taxa Euribor na prestação de crédito habitação.',
-    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922017.png',
+    img: 'https://cdn-icons-png.flaticon.com/512/1170/1170678.png',
     componente: <EuriborSimulator />,
   },
   {
     nome: 'Valor máximo da casa',
     descricao: 'Calcula o preço máximo de casa que podes comprar com base na tua situação financeira.',
-    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922022.png',
+    img: 'https://cdn-icons-png.flaticon.com/512/1946/1946436.png',
     componente: <MaxHouseValue />,
   },
   {
     nome: 'Crédito à habitação',
     descricao: 'Simula o teu empréstimo para habitação com diferentes tipos de taxa de juro.',
-    img: 'https://cdn-icons-png.flaticon.com/512/2922/2922027.png',
+    img: 'https://cdn-icons-png.flaticon.com/512/190/190411.png',
     componente: <HousingLoan />,
+  },
+  {
+    nome: 'Independência Financeira',
+    descricao: 'Planeie o seu caminho para a liberdade financeira: acumulação e fase de rendimento.',
+    img: 'https://cdn-icons-png.flaticon.com/512/3135/3135768.png',
+    componente: <FinancialIndependence />,
+  },
+  {
+    nome: '1º Milhão',
+    descricao: 'Descubra quanto precisa investir por mês para atingir o seu primeiro milhão.',
+    img: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+    componente: <FirstMillion />,
+  },
+  {
+    nome: 'Quanto Tempo de Vida Custa Isso?',
+    descricao: 'Veja quantas horas ou dias de trabalho custam os seus desejos e compras.',
+    img: 'https://cdn-icons-png.flaticon.com/512/1828/1828884.png',
+    componente: <LifeTimeCost />,
   },
   // Aqui serão adicionados mais simuladores para adultos
 ];
@@ -356,7 +392,7 @@ const Simulations = () => {
                         whileHover={{ scale: 1.05, boxShadow: '0 8px 32px #8cb4bc33' }}
                         whileTap={{ scale: 0.97 }}
                       >
-                        <img src={simuladoresEstudantes[faixaSelecionada].img} alt={sim.nome} style={{ width: 70, height: 70, objectFit: 'contain', marginBottom: 12 }} />
+                        <img src={sim.img} alt={sim.nome} style={{ width: 70, height: 70, objectFit: 'contain', marginBottom: 12 }} />
                         <h3 style={{ color: '#7d925c', fontSize: '1.15rem', fontWeight: 800, marginBottom: '0.5rem', textAlign: 'center' }}>{sim.nome}</h3>
                         <p style={{ color: '#333', fontSize: '0.98rem', marginBottom: '1.2rem', textAlign: 'center', fontWeight: 500 }}>{sim.descricao}</p>
                         <button className="simulation-btn" onClick={() => setSimuladorSelecionado(sim)}>
