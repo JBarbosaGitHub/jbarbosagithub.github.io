@@ -44,7 +44,7 @@ const RetirementPlanning = () => {
       </form>
       {result !== null && (
         <p style={{ fontSize: 22, color: "#800080", fontWeight: 800, marginTop: 16 }}>
-          Montante necessário: €{result.toFixed(2)}
+          Montante necessário: €{result.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </p>
       )}
     </div>

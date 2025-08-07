@@ -40,10 +40,10 @@ const StudyLoan = () => {
       {result && (
         <div style={{ marginTop: 16 }}>
           <p style={{ fontSize: 18, color: '#228b22', fontWeight: 700 }}>
-            Prestação mensal: €{result.installment.toFixed(2)}
+            Prestação mensal: €{result.installment.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
           <p style={{ fontSize: 18, color: '#8b4513', fontWeight: 700 }}>
-            Total pago: €{result.total.toFixed(2)}
+            Total pago: €{result.total.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
         </div>
       )}

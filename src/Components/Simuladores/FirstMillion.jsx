@@ -65,8 +65,8 @@ const FirstMillion = () => {
                     <td style={{ padding: 6 }}>{row.years}</td>
                     <td style={{ padding: 6 }}>{row.months}</td>
                     <td style={{ padding: 6 }}>{(results.monthlyR * 100).toFixed(2)}%</td>
-                    <td style={{ padding: 6 }}>€{results.goal.toFixed(2)}</td>
-                    <td style={{ padding: 6 }}>€{row.monthlyInvestment.toFixed(2)}</td>
+                    <td style={{ padding: 6 }}>€{results.goal.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td style={{ padding: 6 }}>€{row.monthlyInvestment.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                   </tr>
                 ))}
               </tbody>

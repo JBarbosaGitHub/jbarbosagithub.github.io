@@ -1,7 +1,7 @@
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import PageTransition from "../Components/PageTransition";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import '../styles/Simulations.css';
 import ColoredCoinCounter from "../Components/Simuladores/ColoredCoinCounter";
 import BookSaving from "../Components/Simuladores/BookSaving";
@@ -200,6 +200,17 @@ const Simulations = () => {
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(null); // null = mostra categorias, 'estudantes' ou 'adultos'
   const [faixaSelecionada, setFaixaSelecionada] = useState(null); // null = mostra faixas
   const [simuladorSelecionado, setSimuladorSelecionado] = useState(null); // objeto simulador
+
+  useEffect(() => {
+    if (simuladorSelecionado) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [simuladorSelecionado]);
 
   // Modal simples
   const Modal = ({ open, onClose, children }) => {

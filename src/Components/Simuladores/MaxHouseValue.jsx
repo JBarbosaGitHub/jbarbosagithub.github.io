@@ -239,12 +239,12 @@ const MaxHouseValue = () => {
             <div style={{ marginTop: 20, padding: "1rem", backgroundColor: "#f8f9fa", borderRadius: "10px", border: "2px solid #eac862" }}>
               <h3 style={{ color: "#8cb4bc", fontWeight: 700, marginBottom: "0.5rem" }}>Resultado da Simulação</h3>
               <p style={{ fontSize: "1.2rem", color: "#4b0082", fontWeight: 600, marginBottom: "0.5rem" }}>
-                Valor máximo da casa: €{result.maxHousePrice}
+                Valor máximo da casa: €{Number(result.maxHousePrice).toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </p>
               <div style={{ fontSize: "0.95rem", color: "#666", textAlign: "left", marginTop: "10px" }}>
                 <p><strong>Detalhes:</strong></p>
-                <p>• Empréstimo máximo: €{result.maxLoan}</p>
-                <p>• Prestação mensal máxima: €{result.maxMonthlyPayment}</p>
+                <p>• Empréstimo máximo: €{Number(result.maxLoan).toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                <p>• Prestação mensal máxima: €{Number(result.maxMonthlyPayment).toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 <p>• Prazo máximo: {result.maxTermYears} anos</p>
                 <p>• Euribor 12m utilizada: {result.euriborRate}%</p>
                 <p>• Spread aplicado: {result.spreadRate}%</p>

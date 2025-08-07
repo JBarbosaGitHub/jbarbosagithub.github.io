@@ -80,8 +80,8 @@ const LifeTimeCost = () => {
       {results && (
         <div style={{ marginTop: 24, background: "#f8f9fa", borderRadius: 12, padding: 18, display: "inline-block", maxWidth: 700 }}>
           <h3 style={{ color: '#8cb4bc', fontWeight: 700, marginBottom: 12 }}>Resultados</h3>
-          <p style={{ marginBottom: 8 }}>Valor da Hora Trabalhada: <b>€{results.hourlyWage.toFixed(2)}</b></p>
-          <p style={{ marginBottom: 16 }}>Renda Semanal: <b>€{results.weeklyIncome.toFixed(2)}</b></p>
+          <p style={{ marginBottom: 8 }}>Valor da Hora Trabalhada: <b>€{results.hourlyWage.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</b></p>
+          <p style={{ marginBottom: 16 }}>Renda Semanal: <b>€{results.weeklyIncome.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</b></p>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', fontSize: 15, borderCollapse: 'collapse' }}>
               <thead style={{ background: '#f3f3f3' }}>
@@ -96,7 +96,7 @@ const LifeTimeCost = () => {
                 {results.table.map((row, idx) => (
                   <tr key={idx}>
                     <td style={{ padding: 6 }}>{row.name}</td>
-                    <td style={{ padding: 6 }}>€{row.price.toFixed(2)}</td>
+                    <td style={{ padding: 6 }}>€{row.price.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                     <td style={{ padding: 6 }}>{row.hours}</td>
                     <td style={{ padding: 6 }}>{row.days}</td>
                   </tr>

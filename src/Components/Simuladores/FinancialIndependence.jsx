@@ -77,7 +77,7 @@ const FinancialIndependence = () => {
       {result && (
         <div style={{ marginTop: 24, background: "#f8f9fa", borderRadius: 12, padding: 18, display: "inline-block" }}>
           <p style={{ fontWeight: 700, color: "#8cb4bc" }}>Fase de Acumulação</p>
-          <p>Património acumulado: €{result.accumulatedWealth}</p>
+          <p>Património acumulado: €{Number(result.accumulatedWealth).toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
           <p style={{ fontWeight: 700, color: "#eac862", marginTop: 12 }}>Fase de Rendimento</p>
           <p>{result.withdrawalText}</p>
         </div>

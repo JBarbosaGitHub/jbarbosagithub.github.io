@@ -178,6 +178,8 @@
   position: relative;
   color: #222;
   font-family: Inter, Arial, sans-serif;
+  overflow-y: auto;
+  max-height: 90vh;
 }
 .simulation-modal-close {
   position: absolute;

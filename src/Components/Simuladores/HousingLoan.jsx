@@ -283,7 +283,7 @@ Ao selecionar esta oferta declaro que todos os proponentes:
               <div style={{ textAlign: "left", fontSize: "0.95rem", color: "#666" }}>
                 <p style={{ fontWeight: 600, marginBottom: "0.5rem" }}>Prestação Base</p>
                 <p style={{ fontSize: "1.3rem", color: "#4b0082", fontWeight: 700, marginBottom: "0.5rem" }}>
-                  {result.payment} €
+                  {Number(result.payment).toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €
                 </p>
                 <p style={{ fontSize: "0.9rem", color: "#888", marginBottom: "0.5rem" }}>sem produtos de venda cruzada</p>
                 <p><strong>Tipo taxa:</strong> {result.rateType}</p>
@@ -291,7 +291,7 @@ Ao selecionar esta oferta declaro que todos os proponentes:
                 <p><strong>Spread Base:</strong> 1,500 %</p>
                 <p><strong>TAN:</strong> {result.annualRate} %</p>
                 <p><strong>TAEG:</strong> {result.taeg} %</p>
-                <p><strong>MTIC:</strong> {result.mtic} €</p>
+                <p><strong>MTIC:</strong> {Number(result.mtic).toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} €</p>
               </div>
             </div>
           )}

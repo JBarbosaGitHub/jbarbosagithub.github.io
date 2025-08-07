@@ -31,7 +31,7 @@ const CompoundInvestment = () => {
         </div>
       </form>
       {total !== null && (
-        <p style={{ fontSize: 22, color: '#eac862', fontWeight: 800 }}>Total: €{total.toFixed(2)}</p>
+        <p style={{ fontSize: 22, color: '#eac862', fontWeight: 800 }}>Total: €{total.toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
       )}
     </div>
   );
